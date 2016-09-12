@@ -16,3 +16,5 @@ target_include_directories (glRender
     include
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+file(COPY include DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
