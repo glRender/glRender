@@ -20,9 +20,9 @@ public:
     ~Shader();
 
     GLuint id();
-    std::string source();
-	void loadFromString(const std::string &sourceString);
-	void loadFromFile(const std::string &filename);
+    const char * source();
+	void loadFromString(const char * sourceString);
+	void loadFromFile(const char * filename);
 	void compile();
 
 };

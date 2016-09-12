@@ -2,7 +2,7 @@
 
 namespace glRender {
 
-Texture::Texture(std::string p_pathToFile)
+Texture::Texture(const char * p_pathToFile)
 {
 	Image* image = new Image( p_pathToFile );
 	

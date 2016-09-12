@@ -20,7 +20,7 @@ Model::Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgra
     // Set up the Vertex attribute pointer for the vVertex attribute
     for( auto attr : m_shaderProgram->attributeLocList )
     {
-        GeometryBuffer* buff = m_geometry->get( attr.first );
+        GeometryBuffer* buff = m_geometry->get( attr.first.c_str() );
         buff->bind();
 
         glEnableVertexAttribArray( attr.second.index );
@@ -41,7 +41,7 @@ Model::Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgra
         const std::string textureUniformName = m_textures->textureName( i );
         if ( textureUniformName != "" )
         {
-            m_shaderProgram->addUniform( textureUniformName );
+            m_shaderProgram->addUniform( textureUniformName.c_str() );
         }
     }
 
@@ -75,7 +75,7 @@ void Model::bindTextures()
         if ( texture != nullptr )
         {
             glBindTexture(GL_TEXTURE_2D, texture->getId() );
-            shaderProgram()->setUniform1i( textureName + patch::to_string(i), i );
+            shaderProgram()->setUniform1i( (textureName + patch::to_string(i)).c_str(), i );
         }
     }
 }

@@ -13,12 +13,12 @@ class Geometry
 {
 
 public:
-	void setGeometryBuffer(const std::string & uniformName, GeometryBuffer * geometryBuffer);
+	void setGeometryBuffer(const char * uniformName, GeometryBuffer * geometryBuffer);
 
-    GeometryBuffer * get(const std::string & name);
+    GeometryBuffer * get(const char * name);
     GeometryBuffer * get(const int index);
 
-    bool isExist(const std::string& name);
+    bool isExist(const char * name);
     bool isExist(const int index);
 
     unsigned int size();

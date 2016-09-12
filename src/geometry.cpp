@@ -15,12 +15,12 @@ Geometry::~Geometry()
     m_geometryBuffers.clear();
 }
 
-void Geometry::setGeometryBuffer(const std::string& uniformName, GeometryBuffer* geometryBuffer)
+void Geometry::setGeometryBuffer(const char * uniformName, GeometryBuffer* geometryBuffer)
 {
     m_geometryBuffers[ uniformName ] = geometryBuffer;
 }
 
-GeometryBuffer* Geometry::get(const std::string& name)
+GeometryBuffer* Geometry::get(const char * name)
 {
     std::map<std::string, GeometryBuffer*>::iterator it = m_geometryBuffers.find( name );
 
@@ -57,7 +57,7 @@ GeometryBuffer* Geometry::get(const int index)
 
 }
 
-bool Geometry::isExist(const std::string& name)
+bool Geometry::isExist(const char * name)
 {
     std::map<std::string, GeometryBuffer*>::iterator it = m_geometryBuffers.find( name );
 

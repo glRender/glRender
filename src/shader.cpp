@@ -32,13 +32,13 @@ GLuint Shader::id()
     return m_id;
 }
 
-std::string Shader::source()
+const char * Shader::source()
 {
-    return m_source;
+    return m_source.c_str();
 }
 
 // Method to load the shader contents from a file
-void Shader::loadFromString(const std::string &sourceString)
+void Shader::loadFromString(const char * sourceString)
 {
     // Keep hold of a copy of the source
     m_source = sourceString;
@@ -51,11 +51,11 @@ void Shader::loadFromString(const std::string &sourceString)
 }
 
 // Method to load the shader contents from a string
-void Shader::loadFromFile(const std::string &filename)
+void Shader::loadFromFile(const char * filename)
 {
     std::ifstream file;
 
-    file.open( filename.c_str() );
+    file.open( filename );
 
     if (!file.good() )
     {

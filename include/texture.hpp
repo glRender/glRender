@@ -13,7 +13,7 @@ protected:
 	GLuint m_id;
 
 public:
-	Texture(std::string pathToFile);
+	Texture(const char * pathToFile);
     ~Texture();
 
 	GLuint getId();

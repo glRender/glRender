@@ -18,7 +18,7 @@ private:
 	bool m_isLoaded = false;
 
 public:
-	Image(std::string pathToFile);
+	Image(const char * pathToFile);
     ~Image();
 
     bool isLoaded();

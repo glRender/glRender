@@ -6,10 +6,10 @@
 #include "../libs/stb/stb_image.h"
 
 namespace glRender {
-Image::Image(std::string pathToFile) :
+Image::Image(const char * pathToFile) :
 	m_pathToFile( pathToFile )
 {
-	m_data = stbi_load( pathToFile.c_str(), &m_width, &m_height, &m_components, STBI_rgb );
+	m_data = stbi_load( pathToFile, &m_width, &m_height, &m_components, STBI_rgb );
 
 }
 

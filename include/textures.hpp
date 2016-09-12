@@ -15,12 +15,12 @@ protected:
 public:
 	Textures();
 
-    void setTexture(const std::string & uniformName, Texture * texture);
+    void setTexture(const char * uniformName, Texture * texture);
 	
-    Texture* texture(const std::string & uniformName);
+    Texture * texture(const char * uniformName);
     bool isExistTexture(const int index);
-    Texture* texture(const int index);
-    const std::string textureName(const int index);
+    Texture * texture(const int index);
+    const char * textureName(const int index);
 	int size();
 
     ~Textures();

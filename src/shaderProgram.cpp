@@ -12,7 +12,7 @@ ShaderProgram::ShaderProgram() :
 
 }
 
-ShaderProgram::ShaderProgram(const std::string pathToVertexShader, const std::string pathToFragmentShader) :
+ShaderProgram::ShaderProgram(const char * pathToVertexShader, const char * pathToFragmentShader) :
     ShaderProgram::ShaderProgram()
 {
     Shader * shaderVertex = new Shader( GL_VERTEX_SHADER );
@@ -100,7 +100,7 @@ void ShaderProgram::disable()
 }
 
 // Returns the bound location of a named attribute
-Attribute ShaderProgram::attribute(const std::string &attribute)
+Attribute ShaderProgram::attribute(const char * attribute)
 {
     // You could do this function with the single line:
     //
@@ -129,7 +129,7 @@ Attribute ShaderProgram::attribute(const std::string &attribute)
 
 
 // Method to returns the bound location of a named uniform
-GLuint ShaderProgram::uniform(const std::string &uniform)
+GLuint ShaderProgram::uniform(const char * uniform)
 {
     // Note: You could do this method with the single line:
     //
@@ -154,7 +154,7 @@ GLuint ShaderProgram::uniform(const std::string &uniform)
 
 
 // Method to add an attrbute to the shader and return the bound location
-int ShaderProgram::setAttribute(const std::string &attributeName, AttributeType type)
+int ShaderProgram::setAttribute(const char * attributeName, AttributeType type)
 {
     static GLuint m_lastIndex = -1;
     m_lastIndex++;
@@ -261,9 +261,9 @@ int ShaderProgram::setAttribute(const std::string &attributeName, AttributeType 
 
 
 // Method to add a uniform to the shader and return the bound location
-int ShaderProgram::addUniform(const std::string &uniformName)
+int ShaderProgram::addUniform(const char * uniformName)
 {
-    uniformLocList[uniformName] = glGetUniformLocation( programId, uniformName.c_str() );
+    uniformLocList[uniformName] = glGetUniformLocation( programId, uniformName );
 
     // Check to ensure that the shader contains a uniform with this name
     if (uniformLocList[uniformName] == -1)
@@ -279,65 +279,65 @@ int ShaderProgram::addUniform(const std::string &uniformName)
     return uniformLocList[uniformName];
 }
 
-int ShaderProgram::setUniform(const std::string &uniformName, float value)
+int ShaderProgram::setUniform(const char * uniformName, float value)
 {
     addUniform( uniformName );
     setUniform1f( uniformName, value);
 }
 
-int ShaderProgram::setUniform(const std::string &uniformName, int value)
+int ShaderProgram::setUniform(const char * uniformName, int value)
 {
     addUniform( uniformName );
     setUniform1i( uniformName, value);
 }
 
-int ShaderProgram::setUniform(const std::string &uniformName, Vec3 & value)
+int ShaderProgram::setUniform(const char * uniformName, Vec3 & value)
 {
     addUniform( uniformName );
     setUniform3f( uniformName, value);
 }
 
-int ShaderProgram::setUniform(const std::string &uniformName, Vec4 & value)
+int ShaderProgram::setUniform(const char * uniformName, Vec4 & value)
 {
     addUniform( uniformName );
     setUniform4f( uniformName, value);
 }
 
-int ShaderProgram::setUniform(const std::string &uniformName, Mat4 & value)
+int ShaderProgram::setUniform(const char * uniformName, Mat4 & value)
 {
     addUniform( uniformName );
     setUniformMatrix4fv( uniformName, value);
 }
 
-void ShaderProgram::setUniform1f(const std::string &uniformName, float value)
+void ShaderProgram::setUniform1f(const char * uniformName, float value)
 {
     use();
     glUniform1f( uniform( uniformName ), value );
     disable();
 }
 
-void ShaderProgram::setUniform3f(const std::string &uniformName, Vec3 value)
+void ShaderProgram::setUniform3f(const char * uniformName, Vec3 value)
 {
     use();
     glUniform3f( uniform( uniformName ), value.x, value.y, value.z );
     disable();
 }
 
-void ShaderProgram::setUniform4f(const std::string &uniformName, Vec4 value)
+void ShaderProgram::setUniform4f(const char * uniformName, Vec4 value)
 {
     use();
     glUniform4f( uniform( uniformName ), value.x, value.y, value.z, value.w );
     disable();
 }
 
-void ShaderProgram::setUniformMatrix4fv(const std::string &uniformName, Mat4 value)
+void ShaderProgram::setUniformMatrix4fv(const char * uniformName, Mat4 value)
 {
     use();
     glUniformMatrix4fv( uniform( uniformName ), 1, GL_FALSE, value.get() );
     disable();
 }
 
-void ShaderProgram::setUniform1i(const std::string &uniformName, int value)
+void ShaderProgram::setUniform1i(const char * uniformName, int value)
 {
     use();
     glUniform1i( uniform( uniformName ), value );

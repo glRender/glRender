@@ -7,13 +7,13 @@ Textures::Textures()
 
 }
 
-void Textures::setTexture(const std::string& uniformName, Texture* texture)
+void Textures::setTexture(const char * uniformName, Texture * texture)
 {
     m_textures[uniformName] = texture;
     
 }
 
-Texture* Textures::texture(const std::string& uniformName)
+Texture* Textures::texture(const char * uniformName)
 {
     auto it = m_textures.find( uniformName );
     if ( it != m_textures.end() )
@@ -57,7 +57,7 @@ Texture* Textures::texture(const int index)
     }
 }
 
-const std::string Textures::textureName(const int index)
+const char * Textures::textureName(const int index)
 {
     if ( isExistTexture( index ) )
     {
@@ -67,7 +67,7 @@ const std::string Textures::textureName(const int index)
             it++;
         }
 
-        return it->first;
+        return it->first.c_str();
 
     }
     else
