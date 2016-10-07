@@ -47,6 +47,7 @@ struct Vec2
 
     friend Vec2 operator*(const float a, const Vec2 vec);
     friend std::ostream& operator<<(std::ostream& os, const Vec2& vec);
+    const char * toStdString() const;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -161,8 +162,13 @@ inline std::ostream& operator<<(std::ostream& os, const Vec2& vec) {
     os << "(" << vec.x << ", " << vec.y << ")";
     return os;
 }
-// END OF VECTOR2 /////////////////////////////////////////////////////////////
 
+inline const char *Vec2::toStdString() const
+{
+    std::string str;
+    str = "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
+    return str.c_str();
+}
     
 }
 
