@@ -20,73 +20,65 @@ void Camera::lookAt(const Vec3 & position, const Vec3 & target, const Vec3 & up)
 
     X.normalize();
 
-    Mat4 viewMatrix;
-    viewMatrix[0] = X.x;
-    viewMatrix[4] = X.y;
-    viewMatrix[8] = X.z;
-    viewMatrix[12] = -X.dot(position);
+    Mat4 view;
+    view.setRow(0, Vec4(X.x, X.y, X.z, -X.dot(position)));
+//    view[0] = X.x;
+//    view[4] = X.y;
+//    view[8] = X.z;
+//    view[12] = -X.dot(position);
 
-    viewMatrix[1] = Y.x;
-    viewMatrix[5] = Y.y;
-    viewMatrix[9] = Y.z;
-    viewMatrix[13] = -Y.dot(position);
+//    view[1] = Y.x;
+//    view[5] = Y.y;
+//    view[9] = Y.z;
+    view.setRow(1, Vec4(Y.x, Y.y, Y.z, -Y.dot(position)));
+//    view[13] = -Y.dot(position);
 
-    viewMatrix[2] = Z.x;
-    viewMatrix[6] = Z.y;
-    viewMatrix[10] = Z.z;
-    viewMatrix[14] =  -Z.dot(position);
+//    view[2] = Z.x;
+//    view[6] = Z.y;
+//    view[10] = Z.z;
+    view.setRow(2, Vec4(Z.x, Z.y, Z.z, -Z.dot(position)));
+//    view[14] =  -Z.dot(position);
 
-    viewMatrix[3] = 0;
-    viewMatrix[7] = 0;
-    viewMatrix[11] = 0;
-    viewMatrix[15] = 1.0f;
+//    view.setColumn(3, Vec3(-X.dot(position), -Y.dot(position), -Z.dot(position)));
 
-    setTransformationMatrix(viewMatrix);
+    view.setRow(3, Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
+//    view[3] = 0;
+//    view[7] = 0;
+//    view[11] = 0;
+//    view[15] = 1.0f;
+
+    m_transformationMatrix = view;
+
+    m_position = position;
+    m_target = target;
+    m_up = up;
 
 }
 
-const Mat4& Camera::projectionMatrix() const
+const Mat4 & Camera::projectionMatrix() const
 {
 	return m_projectionMatrix;
 }
 
-void Camera::setProjectionMatrix(const Mat4& matrix)
-{
-	m_projectionMatrix = matrix;
-}
-
-const Mat4& Camera::transformationMatrix() const
+const Mat4 & Camera::transformationMatrix() const
 {
     return m_transformationMatrix;
 }
 
-void Camera::translate(const float x, const float y, const float z)
+const Vec3 & Camera::position() const
 {
-    Vec3 transformedValue = Positionable::transformationMatrix() * Vec3(x,y,z);
-    Positionable::translate(transformedValue.x, transformedValue.y, transformedValue.z);
-
-    m_transformationMatrix = m_transformationMatrix.translate(-x,-y,-z);
-
+    return m_position;
 }
 
-void Camera::translate(const Vec3 & value)
+const Vec3 & Camera::target() const
 {
-    translate(value.x, value.y, value.z);
+    return m_target;
 }
 
-void Camera::rotate(const float value, const float x, const float y, const float z)
+const Vec3 & Camera::up() const
 {
-    Vec3 pos = position();
-    Positionable::translate( -pos );
-    Positionable::rotate( -value, x, y, z );
-    Positionable::translate( pos );
-
-    m_transformationMatrix = m_transformationMatrix.rotate( value, x, y, z );
-}
-
-void Camera::rotate(const float value, const Vec3 & v)
-{
-    rotate( value, v.x, v.y, v.z );
+    return m_up;
 }
 
 }

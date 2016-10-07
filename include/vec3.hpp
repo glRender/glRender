@@ -48,6 +48,7 @@ struct Vec3
     bool        operator<(const Vec3& rhs) const;    // comparison for sort
     float       operator[](int index) const;            // subscript operator v[0], v[1]
     float&      operator[](int index);                  // subscript operator v[0], v[1]
+    const char * toStdString() const;
 
     static Vec3 AXE_X() { return Vec3(1.0, 0.0, 0.0); };
     static Vec3 AXE_Y() { return Vec3(0.0, 1.0, 0.0); };
@@ -121,6 +122,12 @@ inline bool Vec3::operator<(const Vec3& rhs) const {
 
 inline GLfloat Vec3::operator[](GLint index) const {
     return (&x)[index];
+}
+
+inline const char *Vec3::toStdString() const
+{
+    std::string str = "(" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ")";
+    return str.c_str();
 }
 
 inline GLfloat& Vec3::operator[](GLint index) {

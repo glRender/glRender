@@ -104,7 +104,7 @@ void Model::draw(Camera * camera)
 {
     Mat4 view = camera->transformationMatrix();
     shaderProgram()->setUniformMatrix4fv("projection", camera->projectionMatrix());
-    shaderProgram()->setUniformMatrix4fv("view", view.invert());
+    shaderProgram()->setUniformMatrix4fv("view", view);
     shaderProgram()->setUniformMatrix4fv("model", transformationMatrix());
 
     bindTextures();

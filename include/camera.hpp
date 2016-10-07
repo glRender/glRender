@@ -2,34 +2,34 @@
 #define __CAMERA_HPP__
 
 #include "base.h"
-#include "positionable.hpp"
 
 namespace glRender
 {
 
-class Camera : public Positionable
+class Camera
 {
-protected:
-    Mat4 m_projectionMatrix;
-    Mat4 m_transformationMatrix;
 
 public:
     Camera();
 
-	void lookAt(const Vec3 & position, const Vec3 & target, const Vec3 & up);
-
-    const Mat4 & projectionMatrix() const;
-	void setProjectionMatrix(const Mat4 & matrix);
-
-    const Mat4 & transformationMatrix() const;
-
     virtual void calculateProjectionMatrix() = 0;
 
-    void translate(const float x, const float y, const float z) override;
-    void translate(const Vec3 & pos) override;
+    void lookAt(const Vec3 & position, const Vec3 & target, const Vec3 & up);
 
-    void rotate(const float value, const float x, const float y, const float z);
-    void rotate(const float value, const Vec3 & v);
+    const Mat4 & projectionMatrix() const;
+    const Mat4 & transformationMatrix() const;
+
+    const Vec3 & position() const;
+    const Vec3 & target() const;
+    const Vec3 & up() const;
+
+protected:
+    Mat4 m_projectionMatrix;
+    Mat4 m_transformationMatrix;
+    Vec3 m_position = {0.0f, 0.0f, 0.0f};
+    Vec3 m_target = -Vec3::AXE_Z();
+    Vec3 m_up = Vec3::AXE_Y();
+
 };
 
 }
