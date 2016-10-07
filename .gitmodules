@@ -1,0 +1,3 @@
+[submodule "tests/libs/Catch"]
+	path = tests/libs/Catch
+	url = https://github.com/philsquared/Catch
