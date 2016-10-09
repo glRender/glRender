@@ -165,7 +165,7 @@ inline std::ostream& operator<<(std::ostream& os, const Vec2& vec) {
 inline const char *Vec2::toStdString() const
 {
     std::string str;
-    str = "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
+    str = "(" + patch::to_string(x) + ", " + patch::to_string(y) + ")";
     return str.c_str();
 }
     
