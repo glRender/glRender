@@ -2,6 +2,8 @@
 #define __CAMERA_HPP__
 
 #include "base.h"
+#include "mat4.hpp"
+#include "vec3.hpp"
 
 namespace glRender
 {

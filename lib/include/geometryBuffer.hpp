@@ -1,18 +1,11 @@
 #ifndef __GEOMETRY_BUFFER__
 #define __GEOMETRY_BUFFER__
 
-#include <stdlib.h>
-#include <string>
-
-#include <vector>
+#include "base.h"
 
 #include "vec3.hpp"
 #include "vec4.hpp"
 #include "mat4.hpp"
-
-#include "opengl.h"
-#include "stdlib.h"
-#include "stdio.h"
 
 namespace glRender
 {

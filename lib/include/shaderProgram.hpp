@@ -3,6 +3,9 @@
 
 #include "base.h"
 
+#include "vec3.hpp"
+#include "vec4.hpp"
+#include "mat4.hpp"
 #include "shader.hpp"
 #include "attribute.h"
 

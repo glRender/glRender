@@ -1,8 +1,7 @@
 #ifndef __VEC2_H__
 #define __VEC2_H__
 
-#include <cmath>
-#include <iostream>
+#include "base.h"
 
 namespace glRender
 {

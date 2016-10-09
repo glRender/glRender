@@ -3,6 +3,7 @@
 
 #include "base.h"
 
+#include "vec3.hpp"
 #include "attribute.h"
 #include "geometryBuffer.hpp"
 #include "geometry.hpp"

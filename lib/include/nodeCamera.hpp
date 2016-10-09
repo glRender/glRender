@@ -2,6 +2,7 @@
 #define __NODECAMERA_HPP__
 
 #include "base.h"
+
 #include "node.hpp"
 #include "camera.hpp"
 

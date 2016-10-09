@@ -1,10 +1,7 @@
 #ifndef __VEC3_H__		
 #define __VEC3_H__
 
-#include <iostream>
-#include <cmath>
-
-#include "opengl.h"
+#include "base.h"
 
 namespace glRender
 {
@@ -126,7 +123,7 @@ inline GLfloat Vec3::operator[](GLint index) const {
 
 inline const char *Vec3::toStdString() const
 {
-    std::string str = "(" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ")";
+    std::string str = "(" + patch::to_string(x) + ", " + patch::to_string(y) + ", " + patch::to_string(z) + ")";
     return str.c_str();
 }
 

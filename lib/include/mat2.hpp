@@ -1,8 +1,7 @@
 #ifndef __MAT2_H__      
 #define __MAT2_H__
 
-#include <iostream>
-#include <iomanip>
+#include "base.h"
 
 #include "vec2.hpp"
 #include "vec3.hpp"

@@ -1,10 +1,7 @@
 #ifndef __VEC4_H__      
 #define __VEC4_H__
 
-#include <iostream>
-#include <cmath>
-
-#include "opengl.h"
+#include "base.h"
 
 namespace glRender
 {
