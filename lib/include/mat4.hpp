@@ -1,8 +1,7 @@
 #ifndef __MAT4_H__      
 #define __MAT4_H__
 
-#include <iostream>
-#include <iomanip>
+#include "base.h"
 
 #include "vec2.hpp"
 #include "vec3.hpp"
@@ -10,8 +9,6 @@
 
 #include "mat2.hpp"
 #include "mat3.hpp"
-
-#include "opengl.h"
 
 namespace glRender
 {

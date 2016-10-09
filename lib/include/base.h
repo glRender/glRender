@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string>
 #include <string.h>
 #include <math.h>
 #include <cstdlib>
@@ -10,16 +11,14 @@
 #include <sstream>
 #include <fstream>
 #include <functional>
+#include <stdlib.h>
+#include <iostream>
+#include <iomanip>
 
 #include <map>
 #include <vector>
 
-#include "vec2.hpp"
-#include "vec3.hpp"
-#include "vec4.hpp"
-
-#include "mat3.hpp"
-#include "mat4.hpp"
+#include <GL/glew.h>
 
 // Math
 #define MATH_DEG_TO_RAD(x)          ((x) * 0.0174532925f)

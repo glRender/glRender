@@ -7,8 +7,6 @@ set (CATCH_INCLUDES libs/Catch/include)
 set (SRC src)
 set (bin_src ${SRC}/tests.cpp)
 
-message(${LIB_INCLUDE_DIR})
-
 include_directories (${SRC} ${LIB_INCLUDE_DIR} ${CATCH_INCLUDES})
 
 add_executable(Tests ${bin_src})

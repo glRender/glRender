@@ -2,6 +2,7 @@
 #define __SCENE_HPP__
 
 #include "base.h"
+
 #include "node.hpp"
 
 namespace glRender

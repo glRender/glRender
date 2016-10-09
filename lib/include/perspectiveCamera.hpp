@@ -2,6 +2,7 @@
 #define PERSPECTIVECAMERA_H
 
 #include "base.h"
+
 #include "camera.hpp"
 
 namespace glRender

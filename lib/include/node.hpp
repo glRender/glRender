@@ -2,6 +2,7 @@
 #define __NODE_HPP__
 
 #include "base.h"
+
 #include "camera.hpp"
 
 namespace glRender

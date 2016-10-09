@@ -2,6 +2,7 @@
 #define __TEXTURES_HPP__
 
 #include "base.h"
+
 #include "texture.hpp"
 
 namespace glRender
