@@ -76,9 +76,36 @@ const Vec3 & Camera::target() const
     return m_target;
 }
 
+const Vec3 Camera::normalizedDirection() const
+{
+    Vec3 normalizedDir = target() - position();
+    normalizedDir.normalize();
+    return normalizedDir;
+}
+
+const Vec3 Camera::front() const
+{
+    return normalizedDirection();
+}
+
+const Vec3 Camera::right() const
+{
+    Vec3 normDir = normalizedDirection();
+    return normDir.cross(up());
+}
+
 const Vec3 & Camera::up() const
 {
     return m_up;
+}
+
+void Camera::shift(const Vec3 v)
+{
+    Vec3 newPos = position() + v;
+    Vec3 newTarget = newPos + normalizedDirection();
+    Vec3 newUp = up();
+
+    lookAt(newPos, newTarget, newUp);
 }
 
 }

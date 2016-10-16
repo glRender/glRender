@@ -23,7 +23,17 @@ public:
 
     const Vec3 & position() const;
     const Vec3 & target() const;
+
+    const Vec3 normalizedDirection() const;
+
+    const Vec3 front() const;
+    const Vec3 right() const;
     const Vec3 & up() const;
+
+    void shift(const Vec3 v);
+
+    float yaw = 0.0f;
+    float pitch = 0.0f;
 
 protected:
     Mat4 m_projectionMatrix;
