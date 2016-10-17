@@ -24,22 +24,28 @@ public:
     const Vec3 & position() const;
     const Vec3 & target() const;
 
-    const Vec3 normalizedDirection() const;
-
-    const Vec3 front() const;
-    const Vec3 right() const;
+    const Vec3 & front() const;
+    const Vec3 & right() const;
     const Vec3 & up() const;
 
     void shift(const Vec3 v);
 
-    float yaw = 0.0f;
-    float pitch = 0.0f;
+    void setEulerAngles(float pitch, float yaw, float roll);
+
+    float m_yaw = 0.0f;
+    float m_pitch = 0.0f;
+    float m_roll = 0.0f;
 
 protected:
     Mat4 m_projectionMatrix;
     Mat4 m_transformationMatrix;
+
     Vec3 m_position = {0.0f, 0.0f, 0.0f};
     Vec3 m_target = -Vec3::AXE_Z();
+    Vec3 m_direction;
+
+    Vec3 m_front;
+    Vec3 m_right;
     Vec3 m_up = Vec3::AXE_Y();
 
 };
