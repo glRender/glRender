@@ -28,13 +28,16 @@ public:
     const Vec3 & right() const;
     const Vec3 & up() const;
 
+    float pitch() const;
+    float yaw() const;
+    float roll() const;
+
     void shift(const Vec3 v);
 
+    void setPosition(const Vec3 & pos);
+    void setTarget(const Vec3 & target);
+    void setDirection(const Vec3 & direction);
     void setEulerAngles(float pitch, float yaw, float roll);
-
-    float m_yaw = 0.0f;
-    float m_pitch = 0.0f;
-    float m_roll = 0.0f;
 
 protected:
     Mat4 m_projectionMatrix;
@@ -47,6 +50,10 @@ protected:
     Vec3 m_front;
     Vec3 m_right;
     Vec3 m_up = Vec3::AXE_Y();
+
+    float m_yaw = 0.0f;
+    float m_pitch = 0.0f;
+    float m_roll = 0.0f;
 
 };
 

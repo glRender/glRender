@@ -82,21 +82,44 @@ void Camera::shift(const Vec3 v)
     lookAt(newPos, newTarget, newUp);
 }
 
-void Camera::setEulerAngles(float pitch, float yaw, float roll)
+void Camera::setPosition(const Vec3 &pos)
 {
-    m_pitch = pitch;
-    m_yaw = yaw;
-    m_roll = roll;
+    Vec3 newPos = pos;
+    Vec3 newTarget = pos + front();
+    Vec3 newUp = up();
 
-    Mat4 m;
-    m.rotate(pitch, 1,0,0);
-    m.rotate(yaw,   0,1,0);
-    m.rotate(roll,  0,0,1);
+    lookAt(newPos, newTarget, newUp);
+}
+
+void Camera::setTarget(const Vec3 &target)
+{
+    Vec3 newPos = position();
+    Vec3 newTarget = target;
+    Vec3 newUp = up();
+
+    lookAt(newPos, newTarget, newUp);
+}
+
+void Camera::setDirection(const Vec3 &direction)
+{
+    Vec3 d = direction;
+    d.normalize();
 
     Vec3 newPos = position();
-//    Vec4 tmp(newPos.x, newPos.y, newPos.z, 1.0f);
-//    tmp = m * tmp;
-//    newPos.set(tmp.x, tmp.y, tmp.z);
+    Vec3 newTarget = position() + d;
+    Vec3 newUp = up();
+
+    lookAt(newPos, newTarget, newUp);
+}
+
+void Camera::setEulerAngles(float pitch, float yaw, float roll)
+{
+    Mat4 m;
+    m.rotate(pitch, Vec3::AXE_X());
+    m.rotate(yaw,   Vec3::AXE_Y());
+    m.rotate(roll,  Vec3::AXE_Z());
+
+    Vec3 newPos = position();
 
     Vec3 newTarget = -Vec3::AXE_Z();
     Vec4 tmp(newTarget.x, newTarget.y, newTarget.z, 1.0f);
@@ -110,6 +133,25 @@ void Camera::setEulerAngles(float pitch, float yaw, float roll)
     newUp.set(tmp.x, tmp.y, tmp.z);
 
     lookAt(newPos, newTarget, newUp);
+
+    m_pitch = pitch;
+    m_yaw = yaw;
+    m_roll = roll;
+}
+
+float Camera::pitch() const
+{
+    return m_pitch;
+}
+
+float Camera::yaw() const
+{
+    return m_yaw;
+}
+
+float Camera::roll() const
+{
+    return m_roll;
 }
 
 }
