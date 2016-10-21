@@ -2,14 +2,15 @@
 
 namespace glRender {
 
-glRender::Texture *glRender::ResourceManager::getTexture(std::string path)
+glRender::Texture *glRender::ResourceManager::getTexture(const char * path)
 {
-    if (m_textures.find(path) == m_textures.end())
+    std::string key = std::string(path);
+    if (m_textures.find(key) == m_textures.end())
     {
-        m_textures[path] = new Texture(path.c_str());
+        m_textures[key] = new Texture(path);
     }
 
-    return m_textures.at(path);
+    return m_textures.at(key);
 }
 
 }

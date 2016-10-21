@@ -30,8 +30,8 @@ public:
     //       before deleted status
 
 public:
-    Texture *       getTexture(std::string path);
-    ShaderProgram * getShaderProgram(std::string path);
+    Texture *       getTexture(const char * path);
+    ShaderProgram * getShaderProgram(const char * path);
 
 private:
     ResourceManager() {}                    // Constructor? (the {} brackets) are needed here.
