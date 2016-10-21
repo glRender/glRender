@@ -18,5 +18,6 @@
 #include "nodeModel.hpp"
 #include "nodeCamera.hpp"
 #include "scene.hpp"
+#include "resourceManager.hpp"
 
 #endif /* __GLRENDER_H__ */
