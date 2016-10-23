@@ -1,61 +1,105 @@
 #include "shaderProgram.hpp"
 
+#include "resourceManager.hpp"
+
 namespace glRender {
 
-ShaderProgram::ShaderProgram() :
-    shaderCount(0)
+//ShaderProgram::ShaderProgram() :
+//    shaderCount(0)
+//{
+//    // Generate a unique Id / handle for the shader program
+//    // Note: We MUST have a valid rendering context before generating
+//    // the programId or it causes a segfault!
+//    programId = glCreateProgram();
+
+//}
+
+ShaderProgram::ShaderProgram(const char * pathToVertexShader, const char * pathToFragmentShader)
 {
-    // Generate a unique Id / handle for the shader program
-    // Note: We MUST have a valid rendering context before generating
-    // the programId or it causes a segfault!
     programId = glCreateProgram();
 
-}
+    bool vertexShaderReady = false;
+    bool fragmentShaderReady = false;
+    bool isShadersLinked = false;
 
-ShaderProgram::ShaderProgram(const char * pathToVertexShader, const char * pathToFragmentShader) :
-    ShaderProgram::ShaderProgram()
-{
-    Shader * shaderVertex = new Shader( GL_VERTEX_SHADER );
-    shaderVertex->loadFromFile( pathToVertexShader );
-    shaderVertex->compile();
+    Shader * vertexShader;
+    Shader * fragmentShader;
 
-    Shader * shaderFragment = new Shader( GL_FRAGMENT_SHADER );
-    shaderFragment->loadFromFile( pathToFragmentShader );
-    shaderFragment->compile();
+    if (!ResourceManager::getInstance().hasShader(pathToVertexShader))
+    {
+        vertexShaderReady = ResourceManager::getInstance().initShader(pathToVertexShader, GL_VERTEX_SHADER);
+        if (!vertexShaderReady)
+        {
+            std::cout << "Can't init vertex shader!" <<std::endl;
+        }
+    }
+    vertexShader = ResourceManager::getInstance().getShader(pathToVertexShader);
+    std::cout << " * ShaderVertex " << vertexShader << std::endl;
 
-    add( *shaderVertex );
-    add( *shaderFragment );
+    if (!ResourceManager::getInstance().hasShader(pathToFragmentShader))
+    {
+        fragmentShaderReady = ResourceManager::getInstance().initShader(pathToFragmentShader, GL_FRAGMENT_SHADER);
+        if (!fragmentShaderReady)
+        {
+            std::cout << "Can't init fragment shader!" <<std::endl;
+        }
+    }
+    fragmentShader = ResourceManager::getInstance().getShader(pathToFragmentShader);
+    std::cout << " * ShaderFragment " << fragmentShader << std::endl;
+
+//    Shader * vertexShader = new Shader( GL_VERTEX_SHADER );
+//    vertexShader->loadFromFile( pathToVertexShader );
+//    vertexShader->compile();
+
+//    Shader * fragmentShader = new Shader( GL_FRAGMENT_SHADER );
+//    fragmentShader->loadFromFile( pathToFragmentShader );
+//    fragmentShader->compile();
+    attachVertexShader(vertexShader);
+    attachFragmentShader(fragmentShader);
     link();
-
 }
 
 
 // Destructor
 ShaderProgram::~ShaderProgram()
 {
+    detachVertexShader();
+    detachFragmentShader();
+
     // Delete the shader program from the graphics card memory to
     // free all the resources it's been using
     glDeleteProgram(programId);
 }
 
-
-// Method to attach a shader to the shader program
-void ShaderProgram::add(Shader shader)
+void ShaderProgram::attachVertexShader(Shader *shader)
 {
-    // Attach the shader to the program
-    // Note: We identify the shader by its unique Id value
-    glAttachShader( programId, shader.id() );
-
-    // Increment the number of shaders we have associated with the program
-    shaderCount++;
+    m_vertexShader = shader;
+    glAttachShader( programId, shader->id() );
+    std::cout << " * Vertex shader attached to programm " << programId << std::endl;
 }
 
+void ShaderProgram::attachFragmentShader(Shader *shader)
+{
+    m_fragmentShader = shader;
+    glAttachShader( programId, shader->id() );
+    std::cout << " * Fragment shader attached to programm " << programId << std::endl;
+}
+
+void ShaderProgram::detachVertexShader()
+{
+    glDetachShader(programId, m_vertexShader->id());
+}
+
+void ShaderProgram::detachFragmentShader()
+{
+    glDetachShader(programId, m_fragmentShader->id());
+}
 
 // Method to link the shader program and display the link status
-void ShaderProgram::link()
+bool ShaderProgram::link()
 {
     // If we have at least two shaders (like a vertex shader and a fragment shader)...
-    if (shaderCount >= 2)
+    if (m_vertexShader != nullptr && m_fragmentShader != nullptr)
     {
         // Perform the linking process
         glLinkProgram(programId);
@@ -65,8 +109,17 @@ void ShaderProgram::link()
         glGetProgramiv(programId, GL_LINK_STATUS, &linkStatus);
         if (linkStatus == GL_FALSE)
         {
+            GLint maxLength = 0;
+            glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &maxLength);
+
+            //The maxLength includes the NULL character
+            std::vector<GLchar> infoLog(maxLength);
+            glGetProgramInfoLog(programId, maxLength, &maxLength, &infoLog[0]);
+
+            //We don't need the program anymore.
+            glDeleteProgram(programId);
+
             std::cout << "Shader program linking failed." << std::endl;
-            // glfwTerminate();
         }
         else
         {
@@ -75,12 +128,15 @@ void ShaderProgram::link()
             addUniform( "projection" );
 
             std::cout << "Shader program linking OK." << std::endl;
+
+            detachVertexShader();
+            detachFragmentShader();
+
         }
     }
     else
     {
-        std::cout << "Can't link shaders - you need at least 2, but attached shader count is only: " << shaderCount << std::endl;
-        // glfwTerminate();
+        std::cout << "Can't link shaders" << std::endl;
     }
 
 }
@@ -89,6 +145,7 @@ void ShaderProgram::link()
 void ShaderProgram::use()
 {
     glUseProgram(programId);
+//    std::cout << " * Use programm with id " << programId << std::endl;
 
 }
 
@@ -97,6 +154,7 @@ void ShaderProgram::use()
 void ShaderProgram::disable()
 {
     glUseProgram(0);
+//    std::cout << " * Disable programm with id " << programId << std::endl;
 }
 
 // Returns the bound location of a named attribute
@@ -123,10 +181,120 @@ Attribute ShaderProgram::attribute(const char * attribute)
     else
     {
         std::cout << "Could not find attribute in shader program: " << attribute << std::endl;
-        exit(-1);
+        return {0, 0, 0, 0, 0};
+//        exit(-1);
     }
 }
 
+bool ShaderProgram::hasAttribute(const char * attributeName)
+{
+    GLuint index = glGetAttribLocation( programId, attributeName );
+    return index != -1;
+}
+
+// Method to add an attrbute to the shader and return the bound location
+void ShaderProgram::setAttributeType(const char * attributeName, AttributeType type)
+{
+//    static GLuint index = -1;
+//    index++;
+
+    // printf("%s, type: %d\n", attributeName.c_str(), type );
+
+    GLuint index = glGetAttribLocation( programId, attributeName );
+    // Check to ensure that the shader contains an attribute with this name
+    if (index == -1)
+    {
+        std::cout << "Could not add attribute: " << attributeName << " - location returned -1!" << std::endl;
+        exit(-1);
+    }
+    else
+    {
+        Attribute attr;
+
+        switch( type )
+        {
+            case AttributeType::XYZW: {
+                attr.index = index;
+                attr.size = 4;
+                attr.type = GL_FLOAT;
+                attr.normalized = GL_FALSE;
+                attr.stride = 4 * sizeof(GLfloat);
+                attr.pointer = (GLvoid*)0;
+            }; break;
+
+            case AttributeType::XYZ: {
+                attr.index = index;
+                attr.size = 3;
+                attr.type = GL_FLOAT;
+                attr.normalized = GL_FALSE;
+                attr.stride = 3 * sizeof(GLfloat);
+                attr.pointer = (GLvoid*)0;
+            }; break;
+
+            case AttributeType::XY: {
+                attr.index = index;
+                attr.size = 2;
+                attr.type = GL_FLOAT;
+                attr.normalized = GL_FALSE;
+                attr.stride = 2 * sizeof(GLfloat);
+                attr.pointer = (GLvoid*)0;
+            }; break;
+
+            case AttributeType::X: {
+                attr.index = index;
+                attr.size = 1;
+                attr.type = GL_FLOAT;
+                attr.normalized = GL_FALSE;
+                attr.stride = 1 * sizeof(GLfloat);
+                attr.pointer = (GLvoid*)0;
+            }; break;
+
+            case AttributeType::UVW: {
+                attr.index = index;
+                attr.size = 3;
+                attr.type = GL_FLOAT;
+                attr.normalized = GL_FALSE;
+                attr.stride = 3 * sizeof(GLfloat);
+                attr.pointer = (GLvoid*)0;
+
+            }; break;
+
+            case AttributeType::UV: {
+                attr.index = index;
+                attr.size = 2;
+                attr.type = GL_FLOAT;
+                attr.normalized = GL_FALSE;
+                attr.stride = 2 * sizeof(GLfloat);
+                attr.pointer = (GLvoid*)0;
+
+            }; break;
+
+            case AttributeType::RGB: {
+                attr.index = index;
+                attr.size = 3;
+                attr.type = GL_FLOAT;
+                attr.normalized = GL_FALSE;
+                attr.stride = 3 * sizeof(GLfloat);
+                attr.pointer = (GLvoid*)0;
+
+            }; break;
+
+            case AttributeType::RGBA: {
+                attr.index = index;
+                attr.size = 4;
+                attr.type = GL_FLOAT;
+                attr.normalized = GL_FALSE;
+                attr.stride = 4 * sizeof(GLfloat);
+                attr.pointer = (GLvoid*)0;
+
+            }; break;
+        }
+
+        attributeLocList[ attributeName ] = attr;
+
+        // std::cout << "Attribute " << attributeName << " bound to location: " << attr.index << std::endl;
+    }
+}
 
 // Method to returns the bound location of a named uniform
 GLuint ShaderProgram::uniform(const char * uniform)
@@ -151,114 +319,6 @@ GLuint ShaderProgram::uniform(const char * uniform)
         exit(-1);
     }
 }
-
-
-// Method to add an attrbute to the shader and return the bound location
-int ShaderProgram::setAttribute(const char * attributeName, AttributeType type)
-{
-    static GLuint m_lastIndex = -1;
-    m_lastIndex++;
-
-    // printf("%s, type: %d\n", attributeName.c_str(), type );
-
-    // GLuint index = glGetAttribLocation( programId, attributeName.c_str() );
-    // Check to ensure that the shader contains an attribute with this name
-    if (m_lastIndex == -1)
-    {
-        std::cout << "Could not add attribute: " << attributeName << " - location returned -1!" << std::endl;
-        exit(-1);
-    }
-    else
-    {
-        Attribute attr;
-
-        switch( type )
-        {
-            case AttributeType::XYZW: {
-                attr.index = m_lastIndex;
-                attr.size = 4;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 4 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-            }; break;
-
-            case AttributeType::XYZ: {
-                attr.index = m_lastIndex;
-                attr.size = 3;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 3 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-            }; break;
-
-            case AttributeType::XY: {
-                attr.index = m_lastIndex;
-                attr.size = 2;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 2 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-            }; break;
-
-            case AttributeType::X: {
-                attr.index = m_lastIndex;
-                attr.size = 1;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 1 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-            }; break;
-
-            case AttributeType::UVW: {
-                attr.index = m_lastIndex;
-                attr.size = 3;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 3 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-
-            }; break;
-
-            case AttributeType::UV: {
-                attr.index = m_lastIndex;
-                attr.size = 2;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 2 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-
-            }; break;
-
-            case AttributeType::RGB: {
-                attr.index = m_lastIndex;
-                attr.size = 3;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 3 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-
-            }; break;
-
-            case AttributeType::RGBA: {
-                attr.index = m_lastIndex;
-                attr.size = 4;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 4 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-
-            }; break;
-        }
-
-        attributeLocList[ attributeName ] = attr;
-
-        // std::cout << "Attribute " << attributeName << " bound to location: " << attr.index << std::endl;
-    }
-
-    return m_lastIndex;
-}
-
 
 // Method to add a uniform to the shader and return the bound location
 int ShaderProgram::addUniform(const char * uniformName)
@@ -311,9 +371,12 @@ int ShaderProgram::setUniform(const char * uniformName, Mat4 & value)
 
 void ShaderProgram::setUniform1f(const char * uniformName, float value)
 {
-    use();
+//    use();
+    glUseProgram(programId);
     glUniform1f( uniform( uniformName ), value );
-    disable();
+    glUseProgram(0);
+
+//    disable();
 }
 
 void ShaderProgram::setUniform3f(const char * uniformName, Vec3 value)
@@ -332,9 +395,11 @@ void ShaderProgram::setUniform4f(const char * uniformName, Vec4 value)
 
 void ShaderProgram::setUniformMatrix4fv(const char * uniformName, Mat4 value)
 {
-    use();
+//    use();
+    glUseProgram(programId);
     glUniformMatrix4fv( uniform( uniformName ), 1, GL_FALSE, value.get() );
-    disable();
+    glUseProgram(0);
+//    disable();
 }
 
 void ShaderProgram::setUniform1i(const char * uniformName, int value)

@@ -51,7 +51,7 @@ void Shader::loadFromString(const char * sourceString)
 }
 
 // Method to load the shader contents from a string
-void Shader::loadFromFile(const char * filename)
+bool Shader::loadFromFile(const char * filename)
 {
     std::ifstream file;
 
@@ -60,7 +60,7 @@ void Shader::loadFromFile(const char * filename)
     if (!file.good() )
     {
         std::cout << "Failed to open file: " << filename << std::endl;
-        exit(-1);
+        return false;
     }
 
     // Create a string stream
@@ -76,15 +76,16 @@ void Shader::loadFromFile(const char * filename)
     m_source = stream.str();
 
     // Get the source string as a pointer to an array of characters
-    const char *sourceChars = m_source.c_str();
+    const GLchar *sourceChars = m_source.c_str();
 
     // Associate the source with the shader id
     glShaderSource(m_id, 1, &sourceChars, NULL);
+    return true;
 }
 
 
 // Method to compile a shader and display any problems if compilation fails
-void Shader::compile()
+bool Shader::compile()
 {
     // Compile the shader
     glCompileShader(m_id);
@@ -100,15 +101,19 @@ void Shader::compile()
         glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &infoLogLength);
 
         GLchar *strInfoLog = new GLchar[infoLogLength + 1];
-        glGetShaderInfoLog(m_id, infoLogLength, NULL, strInfoLog);
+        glGetShaderInfoLog(m_id, infoLogLength, &infoLogLength, strInfoLog);
 
         std::cout << m_typeString << " shader compilation failed: " << strInfoLog << std::endl;
         delete[] strInfoLog;
+
+        glDeleteShader(m_id);
         // glfwTerminate();
+        return false;
     }
     else
     {
         std::cout << m_typeString << " shader compilation OK" << std::endl;
+        return true;
     }
 }
     

@@ -16,15 +16,14 @@ private:
     GLuint m_program;
 
 public:
-	Shader(const GLenum &type);
+    Shader(const GLenum &type);
     ~Shader();
 
     GLuint id();
     const char * source();
-	void loadFromString(const char * sourceString);
-	void loadFromFile(const char * filename);
-	void compile();
-
+    void loadFromString(const char * sourceString);
+    bool loadFromFile(const char * filename);
+    bool compile();
 };
 
 }

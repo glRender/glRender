@@ -31,7 +31,12 @@ public:
 
 public:
     Texture *       getTexture(const char * path);
-    ShaderProgram * getShaderProgram(const char * path);
+    ShaderProgram * getShaderProgram(const char * pathToVerticesShader, const char * pathToFragmentShader);
+
+    bool hasShader(const char * path);
+    bool initShader(const char * path, const GLenum & type);
+    Shader * getShader(const char * path);
+
 
 private:
     ResourceManager() {}                    // Constructor? (the {} brackets) are needed here.
@@ -43,6 +48,7 @@ private:
 
     std::map<std::string, Texture *> m_textures;
     std::map<std::string, ShaderProgram *> m_shaderPrograms;
+    std::map<std::string, Shader *> m_shaders;
 
 };
 

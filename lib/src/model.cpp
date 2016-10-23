@@ -9,11 +9,11 @@ Model::Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgra
 {
     glGenVertexArrays ( 1, &m_vaoId );
     glBindVertexArray ( m_vaoId );
-    
+
     // bind all geometry buffers
     for(int i=0; i < m_geometry->size(); ++i)
     {
-        m_geometry->get(i)->bind();
+//        m_geometry->get(i)->bind();
         m_geometry->get(i)->bufferData();
     }
     
@@ -48,7 +48,6 @@ Model::Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgra
     glBindVertexArray ( 0 );
 
 }
-
 
 Geometry* Model::geometry()
 {
@@ -109,6 +108,8 @@ void Model::draw(Camera * camera)
 
     bindTextures();
 
+    glBindVertexArray ( m_vaoId );
+
     shaderProgram()->use();
 
     if (isWireframeMode())
@@ -117,9 +118,7 @@ void Model::draw(Camera * camera)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
 
-    glBindVertexArray ( m_vaoId );
-
-    if (geometry()->isExist("index"))
+    if (geometry()->has("index"))
     {
         GeometryBuffer *indices = geometry()->get("index");
         indices->bind();
@@ -129,8 +128,6 @@ void Model::draw(Camera * camera)
         glDrawArrays      ( GL_TRIANGLES, 0, geometry()->get("vertex")->size() );
     }
 
-    glBindVertexArray ( 0 );
-
     if (isWireframeMode())
     {
 //          wireframe mode
@@ -138,6 +135,8 @@ void Model::draw(Camera * camera)
     }
 
     shaderProgram()->disable();
+
+    glBindVertexArray ( 0 );
 
     unbindTextures();
 

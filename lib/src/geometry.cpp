@@ -57,7 +57,7 @@ GeometryBuffer* Geometry::get(const int index)
 
 }
 
-bool Geometry::isExist(const char * name)
+bool Geometry::has(const char * name)
 {
     std::map<std::string, GeometryBuffer*>::iterator it = m_geometryBuffers.find( name );
 
@@ -71,7 +71,7 @@ bool Geometry::isExist(const char * name)
     }
 }
 
-bool Geometry::isExist(const int index)
+bool Geometry::has(const int index)
 {
     if (index < m_geometryBuffers.size())
     {

@@ -13,22 +13,21 @@ class Geometry
 {
 
 public:
-	void setGeometryBuffer(const char * uniformName, GeometryBuffer * geometryBuffer);
+    void setGeometryBuffer(const char * uniformName, GeometryBuffer * geometryBuffer);
 
     GeometryBuffer * get(const char * name);
     GeometryBuffer * get(const int index);
 
-    bool isExist(const char * name);
-    bool isExist(const int index);
+    bool has(const char * name);
+    bool has(const int index);
 
     unsigned int size();
 
-	Geometry();
-	~Geometry();
+    Geometry();
+    ~Geometry();
 
 protected:
-	friend class Mesh;
-	std::map<std::string, GeometryBuffer*> m_geometryBuffers;
+    std::map<std::string, GeometryBuffer*> m_geometryBuffers;
 
 };
 

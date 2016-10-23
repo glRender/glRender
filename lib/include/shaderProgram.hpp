@@ -30,21 +30,25 @@ class ShaderProgram
 public:
     GLuint programId;   // The unique ID / handle for the shader program
 
-    ShaderProgram();
+//    ShaderProgram();
     ShaderProgram(const char * pathToVertexShader, const char * pathToFragmentShader);
     ~ShaderProgram();
 
-    void add(Shader shader);
-    void link();
+    void attachVertexShader(Shader * shader);
+    void attachFragmentShader(Shader * shader);
+
+    void detachVertexShader();
+    void detachFragmentShader();
+
+    bool link();
     void disable();
     void use();
 
     Attribute attribute(const char * attribute);
+    bool hasAttribute(const char * attribute);
+    void setAttributeType(const char * attributeName, AttributeType type);
+
     GLuint uniform(const char * uniform);
-
-    // int addAttribute(const char * attributeName, GLint size = 3, GLenum type = GL_FLOAT, GLboolean normalized = GL_FALSE, GLsizei stride = 0, const GLvoid * pointer = (GLvoid*)0);
-    int setAttribute(const char * attributeName, AttributeType type);
-
     int addUniform(const char * uniformName);
     int setUniform(const char * uniformName, float value);
     int setUniform(const char * uniformName, int value);
@@ -61,7 +65,10 @@ public:
 private:
     friend class Model;
 
-    GLuint shaderCount; // How many shaders are attached to the shader program
+    Shader * m_vertexShader = nullptr;
+    Shader * m_fragmentShader = nullptr;
+
+//    GLuint shaderCount; // How many shaders are attached to the shader program
 
     // Map of attributes and their binding locations
     std::map<std::string, Attribute> attributeLocList;
