@@ -5,7 +5,11 @@ set (CMAKE_CXX_STANDARD 11)
 set (CATCH_INCLUDES libs/Catch/include)
 
 set (SRC src)
-set (bin_src ${SRC}/tests.cpp)
+set (bin_src
+${SRC}/main.cpp
+${SRC}/vec3.cpp
+${SRC}/axisalignedBoundingBox.cpp
+)
 
 include_directories (${SRC} ${LIB_INCLUDE_DIR} ${CATCH_INCLUDES})
 

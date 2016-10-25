@@ -19,5 +19,8 @@
 #include "nodeCamera.hpp"
 #include "scene.hpp"
 #include "resourceManager.hpp"
+#include "ray.hpp"
+#include "boundingBox.hpp"
+#include "axisalignedBoundingBox.hpp"
 
 #endif /* __GLRENDER_H__ */
