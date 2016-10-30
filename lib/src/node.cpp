@@ -4,13 +4,13 @@ namespace glRender {
 
 Node::Node()
 {
-
+//    m_bb = new AABB(Vec3(0,0,0), 1.0);
 }
 
-// Node::~Node()
-// {
-
-// }
+//Node::~Node()
+//{
+//    delete m_bb;
+//}
 
 bool Node::addChild(Node * node)
 {
@@ -25,7 +25,7 @@ std::vector<Node * > Node::childs()
 
 Node * Node::parent()
 {
-	return m_parent;
+    return m_parent;
 }
 
 void Node::traverse(std::function<void(Node * node)> handler)

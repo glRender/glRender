@@ -19,6 +19,13 @@ const Vec3 Ray::target() const
     return m_target;
 }
 
+const Vec3 Ray::dir() const
+{
+    Vec3 d = m_target - m_origin;
+    d.normalize();
+    return d;
+}
+
 void Ray::setOrigin(const Vec3 &origin)
 {
     m_origin = origin;

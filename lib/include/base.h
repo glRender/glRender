@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <iostream>
 #include <iomanip>
+#include <limits>
+#include <algorithm>
 
 #include <map>
 #include <vector>

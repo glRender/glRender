@@ -12,6 +12,7 @@ public:
     Ray(const Vec3 & origin, const Vec3 & target);
     const Vec3 origin() const;
     const Vec3 target() const;
+    const Vec3 dir() const;
 
     void setOrigin(const Vec3 & origin);
     void setTarget(const Vec3 & target);

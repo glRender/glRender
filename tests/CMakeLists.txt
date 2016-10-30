@@ -8,7 +8,7 @@ set (SRC src)
 set (bin_src
 ${SRC}/main.cpp
 ${SRC}/vec3.cpp
-${SRC}/axisalignedBoundingBox.cpp
+${SRC}/aabb.cpp
 )
 
 include_directories (${SRC} ${LIB_INCLUDE_DIR} ${CATCH_INCLUDES})

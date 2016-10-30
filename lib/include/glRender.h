@@ -21,6 +21,6 @@
 #include "resourceManager.hpp"
 #include "ray.hpp"
 #include "boundingBox.hpp"
-#include "axisalignedBoundingBox.hpp"
+#include "aabb.hpp"
 
 #endif /* __GLRENDER_H__ */

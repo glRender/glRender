@@ -1,18 +1,19 @@
 #ifndef AXISALIGNEDBOUNDINGBOX_H
 #define AXISALIGNEDBOUNDINGBOX_H
 
-#include "base.h"
 #include "boundingBox.hpp"
 #include "vec3.hpp"
 
 namespace glRender {
 
-class AxisalignedBoundingBox : public BoundingBox
+class AABB : public BoundingBox
 {
 public:
-    AxisalignedBoundingBox(const Vec3 & center, float halfSide);
+    AABB(const Vec3 & center, float halfSide);
     const Vec3 & center() const;
     float halfSide() const;
+    const Vec3 & min();
+    const Vec3 & max();
 
     void setCenter(const Vec3 & center);
     void setHalfSide(float halfSide);
@@ -20,8 +21,13 @@ public:
     virtual bool intersects(Ray * ray) const;
 
 private:
+    void _updateMinMax();
+
+private:
     Vec3 m_center;
     float m_halfSide;
+    Vec3 m_min;
+    Vec3 m_max;
 };
 
 }
