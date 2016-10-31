@@ -6,19 +6,19 @@
 
 namespace glRender {
 
-class AABB : public BoundingBox
+class AABB : public IBoundingBox
 {
 public:
-    AABB(const Vec3 & center, float halfSide);
-    const Vec3 & center() const;
+    AABB(const Vec3 & origin, float halfSide);
+    const Vec3 & origin() const override;
     float halfSide() const;
     const Vec3 & min();
     const Vec3 & max();
 
-    void setCenter(const Vec3 & center);
+    void setOrigin(const Vec3 & origin) override;
     void setHalfSide(float halfSide);
 
-    virtual bool intersects(Ray * ray) const;
+    bool intersects(Ray * ray) const override;
 
 private:
     void _updateMinMax();

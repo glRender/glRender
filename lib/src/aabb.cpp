@@ -11,7 +11,7 @@ AABB::AABB(const Vec3 & center, float halfSide)
     _updateMinMax();
 }
 
-const Vec3 &AABB::center() const
+const Vec3 &AABB::origin() const
 {
     return m_center;
 }
@@ -31,7 +31,7 @@ const Vec3 &AABB::max()
     return m_max;
 }
 
-void AABB::setCenter(const Vec3 &center)
+void AABB::setOrigin(const Vec3 & center)
 {
     m_center = center;
     _updateMinMax();

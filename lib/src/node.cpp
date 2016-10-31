@@ -2,15 +2,13 @@
 
 namespace glRender {
 
-Node::Node()
+Node::~Node()
 {
-//    m_bb = new AABB(Vec3(0,0,0), 1.0);
+    for (Node * n : m_childs)
+    {
+        delete n;
+    }
 }
-
-//Node::~Node()
-//{
-//    delete m_bb;
-//}
 
 bool Node::addChild(Node * node)
 {
@@ -34,7 +32,28 @@ void Node::traverse(std::function<void(Node * node)> handler)
 	for (Node * node : m_childs)
 	{
 		traverse(handler);
-	}	
+    }
+}
+
+void Node::setPosition(const Vec3 & pos)
+{
+    model()->setPosition(pos);
+    bb()->setOrigin(pos);
+}
+
+void Node::setPosition(float x, float y, float z)
+{
+    setPosition(Vec3(x, y, z));
+}
+
+void Node::setSelectable(bool isSelectable)
+{
+    m_isSelectable = isSelectable;
+}
+
+bool Node::isSelectable()
+{
+    return m_isSelectable;
 }
 
 }
