@@ -21,8 +21,8 @@ protected:
     Vec4 m_right = {1.0, 0.0, 0.0, 1.0};
 
 public:
-    void setPosition(const float x, const float y, const float z);
-    void setPosition(const Vec3 & pos);
+    void setOrigin(const float x, const float y, const float z);
+    void setOrigin(const Vec3 & pos);
 
     virtual void translate(const float x, const float y, const float z);
     virtual void translate(const Vec3 & pos);
@@ -33,7 +33,7 @@ public:
     void setTransformationMatrix(const Mat4 & matrix);
     const Mat4& transformationMatrix() const;
 
-    virtual const Vec3 position() const;
+    virtual const Vec3 origin() const;
 
     const Vec3 up() const;
     const Vec3 front() const;

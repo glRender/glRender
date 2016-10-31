@@ -12,7 +12,7 @@ class Camera
 {
 
 public:
-    Camera();
+    Camera(float nearPlane, float farPlane);
 
     virtual void calculateProjectionMatrix() = 0;
 
@@ -27,6 +27,12 @@ public:
     const Vec3 & front() const;
     const Vec3 & right() const;
     const Vec3 & up() const;
+
+    float nearPlane() const;
+    void setNearPlane(float nearPlane);
+
+    float farPlane() const;
+    void setFarPlane(float farPlane);
 
     float pitch() const;
     float yaw() const;
@@ -46,6 +52,9 @@ protected:
     Vec3 m_position = {0.0f, 0.0f, 0.0f};
     Vec3 m_target = -Vec3::AXE_Z();
     Vec3 m_direction;
+
+    float m_farPlane;
+    float m_nearPlane;
 
     Vec3 m_front;
     Vec3 m_right;

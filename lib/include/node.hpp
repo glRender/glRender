@@ -25,8 +25,8 @@ public:
   virtual void draw(Camera * camera) = 0;
   virtual Model * model() = 0;
   virtual IBoundingBox * bb() = 0;
-  virtual void setPosition(const Vec3 & pos);
-  void setPosition(float x, float y, float z);
+  virtual void setOrigin(const Vec3 & pos);
+  void setOrigin(float x, float y, float z);
   void setSelectable(bool isSelectable);
   bool isSelectable();
 

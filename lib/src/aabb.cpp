@@ -1,6 +1,9 @@
+#include "base.h"
 #include "aabb.hpp"
 #include "ray.hpp"
-#include "base.h"
+#include "mat4.hpp"
+#include "vec4.hpp"
+#include "vec3.hpp"
 
 using namespace glRender;
 

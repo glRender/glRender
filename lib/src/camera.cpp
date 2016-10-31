@@ -2,7 +2,9 @@
 
 namespace glRender {
 
-Camera::Camera()
+Camera::Camera(float nearPlane, float farPlane)
+    : m_nearPlane(nearPlane)
+    , m_farPlane(farPlane)
 {
 }
 
@@ -71,6 +73,27 @@ const Vec3 & Camera::right() const
 const Vec3 & Camera::up() const
 {
     return m_up;
+}
+
+float Camera::nearPlane() const
+{
+    return m_nearPlane;
+}
+void Camera::setNearPlane(float nearPlane)
+{
+    m_nearPlane = nearPlane;
+    calculateProjectionMatrix();
+}
+
+float Camera::farPlane() const
+{
+    return m_farPlane;
+}
+
+void Camera::setFarPlane(float farPlane)
+{
+    m_farPlane = farPlane;
+    calculateProjectionMatrix();
 }
 
 void Camera::shift(const Vec3 v)

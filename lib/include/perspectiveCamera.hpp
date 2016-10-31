@@ -11,8 +11,6 @@ namespace glRender
 class PerspectiveCamera : public Camera
 {
 private:
-    float m_farPlane;
-    float m_nearPlane;
     float m_aspectRatio;
     float m_fieldOfView;
 
@@ -25,13 +23,6 @@ public:
 
     float aspectRatio() const;
     void setAspectRatio(float aspectRatio);
-
-    float nearPlane() const;
-    void setNearPlane(float nearPlane);
-
-    float farPlane() const;
-    void setFarPlane(float farPlane);
-
 
 };
 

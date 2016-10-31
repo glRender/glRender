@@ -2,11 +2,9 @@
 
 namespace glRender {
 PerspectiveCamera::PerspectiveCamera(float fieldOfView, float aspectRatio, float nearPlane, float farPlane) :
-    Camera(),
+    Camera(nearPlane, farPlane),
     m_fieldOfView(fieldOfView),
-    m_aspectRatio(aspectRatio),
-    m_nearPlane(nearPlane),
-    m_farPlane(farPlane)
+    m_aspectRatio(aspectRatio)
 {
     calculateProjectionMatrix();
 }
@@ -60,26 +58,6 @@ float PerspectiveCamera::aspectRatio() const
 void PerspectiveCamera::setAspectRatio(float aspectRatio)
 {
     m_aspectRatio = aspectRatio;
-    calculateProjectionMatrix();
-}
-
-float PerspectiveCamera::nearPlane() const
-{
-    return m_nearPlane;
-}
-void PerspectiveCamera::setNearPlane(float nearPlane)
-{
-    m_nearPlane = nearPlane;
-    calculateProjectionMatrix();
-}
-
-float PerspectiveCamera::farPlane() const
-{
-    return m_farPlane;
-}
-void PerspectiveCamera::setFarPlane(float farPlane)
-{
-    m_farPlane = farPlane;
     calculateProjectionMatrix();
 }
 

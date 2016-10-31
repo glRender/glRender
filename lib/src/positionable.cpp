@@ -2,19 +2,19 @@
 
 namespace glRender {
 
-void Positionable::setPosition(const Vec3 & pos)
+void Positionable::setOrigin(const Vec3 & pos)
 {
-    Vec3 delta = position() - pos;
+    Vec3 delta = origin() - pos;
     delta *= -1;
     translate( delta );
 }
 
-void Positionable::setPosition(const float x, const float y, const float z)
+void Positionable::setOrigin(const float x, const float y, const float z)
 {
-    setPosition( Vec3(x, y, z) );
+    setOrigin( Vec3(x, y, z) );
 }
 
-const Vec3 Positionable::position() const
+const Vec3 Positionable::origin() const
 {
     Vec4 position = m_transformationMatrix * Vec4(0,0,0,1);
     Vec3 resultPosition(position.x, position.y, position.z);

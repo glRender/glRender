@@ -35,15 +35,15 @@ void Node::traverse(std::function<void(Node * node)> handler)
     }
 }
 
-void Node::setPosition(const Vec3 & pos)
+void Node::setOrigin(const Vec3 & pos)
 {
-    model()->setPosition(pos);
+    model()->setOrigin(pos);
     bb()->setOrigin(pos);
 }
 
-void Node::setPosition(float x, float y, float z)
+void Node::setOrigin(float x, float y, float z)
 {
-    setPosition(Vec3(x, y, z));
+    setOrigin(Vec3(x, y, z));
 }
 
 void Node::setSelectable(bool isSelectable)
