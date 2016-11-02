@@ -99,11 +99,20 @@ bool Model::isWireframeMode()
     return m_wireframeMode;
 }
 
+bool Model::setDrawMode(Model::DrawMode drawMode)
+{
+    m_drawMode = drawMode;
+}
+
+Model::DrawMode Model::drawMode()
+{
+    return m_drawMode;
+}
+
 void Model::draw(Camera * camera)
 {
-    Mat4 view = camera->transformationMatrix();
     shaderProgram()->setUniformMatrix4fv("projection", camera->projectionMatrix());
-    shaderProgram()->setUniformMatrix4fv("view", view);
+    shaderProgram()->setUniformMatrix4fv("view", camera->transformationMatrix());
     shaderProgram()->setUniformMatrix4fv("model", transformationMatrix());
 
     bindTextures();
@@ -112,9 +121,8 @@ void Model::draw(Camera * camera)
 
     shaderProgram()->use();
 
-    if (isWireframeMode())
+    if (m_wireframeMode)
     {
-//          wireframe mode
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
 
@@ -122,15 +130,13 @@ void Model::draw(Camera * camera)
     {
         GeometryBuffer *indices = geometry()->get("index");
         indices->bind();
-        glDrawElements(GL_TRIANGLES, indices->size(), GL_UNSIGNED_INT, 0);
-
+        glDrawElements(m_drawMode, indices->size(), GL_UNSIGNED_INT, 0);
     } else {
-        glDrawArrays      ( GL_TRIANGLES, 0, geometry()->get("vertex")->size() );
+        glDrawArrays(m_drawMode, 0, geometry()->get("vertex")->size());
     }
 
-    if (isWireframeMode())
+    if (m_wireframeMode)
     {
-//          wireframe mode
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     }
 

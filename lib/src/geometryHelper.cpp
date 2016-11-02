@@ -120,4 +120,22 @@ namespace glRender
             return geometry;
       }
 
+      Geometry *GeometryHelper::QuadraticBezierCurve(const Vec3 &p0, const Vec3 &p1, const Vec3 &p2, uint segmentsNumber)
+      {
+          std::vector<Vec3> vertices;
+
+          float step = 1.0 / segmentsNumber;
+          for (float t=0.0; t<=1.0; t+=step)
+          {
+              Vec3 p = std::pow((1 - t), 2) * p0 + 2 * t * (1 - t) * p1 + std::pow(t, 2) * p2;
+              vertices.push_back(p);
+          }
+
+          Geometry* geometry = new Geometry();
+          geometry->setGeometryBuffer( "vertex", new GeometryBufferVec3( vertices ) );
+
+          return geometry;
+
+      }
+
 }

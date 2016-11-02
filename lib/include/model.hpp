@@ -14,16 +14,14 @@ namespace glRender
 
 class Model : public Positionable
 {
-private:
-    Geometry * m_geometry;
-    ShaderProgram * m_shaderProgram;
-    Textures * m_textures;
-
-    bool m_wireframeMode = false;
-
-	GLuint m_vaoId;
-	
 public:
+    enum DrawMode
+    {
+        TRIANGLES = GL_TRIANGLES,
+        POINTS = GL_POINTS,
+        LINES = GL_LINE_STRIP
+    };
+
     Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgram);
     ~Model();
 
@@ -38,6 +36,19 @@ public:
 
     bool setWireframeMode(bool status);
     bool isWireframeMode();
+
+    bool setDrawMode(DrawMode drawMode);
+    DrawMode drawMode();
+
+private:
+    Geometry * m_geometry;
+    ShaderProgram * m_shaderProgram;
+    Textures * m_textures;
+
+    bool m_wireframeMode = false;
+
+    GLuint m_vaoId;
+    DrawMode m_drawMode = TRIANGLES;
 
 };
 
