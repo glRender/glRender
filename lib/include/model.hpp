@@ -8,6 +8,7 @@
 #include "shaderProgram.hpp"
 #include "camera.hpp"
 #include "textures.hpp"
+#include "geometryBuffer.hpp"
 
 namespace glRender
 {
@@ -49,15 +50,16 @@ public:
     DrawMode drawMode();
 
 private:
+    GLuint m_vaoId;
+
     Geometry * m_geometry;
     ShaderProgram * m_shaderProgram;
     Textures * m_textures;
 
-    bool m_wireframeMode = false;
+    IndicesBuffer * m_indicesBuffer = nullptr;
 
-    GLuint m_vaoId;
     DrawMode m_drawMode = DrawMode::Triangles;
-
+    bool m_wireframeMode = false;
 };
 
 }

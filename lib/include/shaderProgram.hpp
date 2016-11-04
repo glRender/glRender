@@ -61,7 +61,7 @@ public:
     Attribute attribute(const char * attribute);
     bool hasAttribute(const char * attribute);
     void setAttributeType(const char * attributeName, AttributeType type);
-    void bindBuffers(Geometry * geometry);
+    void bindAttributesWithBuffers(Geometry * geometry);
     void bindTextures(Textures * textures);
     void unbindTextures(Textures * textures);
 
@@ -90,7 +90,7 @@ private:
 //    GLuint shaderCount; // How many shaders are attached to the shader program
 
     // Map of attributes and their binding locations
-    std::map<std::string, Attribute> attributeLocList;
+    std::map<std::string, Attribute> attributesList;
 
     // Map of uniforms and their binding locations
     std::map<std::string,int> uniformLocList;

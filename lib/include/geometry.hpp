@@ -11,40 +11,30 @@ namespace glRender
 
 class Geometry
 {
-
 public:
-    void set(const char * uniformName, GeometryBuffer * geometryBuffer);
+    Geometry();
+    Geometry(std::vector<uint> & indices);
+    ~Geometry();
 
-    GeometryBuffer * get(const char * name);
-    GeometryBuffer * get(const int index);
+    void set(const char * uniformName, AttributeBuffer * geometryBuffer);
+    void setIndices(std::vector<uint> & indices);
+
+    AttributeBuffer * get(const char * name);
+    AttributeBuffer * get(const int index);
+    const std::vector<uint> & getIndices();
 
     bool has(const char * name);
-    bool has(const int index);
+    bool has(const int index) const;
+    bool hasIndices() const;
 
-    inline uint size()
+    inline uint size() const
     {
         return m_geometryBuffers.size();
     }
 
-    inline void bufferAll()
-    {
-        // buffer all geometry buffers
-        for(int i=0; i < size(); ++i)
-        {
-            GeometryBuffer * buffer =  get(i);
-            if (buffer != nullptr)
-            {
-                buffer->bufferData();
-            }
-        }
-    }
-
-    Geometry();
-    ~Geometry();
-
 protected:
-    std::map<std::string, GeometryBuffer*> m_geometryBuffers;
-
+    std::map<std::string, AttributeBuffer*> m_geometryBuffers;
+    std::vector<uint> m_indices;
 };
 
 }

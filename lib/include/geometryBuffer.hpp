@@ -10,171 +10,91 @@
 namespace glRender
 {
 
-class GeometryBuffer
+class Buffer
 {
-protected:
-    GLuint m_id;
-
 public:
+    ~Buffer()
+    {
+        glDeleteBuffers(1, &m_id);
+    }
+
     virtual const int size() = 0;
     virtual const int memorySize() = 0;
-    virtual void bufferData() = 0;
 
-    const GLuint id()
+    inline const GLuint id()
     {
         return m_id;
     }
 
-    void bind()
-    {
-        // printf("GeometryBuffer: bind(), id: %d\n", id() );
-        glBindBuffer ( GL_ARRAY_BUFFER, id() );
+protected:
+    GLuint m_id;
 
+};
+
+class AttributeBuffer : public Buffer
+{
+public:
+    virtual const int size() = 0;
+    virtual const int memorySize() = 0;
+
+    inline virtual void bind()
+    {
+        glBindBuffer ( GL_ARRAY_BUFFER, m_id );
     }
 
-    void unbind()
+    inline virtual void unbind()
     {
-        // printf("GeometryBuffer: unbind(), id: %d\n", id() );
         glBindBuffer ( GL_ARRAY_BUFFER, 0 );
-
     }
 
 };
 
-class GeometryBufferFloat : public GeometryBuffer
+template<typename T>
+class AtributeBufferTemplate : public AttributeBuffer
 {
-protected:
-    std::vector<GLfloat> m_data;
-
 public:
-    GeometryBufferFloat(std::vector<GLfloat> data) :
-        m_data(data)
-    {       
-
-    };
-
-    virtual void bufferData()
+    AtributeBufferTemplate(std::vector<T> & data)
+        : m_data(data)
     {
         glGenBuffers(1, &m_id);
         glBindBuffer(GL_ARRAY_BUFFER, m_id);
-        glBufferData(GL_ARRAY_BUFFER, m_data.size() * sizeof(GLfloat), m_data.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, m_data.size() * sizeof(T), m_data.data(), GL_STATIC_DRAW);
+    };
 
-    }
-
-    virtual const int size()
+    const int size() override
     {
         return m_data.size();
     }
 
-    virtual const int memorySize()
+    const int memorySize() override
     {
-        return m_data.size() * sizeof(GLfloat);
+        return m_data.size() * sizeof(T);
     }
 
-    ~GeometryBufferFloat()
-    {
-        glDeleteBuffers(1, &m_id);
-
-    };
+protected:
+    std::vector<T> m_data;
 
 };
 
-class GeometryBufferVec3 : public GeometryBuffer
+class IndicesBuffer : public Buffer
 {
-protected:
-    std::vector<Vec3> m_data;
-
 public:
-    GeometryBufferVec3(std::vector<Vec3> data) :
-        m_data(data)
-    {       
-        bufferData();
-    };
-
-    virtual void bufferData()
-    {
-        glGenBuffers(1, &m_id);
-        glBindBuffer(GL_ARRAY_BUFFER, m_id);
-        glBufferData(GL_ARRAY_BUFFER, m_data.size() * sizeof(Vec3), m_data.data(), GL_STATIC_DRAW);
-
-    }
-
-    virtual const int size()
-    {
-        return m_data.size();
-    }
-
-    virtual const int memorySize()
-    {
-        return m_data.size() * sizeof(Vec3);
-    }
-
-    ~GeometryBufferVec3()
-    {
-        glDeleteBuffers(1, &m_id);
-
-    };
+    virtual const int size() = 0;
+    virtual const int memorySize() = 0;
 
 };
 
-class GeometryBufferVec2 : public GeometryBuffer
+template<typename T>
+class IndicesBufferTemplate : public IndicesBuffer
 {
-
 public:
-    GeometryBufferVec2(std::vector<Vec2> data) :
-        m_data(data)
-    {       
-
-    };
-
-    virtual void bufferData()
-    {
-        glGenBuffers(1, &m_id);
-        glBindBuffer(GL_ARRAY_BUFFER, m_id);
-        glBufferData(GL_ARRAY_BUFFER, m_data.size() * sizeof(Vec2), m_data.data(), GL_STATIC_DRAW);
-
-    }
-
-    virtual const int size()
-    {
-        return m_data.size();
-    }
-
-    virtual const int memorySize()
-    {
-        return m_data.size() * sizeof(Vec2);
-    }
-
-    ~GeometryBufferVec2()
-    {
-        glDeleteBuffers(1, &m_id);
-
-    };
-
-protected:
-    std::vector<Vec2> m_data;
-
-};
-
-class GeometryBufferUint : public GeometryBuffer
-{
-protected:
-    std::vector<GLuint> m_data;
-
-public:
-    GeometryBufferUint(std::vector<GLuint> data) :
-        m_data(data)
-    {
-
-    };
-
-    virtual void bufferData()
+    IndicesBufferTemplate(const std::vector<T> & data)
+        : m_data(data)
     {
         glGenBuffers(1, &m_id);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_data.size() * sizeof(GLuint), m_data.data(), GL_STATIC_DRAW);
-
-    }
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_data.size() * sizeof(uint), m_data.data(), GL_STATIC_DRAW);
+    };
 
     virtual const int size()
     {
@@ -183,14 +103,11 @@ public:
 
     virtual const int memorySize()
     {
-        return m_data.size() * sizeof(GLuint);
+        return m_data.size() * sizeof(uint);
     }
 
-    ~GeometryBufferUint()
-    {
-        glDeleteBuffers(1, &m_id);
-
-    };
+protected:
+    std::vector<T> m_data;
 
 };
 

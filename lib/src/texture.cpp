@@ -41,7 +41,7 @@ Texture::~Texture()
 {
 };
 
-GLuint Texture::getId()
+GLuint Texture::id()
 {
 	return m_id;
 };

@@ -1,6 +1,12 @@
 #include "geometry.hpp"
 
 namespace glRender {
+Geometry::Geometry(std::vector<uint> & indices)
+    : m_indices(indices)
+{
+
+}
+
 Geometry::Geometry()
 {
 
@@ -15,14 +21,19 @@ Geometry::~Geometry()
     m_geometryBuffers.clear();
 }
 
-void Geometry::set(const char * uniformName, GeometryBuffer* geometryBuffer)
+void Geometry::set(const char * uniformName, AttributeBuffer* geometryBuffer)
 {
     m_geometryBuffers[ uniformName ] = geometryBuffer;
 }
 
-GeometryBuffer* Geometry::get(const char * name)
+void Geometry::setIndices(std::vector<uint> &indices)
 {
-    std::map<std::string, GeometryBuffer*>::iterator it = m_geometryBuffers.find( name );
+    m_indices = indices;
+}
+
+AttributeBuffer* Geometry::get(const char * name)
+{
+    std::map<std::string, AttributeBuffer*>::iterator it = m_geometryBuffers.find( name );
 
     // Found it? Great -return the bound location! Didn't find it? Alert user and halt.
     if ( it != m_geometryBuffers.end() )
@@ -37,11 +48,11 @@ GeometryBuffer* Geometry::get(const char * name)
 
 }
 
-GeometryBuffer* Geometry::get(const int index)
+AttributeBuffer* Geometry::get(const int index)
 {
     if (index < m_geometryBuffers.size())
     {
-        std::map<std::string, GeometryBuffer*>::iterator it = m_geometryBuffers.begin();
+        std::map<std::string, AttributeBuffer*>::iterator it = m_geometryBuffers.begin();
         for(int i=0; i<index; i++)
         {
             ++it;
@@ -57,9 +68,14 @@ GeometryBuffer* Geometry::get(const int index)
 
 }
 
+const std::vector<uint> & Geometry::getIndices()
+{
+    return m_indices;
+}
+
 bool Geometry::has(const char * name)
 {
-    std::map<std::string, GeometryBuffer*>::iterator it = m_geometryBuffers.find( name );
+    std::map<std::string, AttributeBuffer*>::iterator it = m_geometryBuffers.find( name );
 
     if ( it != m_geometryBuffers.end() )
     {
@@ -71,7 +87,7 @@ bool Geometry::has(const char * name)
     }
 }
 
-bool Geometry::has(const int index)
+bool Geometry::has(const int index) const
 {
     if (index < m_geometryBuffers.size())
     {
@@ -80,6 +96,11 @@ bool Geometry::has(const int index)
     } else {
         return false;
     }
+}
+
+bool Geometry::hasIndices() const
+{
+    return m_indices.size() > 0;
 }
     
 }

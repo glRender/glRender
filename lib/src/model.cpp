@@ -9,7 +9,13 @@ Model::Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgra
 {
     glGenVertexArrays ( 1, &m_vaoId );
     glBindVertexArray ( m_vaoId );
-    m_shaderProgram->bindBuffers(m_geometry);
+
+    if (geometry->hasIndices())
+    {
+        m_indicesBuffer = new IndicesBufferTemplate<uint>(geometry->getIndices());
+    }
+
+    m_shaderProgram->bindAttributesWithBuffers(m_geometry);
     m_shaderProgram->addUniformsForTextures(m_textures);
     glBindVertexArray ( 0 );
 
@@ -39,18 +45,19 @@ void Model::draw(Camera * camera)
 {
     glBindVertexArray ( m_vaoId );
 
-    shaderProgram()->use();
+    m_shaderProgram->use();
+
+    m_shaderProgram->bindTextures(m_textures);
+
     glUniformMatrix4fv( m_shaderProgram->uniform( "projection" ), 1, GL_FALSE, camera->projectionMatrix().get() );
     glUniformMatrix4fv( m_shaderProgram->uniform( "view" ),       1, GL_FALSE, camera->transformationMatrix().get() );
     glUniformMatrix4fv( m_shaderProgram->uniform( "model" ),      1, GL_FALSE, transformationMatrix().get() );
 
-    m_shaderProgram->bindTextures(m_textures);
-
     if (m_wireframeMode) { glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); }
 
-    if (m_geometry->has("index"))
+    if (m_indicesBuffer != nullptr)
     {
-        glDrawElements(m_drawMode, m_geometry->get("index")->size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(m_drawMode, m_indicesBuffer->size(), GL_UNSIGNED_INT, (void*)(0));
     } else if (m_geometry->has("vertex"))
     {
         glDrawArrays(m_drawMode, 0, m_geometry->get("vertex")->size());

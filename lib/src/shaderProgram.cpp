@@ -5,16 +5,6 @@
 
 namespace glRender {
 
-//ShaderProgram::ShaderProgram() :
-//    shaderCount(0)
-//{
-//    // Generate a unique Id / handle for the shader program
-//    // Note: We MUST have a valid rendering context before generating
-//    // the programId or it causes a segfault!
-//    programId = glCreateProgram();
-
-//}
-
 ShaderProgram::ShaderProgram(const char * pathToVertexShader, const char * pathToFragmentShader)
 {
     m_programId = glCreateProgram();
@@ -156,12 +146,12 @@ Attribute ShaderProgram::attribute(const char * attribute)
     // for exists, and if it doesn't we can alert the user and stop rather than bombing out later.
 
     // Create an iterator to look through our attribute map and try to find the named attribute
-    std::map<std::string, Attribute>::iterator it = attributeLocList.find(attribute);
+    std::map<std::string, Attribute>::iterator it = attributesList.find(attribute);
 
     // Found it? Great -return the bound location! Didn't find it? Alert user and halt.
-    if ( it != attributeLocList.end() )
+    if ( it != attributesList.end() )
     {
-        return attributeLocList[attribute];
+        return attributesList[attribute];
     }
     else
     {
@@ -180,11 +170,6 @@ bool ShaderProgram::hasAttribute(const char * attributeName)
 // Method to add an attrbute to the shader and return the bound location
 void ShaderProgram::setAttributeType(const char * attributeName, AttributeType type)
 {
-//    static GLuint index = -1;
-//    index++;
-
-    // printf("%s, type: %d\n", attributeName.c_str(), type );
-
     GLuint index = glGetAttribLocation( m_programId, attributeName );
     // Check to ensure that the shader contains an attribute with this name
     if (index == -1)
@@ -275,20 +260,16 @@ void ShaderProgram::setAttributeType(const char * attributeName, AttributeType t
             }; break;
         }
 
-        attributeLocList[ attributeName ] = attr;
-
-        // std::cout << "Attribute " << attributeName << " bound to location: " << attr.index << std::endl;
+        attributesList[ attributeName ] = attr;
     }
 }
 
-void ShaderProgram::bindBuffers(Geometry *geometry)
+void ShaderProgram::bindAttributesWithBuffers(Geometry *geometry)
 {
-    geometry->bufferAll();
-
-    // Set up the Vertex attribute pointer for the vVertex attribute
-    for( auto attr : attributeLocList )
+    // Set up the Vertex attribute pointer for the Vertex attribute
+    for( auto attr : attributesList )
     {
-        GeometryBuffer * buffer = geometry->get( attr.first.c_str() );
+        AttributeBuffer * buffer = geometry->get( attr.first.c_str() );
         if (buffer != nullptr)
         {
             buffer->bind();
@@ -305,6 +286,7 @@ void ShaderProgram::bindBuffers(Geometry *geometry)
         }
 
     }
+
 }
 
 void ShaderProgram::bindTextures(Textures * textures)
@@ -316,7 +298,7 @@ void ShaderProgram::bindTextures(Textures * textures)
         Texture * texture = textures->texture(i);
         if ( texture != nullptr )
         {
-            glBindTexture(GL_TEXTURE_2D, texture->getId() );
+            glBindTexture(GL_TEXTURE_2D, texture->id() );
             setUniform1i( (textureName + patch::to_string(i)).c_str(), i );
         }
     }
@@ -352,7 +334,6 @@ GLuint ShaderProgram::uniform(const char * uniform)
     else
     {
         std::cout << "Could not find uniform in shader program: " << uniform << std::endl;
-        exit(-1);
     }
 }
 
@@ -419,37 +400,32 @@ int ShaderProgram::setUniform(const char * uniformName, Mat4 & value)
 
 void ShaderProgram::setUniform1f(const char * uniformName, float value)
 {
-    use();
+    glUseProgram(m_programId);
     glUniform1f( uniform( uniformName ), value );
-    disable();
 }
 
 void ShaderProgram::setUniform3f(const char * uniformName, Vec3 value)
 {
-    use();
+    glUseProgram(m_programId);
     glUniform3f( uniform( uniformName ), value.x, value.y, value.z );
-    disable();
 }
 
 void ShaderProgram::setUniform4f(const char * uniformName, Vec4 value)
 {
-    use();
+    glUseProgram(m_programId);
     glUniform4f( uniform( uniformName ), value.x, value.y, value.z, value.w );
-    disable();
 }
 
 void ShaderProgram::setUniformMatrix4f(const char * uniformName, Mat4 value)
 {
-    use();
+    glUseProgram(m_programId);
     glUniformMatrix4fv( uniform( uniformName ), 1, GL_FALSE, value.get() );
-    disable();
 }
 
 void ShaderProgram::setUniform1i(const char * uniformName, int value)
 {
-    use();
+    glUseProgram(m_programId);
     glUniform1i( uniform( uniformName ), value );
-    disable();
 }
 
 }

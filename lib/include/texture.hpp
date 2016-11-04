@@ -17,7 +17,7 @@ public:
 	Texture(const char * pathToFile);
     ~Texture();
 
-	GLuint getId();
+	GLuint id();
 
 };
 
