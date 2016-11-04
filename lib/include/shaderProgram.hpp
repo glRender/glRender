@@ -8,6 +8,8 @@
 #include "mat4.hpp"
 #include "shader.hpp"
 #include "attribute.h"
+#include "geometry.hpp"
+#include "textures.hpp"
 
 namespace glRender
 {
@@ -28,11 +30,15 @@ class ShaderProgram
 {
 
 public:
-    GLuint programId;   // The unique ID / handle for the shader program
+    GLuint m_programId;   // The unique ID / handle for the shader program
 
-//    ShaderProgram();
     ShaderProgram(const char * pathToVertexShader, const char * pathToFragmentShader);
     ~ShaderProgram();
+
+    inline GLuint id()
+    {
+        return m_programId;
+    }
 
     void attachVertexShader(Shader * shader);
     void attachFragmentShader(Shader * shader);
@@ -41,15 +47,28 @@ public:
     void detachFragmentShader();
 
     bool link();
-    void disable();
-    void use();
+
+    inline void use()
+    {
+        glUseProgram(m_programId);
+    }
+
+    inline void disable()
+    {
+        glUseProgram(0);
+    }
 
     Attribute attribute(const char * attribute);
     bool hasAttribute(const char * attribute);
     void setAttributeType(const char * attributeName, AttributeType type);
+    void bindBuffers(Geometry * geometry);
+    void bindTextures(Textures * textures);
+    void unbindTextures(Textures * textures);
 
     GLuint uniform(const char * uniform);
     int addUniform(const char * uniformName);
+    void addUniformsForTextures(Textures * textures);
+
     int setUniform(const char * uniformName, float value);
     int setUniform(const char * uniformName, int value);
     int setUniform(const char * uniformName, Vec3 & value);
@@ -59,7 +78,7 @@ public:
     void setUniform1f(const char * uniformName, float value);
     void setUniform3f(const char * uniformName, Vec3 value);
     void setUniform4f(const char * uniformName, Vec4 value);
-    void setUniformMatrix4fv(const char * uniformName, Mat4 value);
+    void setUniformMatrix4f(const char * uniformName, Mat4 value);
     void setUniform1i(const char * uniformName, int value);
 
 private:

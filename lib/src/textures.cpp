@@ -57,7 +57,7 @@ Texture* Textures::texture(const int index)
     }
 }
 
-const char * Textures::textureName(const int index)
+const char * Textures::textureUniformName(const int index)
 {
     if ( isExistTexture( index ) )
     {
@@ -76,14 +76,18 @@ const char * Textures::textureName(const int index)
     }
 }
 
-Textures::~Textures()
-{
-
-}
 
 int Textures::size()
 {
     return m_textures.size();
+
+}
+Textures::~Textures()
+{
+    for (auto item : m_textures)
+    {
+        delete item.second;
+    }
 }
 
 }

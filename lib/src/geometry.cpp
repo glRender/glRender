@@ -15,7 +15,7 @@ Geometry::~Geometry()
     m_geometryBuffers.clear();
 }
 
-void Geometry::setGeometryBuffer(const char * uniformName, GeometryBuffer* geometryBuffer)
+void Geometry::set(const char * uniformName, GeometryBuffer* geometryBuffer)
 {
     m_geometryBuffers[ uniformName ] = geometryBuffer;
 }
@@ -32,7 +32,7 @@ GeometryBuffer* Geometry::get(const char * name)
     else
     {
         std::cout << "Could not find geometry buffer in geometry: " << name << std::endl;
-        exit(-1);
+        return nullptr;
     }
 
 }
@@ -51,7 +51,7 @@ GeometryBuffer* Geometry::get(const int index)
 
     } else {
         std::cout << "Geometry buffer with index: " << index << " does not exist!" << std::endl;
-        exit(-1);
+        return nullptr;
 
     }
 
@@ -80,11 +80,6 @@ bool Geometry::has(const int index)
     } else {
         return false;
     }
-}
-
-unsigned int Geometry::size()
-{
-    return m_geometryBuffers.size();
 }
     
 }

@@ -82,9 +82,9 @@ namespace glRender
             indices.push_back( 6 );
 
             Geometry * geometry = new Geometry();
-            geometry->setGeometryBuffer( "vertex", new GeometryBufferVec3( vertices ) );
-            geometry->setGeometryBuffer( "uv", new GeometryBufferVec2( uvs ) );
-            geometry->setGeometryBuffer( "index", new GeometryBufferUint( indices ) );
+            geometry->set( "vertex", new GeometryBufferVec3( vertices ) );
+            geometry->set( "uv", new GeometryBufferVec2( uvs ) );
+            geometry->set( "index", new GeometryBufferUint( indices ) );
 
             return geometry;
       }
@@ -113,9 +113,9 @@ namespace glRender
             indices.push_back( 3 );
 
             Geometry* geometry = new Geometry();
-            geometry->setGeometryBuffer( "vertex", new GeometryBufferVec3( vertices ) );
-            geometry->setGeometryBuffer( "uv", new GeometryBufferVec2( uv ) );
-            geometry->setGeometryBuffer( "index", new GeometryBufferUint( indices ) );
+            geometry->set( "vertex", new GeometryBufferVec3( vertices ) );
+            geometry->set( "uv", new GeometryBufferVec2( uv ) );
+            geometry->set( "index", new GeometryBufferUint( indices ) );
 
             return geometry;
       }
@@ -133,7 +133,7 @@ namespace glRender
           }
 
           Geometry* geometry = new Geometry();
-          geometry->setGeometryBuffer( "vertex", new GeometryBufferVec3( vertices ) );
+          geometry->set( "vertex", new GeometryBufferVec3( vertices ) );
 
           return geometry;
 
@@ -151,7 +151,7 @@ namespace glRender
           }
 
           Geometry* geometry = new Geometry();
-          geometry->setGeometryBuffer( "vertex", new GeometryBufferVec3( vertices ) );
+          geometry->set( "vertex", new GeometryBufferVec3( vertices ) );
 
           return geometry;
 

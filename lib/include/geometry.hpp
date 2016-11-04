@@ -13,7 +13,7 @@ class Geometry
 {
 
 public:
-    void setGeometryBuffer(const char * uniformName, GeometryBuffer * geometryBuffer);
+    void set(const char * uniformName, GeometryBuffer * geometryBuffer);
 
     GeometryBuffer * get(const char * name);
     GeometryBuffer * get(const int index);
@@ -21,7 +21,23 @@ public:
     bool has(const char * name);
     bool has(const int index);
 
-    unsigned int size();
+    inline uint size()
+    {
+        return m_geometryBuffers.size();
+    }
+
+    inline void bufferAll()
+    {
+        // buffer all geometry buffers
+        for(int i=0; i < size(); ++i)
+        {
+            GeometryBuffer * buffer =  get(i);
+            if (buffer != nullptr)
+            {
+                buffer->bufferData();
+            }
+        }
+    }
 
     Geometry();
     ~Geometry();

@@ -88,7 +88,7 @@ public:
     GeometryBufferVec3(std::vector<Vec3> data) :
         m_data(data)
     {       
-
+        bufferData();
     };
 
     virtual void bufferData()

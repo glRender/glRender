@@ -1,6 +1,7 @@
 #include "shaderProgram.hpp"
 
 #include "resourceManager.hpp"
+#include "geometryBuffer.hpp"
 
 namespace glRender {
 
@@ -16,7 +17,7 @@ namespace glRender {
 
 ShaderProgram::ShaderProgram(const char * pathToVertexShader, const char * pathToFragmentShader)
 {
-    programId = glCreateProgram();
+    m_programId = glCreateProgram();
 
     bool vertexShaderReady = false;
     bool fragmentShaderReady = false;
@@ -68,31 +69,31 @@ ShaderProgram::~ShaderProgram()
 
     // Delete the shader program from the graphics card memory to
     // free all the resources it's been using
-    glDeleteProgram(programId);
+    glDeleteProgram(m_programId);
 }
 
 void ShaderProgram::attachVertexShader(Shader *shader)
 {
     m_vertexShader = shader;
-    glAttachShader( programId, shader->id() );
-    std::cout << " * Vertex shader attached to programm " << programId << std::endl;
+    glAttachShader( m_programId, shader->id() );
+    std::cout << " * Vertex shader attached to programm " << m_programId << std::endl;
 }
 
 void ShaderProgram::attachFragmentShader(Shader *shader)
 {
     m_fragmentShader = shader;
-    glAttachShader( programId, shader->id() );
-    std::cout << " * Fragment shader attached to programm " << programId << std::endl;
+    glAttachShader( m_programId, shader->id() );
+    std::cout << " * Fragment shader attached to programm " << m_programId << std::endl;
 }
 
 void ShaderProgram::detachVertexShader()
 {
-    glDetachShader(programId, m_vertexShader->id());
+    glDetachShader(m_programId, m_vertexShader->id());
 }
 
 void ShaderProgram::detachFragmentShader()
 {
-    glDetachShader(programId, m_fragmentShader->id());
+    glDetachShader(m_programId, m_fragmentShader->id());
 }
 
 // Method to link the shader program and display the link status
@@ -102,22 +103,22 @@ bool ShaderProgram::link()
     if (m_vertexShader != nullptr && m_fragmentShader != nullptr)
     {
         // Perform the linking process
-        glLinkProgram(programId);
+        glLinkProgram(m_programId);
 
         // Check the status
         GLint linkStatus;
-        glGetProgramiv(programId, GL_LINK_STATUS, &linkStatus);
+        glGetProgramiv(m_programId, GL_LINK_STATUS, &linkStatus);
         if (linkStatus == GL_FALSE)
         {
             GLint maxLength = 0;
-            glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &maxLength);
+            glGetProgramiv(m_programId, GL_INFO_LOG_LENGTH, &maxLength);
 
             //The maxLength includes the NULL character
             std::vector<GLchar> infoLog(maxLength);
-            glGetProgramInfoLog(programId, maxLength, &maxLength, &infoLog[0]);
+            glGetProgramInfoLog(m_programId, maxLength, &maxLength, &infoLog[0]);
 
             //We don't need the program anymore.
-            glDeleteProgram(programId);
+            glDeleteProgram(m_programId);
 
             std::cout << "Shader program linking failed." << std::endl;
         }
@@ -139,22 +140,6 @@ bool ShaderProgram::link()
         std::cout << "Can't link shaders" << std::endl;
     }
 
-}
-
-// Method to enable the shader program
-void ShaderProgram::use()
-{
-    glUseProgram(programId);
-//    std::cout << " * Use programm with id " << programId << std::endl;
-
-}
-
-
-// Method to disable the shader program
-void ShaderProgram::disable()
-{
-    glUseProgram(0);
-//    std::cout << " * Disable programm with id " << programId << std::endl;
 }
 
 // Returns the bound location of a named attribute
@@ -188,7 +173,7 @@ Attribute ShaderProgram::attribute(const char * attribute)
 
 bool ShaderProgram::hasAttribute(const char * attributeName)
 {
-    GLuint index = glGetAttribLocation( programId, attributeName );
+    GLuint index = glGetAttribLocation( m_programId, attributeName );
     return index != -1;
 }
 
@@ -200,7 +185,7 @@ void ShaderProgram::setAttributeType(const char * attributeName, AttributeType t
 
     // printf("%s, type: %d\n", attributeName.c_str(), type );
 
-    GLuint index = glGetAttribLocation( programId, attributeName );
+    GLuint index = glGetAttribLocation( m_programId, attributeName );
     // Check to ensure that the shader contains an attribute with this name
     if (index == -1)
     {
@@ -296,6 +281,57 @@ void ShaderProgram::setAttributeType(const char * attributeName, AttributeType t
     }
 }
 
+void ShaderProgram::bindBuffers(Geometry *geometry)
+{
+    geometry->bufferAll();
+
+    // Set up the Vertex attribute pointer for the vVertex attribute
+    for( auto attr : attributeLocList )
+    {
+        GeometryBuffer * buffer = geometry->get( attr.first.c_str() );
+        if (buffer != nullptr)
+        {
+            buffer->bind();
+
+            glEnableVertexAttribArray( attr.second.index );
+            glVertexAttribPointer(
+                attr.second.index,     // Attribute location
+                attr.second.size,      // Number of elements per vertex, here (x,y,z), so 3
+                attr.second.type,      // Data type of each element
+                attr.second.normalized,// Normalised?
+                attr.second.stride,    // Stride
+                attr.second.pointer    // Offset
+            );
+        }
+
+    }
+}
+
+void ShaderProgram::bindTextures(Textures * textures)
+{
+    std::string textureName = "texture";
+    for (GLuint i = 0; i < textures->size(); i++)
+    {
+        glActiveTexture( GL_TEXTURE0 + i );
+        Texture * texture = textures->texture(i);
+        if ( texture != nullptr )
+        {
+            glBindTexture(GL_TEXTURE_2D, texture->getId() );
+            setUniform1i( (textureName + patch::to_string(i)).c_str(), i );
+        }
+    }
+}
+
+void ShaderProgram::unbindTextures(Textures * textures)
+{
+    // Always good practice to set everything back to defaults once configured.
+    for (GLuint i = 0; i < textures->size(); ++i)
+    {
+        glActiveTexture(GL_TEXTURE0 + i);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+}
+
 // Method to returns the bound location of a named uniform
 GLuint ShaderProgram::uniform(const char * uniform)
 {
@@ -323,13 +359,12 @@ GLuint ShaderProgram::uniform(const char * uniform)
 // Method to add a uniform to the shader and return the bound location
 int ShaderProgram::addUniform(const char * uniformName)
 {
-    uniformLocList[uniformName] = glGetUniformLocation( programId, uniformName );
+    uniformLocList[uniformName] = glGetUniformLocation( m_programId, uniformName );
 
     // Check to ensure that the shader contains a uniform with this name
     if (uniformLocList[uniformName] == -1)
     {
         std::cout << "Could not add uniform: " << uniformName << " - location returned -1!" << std::endl;
-        exit(-1);
     }
     else
     {
@@ -337,6 +372,19 @@ int ShaderProgram::addUniform(const char * uniformName)
     }
 
     return uniformLocList[uniformName];
+}
+
+void ShaderProgram::addUniformsForTextures(Textures * textures)
+{
+    // add uniforms for every texture
+    for (int i = 0; i < textures->size(); ++i)
+    {
+        const std::string textureUniformName = textures->textureUniformName( i );
+        if ( textureUniformName != "" )
+        {
+            addUniform( textureUniformName.c_str() );
+        }
+    }
 }
 
 int ShaderProgram::setUniform(const char * uniformName, float value)
@@ -366,17 +414,14 @@ int ShaderProgram::setUniform(const char * uniformName, Vec4 & value)
 int ShaderProgram::setUniform(const char * uniformName, Mat4 & value)
 {
     addUniform( uniformName );
-    setUniformMatrix4fv( uniformName, value);
+    setUniformMatrix4f( uniformName, value);
 }
 
 void ShaderProgram::setUniform1f(const char * uniformName, float value)
 {
-//    use();
-    glUseProgram(programId);
+    use();
     glUniform1f( uniform( uniformName ), value );
-    glUseProgram(0);
-
-//    disable();
+    disable();
 }
 
 void ShaderProgram::setUniform3f(const char * uniformName, Vec3 value)
@@ -393,13 +438,11 @@ void ShaderProgram::setUniform4f(const char * uniformName, Vec4 value)
     disable();
 }
 
-void ShaderProgram::setUniformMatrix4fv(const char * uniformName, Mat4 value)
+void ShaderProgram::setUniformMatrix4f(const char * uniformName, Mat4 value)
 {
-//    use();
-    glUseProgram(programId);
+    use();
     glUniformMatrix4fv( uniform( uniformName ), 1, GL_FALSE, value.get() );
-    glUseProgram(0);
-//    disable();
+    disable();
 }
 
 void ShaderProgram::setUniform1i(const char * uniformName, int value)

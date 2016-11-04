@@ -26,13 +26,21 @@ public:
     ~Model();
 
     void draw(Camera * camera);
-    
-    Geometry * geometry();
-    ShaderProgram * shaderProgram();
-    Textures * textures();
 
-    void bindTextures();
-    void unbindTextures();
+    inline Geometry* geometry()
+    {
+        return m_geometry;
+    }
+
+    inline ShaderProgram* shaderProgram()
+    {
+        return m_shaderProgram;
+    }
+
+    inline Textures* textures()
+    {
+        return m_textures;
+    }
 
     bool setWireframeMode(bool status);
     bool isWireframeMode();

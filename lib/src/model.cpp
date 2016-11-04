@@ -9,84 +9,10 @@ Model::Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgra
 {
     glGenVertexArrays ( 1, &m_vaoId );
     glBindVertexArray ( m_vaoId );
-
-    // bind all geometry buffers
-    for(int i=0; i < m_geometry->size(); ++i)
-    {
-//        m_geometry->get(i)->bind();
-        m_geometry->get(i)->bufferData();
-    }
-    
-    // Set up the Vertex attribute pointer for the vVertex attribute
-    for( auto attr : m_shaderProgram->attributeLocList )
-    {
-        GeometryBuffer* buff = m_geometry->get( attr.first.c_str() );
-        buff->bind();
-
-        glEnableVertexAttribArray( attr.second.index );
-        glVertexAttribPointer(
-            attr.second.index,     // Attribute location
-            attr.second.size,      // Number of elements per vertex, here (x,y,z), so 3
-            attr.second.type,      // Data type of each element
-            attr.second.normalized,// Normalised?
-            attr.second.stride,    // Stride
-            attr.second.pointer    // Offset
-        );
-        
-    }
-
-    // add uniforms for every texture
-    for (int i = 0; i <m_textures->size(); ++i)
-    {
-        const std::string textureUniformName = m_textures->textureName( i );
-        if ( textureUniformName != "" )
-        {
-            m_shaderProgram->addUniform( textureUniformName.c_str() );
-        }
-    }
-
+    m_shaderProgram->bindBuffers(m_geometry);
+    m_shaderProgram->addUniformsForTextures(m_textures);
     glBindVertexArray ( 0 );
 
-}
-
-Geometry* Model::geometry()
-{
-    return m_geometry;
-}
-
-ShaderProgram* Model::shaderProgram()
-{
-    return m_shaderProgram;
-}
-
-Textures* Model::textures()
-{
-    return m_textures;
-}
-
-void Model::bindTextures()
-{
-    std::string textureName = "texture";
-    for (GLuint i = 0; i < textures()->size(); i++)
-    {
-        glActiveTexture( GL_TEXTURE0 + i );
-        Texture * texture = textures()->texture(i);
-        if ( texture != nullptr )
-        {
-            glBindTexture(GL_TEXTURE_2D, texture->getId() );
-            shaderProgram()->setUniform1i( (textureName + patch::to_string(i)).c_str(), i );
-        }
-    }
-}
-
-void Model::unbindTextures()
-{
-    // Always good practice to set everything back to defaults once configured.
-    for (GLuint i = 0; i < textures()->size(); ++i)
-    {
-        glActiveTexture(GL_TEXTURE0 + i);
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
 }
 
 bool Model::setWireframeMode(bool status)
@@ -111,50 +37,40 @@ Model::DrawMode Model::drawMode()
 
 void Model::draw(Camera * camera)
 {
-    shaderProgram()->setUniformMatrix4fv("projection", camera->projectionMatrix());
-    shaderProgram()->setUniformMatrix4fv("view", camera->transformationMatrix());
-    shaderProgram()->setUniformMatrix4fv("model", transformationMatrix());
-
-    bindTextures();
-
     glBindVertexArray ( m_vaoId );
 
     shaderProgram()->use();
+    glUniformMatrix4fv( m_shaderProgram->uniform( "projection" ), 1, GL_FALSE, camera->projectionMatrix().get() );
+    glUniformMatrix4fv( m_shaderProgram->uniform( "view" ),       1, GL_FALSE, camera->transformationMatrix().get() );
+    glUniformMatrix4fv( m_shaderProgram->uniform( "model" ),      1, GL_FALSE, transformationMatrix().get() );
 
-    if (m_wireframeMode)
+    m_shaderProgram->bindTextures(m_textures);
+
+    if (m_wireframeMode) { glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); }
+
+    if (m_geometry->has("index"))
     {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDrawElements(m_drawMode, m_geometry->get("index")->size(), GL_UNSIGNED_INT, 0);
+    } else if (m_geometry->has("vertex"))
+    {
+        glDrawArrays(m_drawMode, 0, m_geometry->get("vertex")->size());
     }
 
-    if (geometry()->has("index"))
-    {
-        GeometryBuffer *indices = geometry()->get("index");
-        indices->bind();
-        glDrawElements(m_drawMode, indices->size(), GL_UNSIGNED_INT, 0);
-    } else {
-        glDrawArrays(m_drawMode, 0, geometry()->get("vertex")->size());
-    }
+    if (m_wireframeMode) { glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ); }
 
-    if (m_wireframeMode)
-    {
-        glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    }
+    shaderProgram()->unbindTextures(m_textures);
 
     shaderProgram()->disable();
 
     glBindVertexArray ( 0 );
-
-    unbindTextures();
-
 }
 
 Model::~Model()
 {
-    glDeleteVertexArrays(1, &m_vaoId);
     delete m_geometry;
     delete m_shaderProgram;
     delete m_textures;
-
+    glDeleteVertexArrays(1, &m_vaoId);
 }
     
 }
