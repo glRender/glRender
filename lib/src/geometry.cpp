@@ -14,16 +14,16 @@ Geometry::Geometry()
 
 Geometry::~Geometry()
 {
-    for( auto i : m_geometryBuffers)
+    for( auto i : m_attributeBuffers)
     {
         delete i.second;
     }
-    m_geometryBuffers.clear();
+    m_attributeBuffers.clear();
 }
 
 void Geometry::set(const char * uniformName, AttributeBuffer* geometryBuffer)
 {
-    m_geometryBuffers[ uniformName ] = geometryBuffer;
+    m_attributeBuffers[ uniformName ] = geometryBuffer;
 }
 
 void Geometry::setIndices(std::vector<uint> &indices)
@@ -33,12 +33,12 @@ void Geometry::setIndices(std::vector<uint> &indices)
 
 AttributeBuffer* Geometry::get(const char * name)
 {
-    std::map<std::string, AttributeBuffer*>::iterator it = m_geometryBuffers.find( name );
+    std::map<std::string, AttributeBuffer*>::iterator it = m_attributeBuffers.find( name );
 
     // Found it? Great -return the bound location! Didn't find it? Alert user and halt.
-    if ( it != m_geometryBuffers.end() )
+    if ( it != m_attributeBuffers.end() )
     {
-        return m_geometryBuffers[ name ];
+        return m_attributeBuffers[ name ];
     }
     else
     {
@@ -50,9 +50,9 @@ AttributeBuffer* Geometry::get(const char * name)
 
 AttributeBuffer* Geometry::get(const int index)
 {
-    if (index < m_geometryBuffers.size())
+    if (index < m_attributeBuffers.size())
     {
-        std::map<std::string, AttributeBuffer*>::iterator it = m_geometryBuffers.begin();
+        std::map<std::string, AttributeBuffer*>::iterator it = m_attributeBuffers.begin();
         for(int i=0; i<index; i++)
         {
             ++it;
@@ -75,9 +75,9 @@ const std::vector<uint> & Geometry::getIndices()
 
 bool Geometry::has(const char * name)
 {
-    std::map<std::string, AttributeBuffer*>::iterator it = m_geometryBuffers.find( name );
+    std::map<std::string, AttributeBuffer*>::iterator it = m_attributeBuffers.find( name );
 
-    if ( it != m_geometryBuffers.end() )
+    if ( it != m_attributeBuffers.end() )
     {
         return true;
     }
@@ -89,7 +89,7 @@ bool Geometry::has(const char * name)
 
 bool Geometry::has(const int index) const
 {
-    if (index < m_geometryBuffers.size())
+    if (index < m_attributeBuffers.size())
     {
         return true;
 

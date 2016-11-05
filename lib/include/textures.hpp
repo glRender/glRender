@@ -21,7 +21,16 @@ public:
     bool isExistTexture(const int index) const;
     bool isExistTexture(const char * uniformName) const;
     const char * textureUniformName(const int index) const;
-    int size() const;
+
+    inline int size() const
+    {
+        return m_textures.size();
+    }
+
+    inline bool isEmpty() const
+    {
+        return m_textures.size() == 0;
+    }
 
 protected:
     std::map<const std::string, Texture *> m_textures;

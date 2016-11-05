@@ -46,7 +46,10 @@ void Model::draw(Camera * camera)
 
     m_shaderProgram->use();
 
-    m_shaderProgram->bindTextures(m_textures);
+    if (!m_textures->isEmpty())
+    {
+        m_shaderProgram->bindTextures(m_textures);
+    }
 
     glUniformMatrix4fv( m_shaderProgram->uniform<Mat4>( "projection" ), 1, GL_FALSE, camera->projectionMatrix().get() );
     glUniformMatrix4fv( m_shaderProgram->uniform<Mat4>( "view" ),       1, GL_FALSE, camera->transformationMatrix().get() );
@@ -63,7 +66,11 @@ void Model::draw(Camera * camera)
     }
 
     if (m_wireframeMode) { glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ); }
-    shaderProgram()->unbindTextures();
+
+    if (!m_textures->isEmpty())
+    {
+        shaderProgram()->unbindTextures();
+    }
 
     shaderProgram()->disable();
 

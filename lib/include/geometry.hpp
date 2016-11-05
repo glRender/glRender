@@ -29,11 +29,17 @@ public:
 
     inline uint size() const
     {
-        return m_geometryBuffers.size();
+        return m_attributeBuffers.size();
     }
 
+    inline bool isEmpty() const
+    {
+        return m_attributeBuffers.size() == 0;
+    }
+
+
 protected:
-    std::map<std::string, AttributeBuffer*> m_geometryBuffers;
+    std::map<std::string, AttributeBuffer*> m_attributeBuffers;
     std::vector<uint> m_indices;
 };
 

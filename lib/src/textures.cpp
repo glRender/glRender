@@ -91,11 +91,10 @@ const char * Textures::textureUniformName(const int index) const
 }
 
 
-int Textures::size() const
-{
-    return m_textures.size();
 
-}
+
+
+
 Textures::~Textures()
 {
     for (auto item : m_textures)

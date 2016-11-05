@@ -51,7 +51,7 @@ public:
     void unbindTextures();
 
     template<typename T>
-    bool hasAttribute(const char * attributeName)
+    bool hasAttribute(const char * attributeName) const
     {
         std::string typeName = typeid(T).name();
         for( auto item : attributesList )
@@ -66,9 +66,7 @@ public:
                 return true;
             }
         }
-
-        GLuint index = glGetAttribLocation( m_programId, attributeName );
-        return index != -1;
+        return glGetAttribLocation( m_programId, attributeName ) != -1;
     }
 
     template<typename T>
@@ -111,6 +109,25 @@ public:
         }
 
         return index != -1;
+    }
+
+    template<typename T>
+    bool hasUniform(const char * uniformName) const
+    {
+        std::string typeName = typeid(T).name();
+        for( auto item : uniformsList )
+        {
+            std::string key = item.first;
+            std::vector<std::string> words = split(key, '+');
+            std::string itemTypeName = words[0];
+            std::string uniformName = words[1];
+
+            if (itemTypeName == typeName && uniformName == std::string(uniformName))
+            {
+                return true;
+            }
+        }
+        return glGetUniformLocation( m_programId, uniformName ) != -1;
     }
 
     template<typename T>
