@@ -13,7 +13,7 @@ void Textures::setTexture(const char * uniformName, Texture * texture)
     
 }
 
-Texture* Textures::texture(const char * uniformName)
+Texture* Textures::texture(const char * uniformName) const
 {
     auto it = m_textures.find( uniformName );
     if ( it != m_textures.end() )
@@ -27,7 +27,7 @@ Texture* Textures::texture(const char * uniformName)
 
 }
 
-Texture* Textures::texture(const int index)
+Texture* Textures::texture(const int index) const
 {
     if ( m_textures.size() > index && index >= 0 )
     {
@@ -45,7 +45,7 @@ Texture* Textures::texture(const int index)
     }
 }
 
-bool Textures::isExistTexture(const int index)
+bool Textures::isExistTexture(const int index) const
 {
     if ( m_textures.size() > index && index >= 0 )
     {
@@ -57,7 +57,7 @@ bool Textures::isExistTexture(const int index)
     }
 }
 
-bool Textures::isExistTexture(const char * uniformName)
+bool Textures::isExistTexture(const char * uniformName) const
 {
     auto it = m_textures.find( uniformName );
     if ( it != m_textures.end() )
@@ -71,7 +71,7 @@ bool Textures::isExistTexture(const char * uniformName)
 
 }
 
-const char * Textures::textureUniformName(const int index)
+const char * Textures::textureUniformName(const int index) const
 {
     if ( isExistTexture( index ) )
     {
@@ -91,7 +91,7 @@ const char * Textures::textureUniformName(const int index)
 }
 
 
-int Textures::size()
+int Textures::size() const
 {
     return m_textures.size();
 

@@ -162,8 +162,6 @@ void ShaderProgram::bindTextures(Textures * textures)
 {
     std::string textureTypeName = typeid(Texture).name();
 
-    uint textureIndex = 0;
-
     for ( auto item : uniformsList )
     {
         std::string key = item.first;
@@ -173,42 +171,25 @@ void ShaderProgram::bindTextures(Textures * textures)
 
         if (typeName == textureTypeName)
         {
-            glActiveTexture( GL_TEXTURE0 + textureIndex );
-            if (textures->isExistTexture(textureIndex))
+            if (textures->isExistTexture(uniformName.c_str()))
             {
-                Texture * texture = textures->texture(textureIndex);
+                Texture * texture = textures->texture(uniformName.c_str());
                 if ( texture != nullptr )
                 {
-                    glBindTexture(GL_TEXTURE_2D, texture->id() );
+                    setUniform<Texture>(uniformName.c_str(), (*texture));
                 }
-                textureIndex++;
             }
         }
     }
 }
 
-void ShaderProgram::unbindTextures(Textures * textures)
+void ShaderProgram::unbindTextures()
 {
-    std::string textureTypeName = typeid(Texture).name();
-
-    uint textureIndex = 0;
-
-    for ( auto item : uniformsList )
+    while(m_lastFreeTextureUnit >= 1)
     {
-        std::string key = item.first;
-        std::vector<std::string> words = split(key, '+');
-        std::string typeName = words[0];
-        std::string uniformName = words[1];
-
-        if (typeName == textureTypeName)
-        {
-            glActiveTexture( GL_TEXTURE0 + textureIndex );
-            if (textures->isExistTexture(textureIndex))
-            {
-                glBindTexture(GL_TEXTURE_2D, 0);
-                textureIndex++;
-            }
-        }
+        m_lastFreeTextureUnit--;
+        glActiveTexture( GL_TEXTURE0 + m_lastFreeTextureUnit );
+        glBindTexture(GL_TEXTURE_2D, 0 );
     }
 }
 
@@ -240,6 +221,14 @@ void ShaderProgram::setUniformValueByAddress(GLuint index, Vec4 & value)
 void ShaderProgram::setUniformValueByAddress(GLuint index, Mat4 & value)
 {
     glUniformMatrix4fv( index, 1, GL_FALSE, value.get() );
+}
+
+void ShaderProgram::setUniformValueByAddress(GLuint index, Texture & value)
+{
+    glActiveTexture( GL_TEXTURE0 + m_lastFreeTextureUnit );
+    glBindTexture(GL_TEXTURE_2D, value.id() );
+    glUniform1i(index, m_lastFreeTextureUnit);
+    m_lastFreeTextureUnit++;
 }
 
 }

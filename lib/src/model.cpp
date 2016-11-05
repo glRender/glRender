@@ -63,8 +63,7 @@ void Model::draw(Camera * camera)
     }
 
     if (m_wireframeMode) { glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ); }
-
-    shaderProgram()->unbindTextures(m_textures);
+    shaderProgram()->unbindTextures();
 
     shaderProgram()->disable();
 

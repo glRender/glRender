@@ -48,7 +48,7 @@ public:
 
     void fillAttributes(Geometry * geometry);
     void bindTextures(Textures * textures);
-    void unbindTextures(Textures * textures);
+    void unbindTextures();
 
     template<typename T>
     bool hasAttribute(const char * attributeName)
@@ -162,6 +162,7 @@ private:
     void setUniformValueByAddress(GLuint index, Vec3 & value);
     void setUniformValueByAddress(GLuint index, Vec4 & value);
     void setUniformValueByAddress(GLuint index, Mat4 & value);
+    void setUniformValueByAddress(GLuint index, Texture & value);
 
     friend class Model;
 
@@ -173,6 +174,9 @@ private:
 
     // Map of uniforms and their binding locations
     std::map<std::string,int> uniformsList;
+
+    uint m_lastFreeTextureUnit = 0;
+
 };
 
 }
