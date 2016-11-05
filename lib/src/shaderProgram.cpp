@@ -114,10 +114,6 @@ bool ShaderProgram::link()
         }
         else
         {
-            addUniform( "model" );
-            addUniform( "view" );
-            addUniform( "projection" );
-
             std::cout << "Shader program linking OK." << std::endl;
 
             detachVertexShader();
@@ -291,141 +287,87 @@ void ShaderProgram::bindAttributesWithBuffers(Geometry *geometry)
 
 void ShaderProgram::bindTextures(Textures * textures)
 {
-    std::string textureName = "texture";
-    for (GLuint i = 0; i < textures->size(); i++)
+    std::string textureTypeName = typeid(Texture).name();
+
+    uint textureIndex = 0;
+
+    for ( auto item : uniformsList )
     {
-        glActiveTexture( GL_TEXTURE0 + i );
-        Texture * texture = textures->texture(i);
-        if ( texture != nullptr )
+        std::string key = item.first;
+        std::vector<std::string> words = split(key, '+');
+        std::string typeName = words[0];
+        std::string uniformName = words[1];
+
+        if (typeName == textureTypeName)
         {
-            glBindTexture(GL_TEXTURE_2D, texture->id() );
-            setUniform1i( (textureName + patch::to_string(i)).c_str(), i );
+            glActiveTexture( GL_TEXTURE0 + textureIndex );
+            if (textures->isExistTexture(textureIndex))
+            {
+                Texture * texture = textures->texture(textureIndex);
+                if ( texture != nullptr )
+                {
+                    glBindTexture(GL_TEXTURE_2D, texture->id() );
+                    setUniform<uint>( uniformName.c_str(), textureIndex );
+                }
+                textureIndex++;
+            }
         }
     }
 }
 
 void ShaderProgram::unbindTextures(Textures * textures)
 {
-    // Always good practice to set everything back to defaults once configured.
-    for (GLuint i = 0; i < textures->size(); ++i)
+    std::string textureTypeName = typeid(Texture).name();
+
+    uint textureIndex = 0;
+
+    for ( auto item : uniformsList )
     {
-        glActiveTexture(GL_TEXTURE0 + i);
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
-}
+        std::string key = item.first;
+        std::vector<std::string> words = split(key, '+');
+        std::string typeName = words[0];
+        std::string uniformName = words[1];
 
-// Method to returns the bound location of a named uniform
-GLuint ShaderProgram::uniform(const char * uniform)
-{
-    // Note: You could do this method with the single line:
-    //
-    //      return uniformLocList[uniform];
-    //
-    // But we're not doing that. Explanation in the attribute() method above.
-
-    // Create an iterator to look through our uniform map and try to find the named uniform
-    std::map<std::string, int>::iterator it = uniformLocList.find(uniform);
-
-    // Found it? Great - pass it back! Didn't find it? Alert user and halt.
-    if ( it != uniformLocList.end() )
-    {
-        return uniformLocList[uniform];
-    }
-    else
-    {
-        std::cout << "Could not find uniform in shader program: " << uniform << std::endl;
-    }
-}
-
-// Method to add a uniform to the shader and return the bound location
-int ShaderProgram::addUniform(const char * uniformName)
-{
-    uniformLocList[uniformName] = glGetUniformLocation( m_programId, uniformName );
-
-    // Check to ensure that the shader contains a uniform with this name
-    if (uniformLocList[uniformName] == -1)
-    {
-        std::cout << "Could not add uniform: " << uniformName << " - location returned -1!" << std::endl;
-    }
-    else
-    {
-        // std::cout << "Uniform " << uniformName << " bound to location: " << uniformLocList[uniformName] << std::endl;
-    }
-
-    return uniformLocList[uniformName];
-}
-
-void ShaderProgram::addUniformsForTextures(Textures * textures)
-{
-    // add uniforms for every texture
-    for (int i = 0; i < textures->size(); ++i)
-    {
-        const std::string textureUniformName = textures->textureUniformName( i );
-        if ( textureUniformName != "" )
+        if (typeName == textureTypeName)
         {
-            addUniform( textureUniformName.c_str() );
+            glActiveTexture( GL_TEXTURE0 + textureIndex );
+            if (textures->isExistTexture(textureIndex))
+            {
+                glBindTexture(GL_TEXTURE_2D, 0);
+                textureIndex++;
+            }
         }
     }
 }
 
-int ShaderProgram::setUniform(const char * uniformName, float value)
+void ShaderProgram::setUniformValueByAddress(GLuint index, float value)
 {
-    addUniform( uniformName );
-    setUniform1f( uniformName, value);
+    glUniform1f( index, value );
 }
 
-int ShaderProgram::setUniform(const char * uniformName, int value)
+void ShaderProgram::setUniformValueByAddress(GLuint index, int value)
 {
-    addUniform( uniformName );
-    setUniform1i( uniformName, value);
+    glUniform1i( index, value );
 }
 
-int ShaderProgram::setUniform(const char * uniformName, Vec3 & value)
+void ShaderProgram::setUniformValueByAddress(GLuint index, uint value)
 {
-    addUniform( uniformName );
-    setUniform3f( uniformName, value);
+    setUniformValueByAddress(index, static_cast<int>(value));
 }
 
-int ShaderProgram::setUniform(const char * uniformName, Vec4 & value)
+void ShaderProgram::setUniformValueByAddress(GLuint index, Vec3 & value)
 {
-    addUniform( uniformName );
-    setUniform4f( uniformName, value);
+    glUniform3f( index, value.x, value.y, value.z );
 }
 
-int ShaderProgram::setUniform(const char * uniformName, Mat4 & value)
+void ShaderProgram::setUniformValueByAddress(GLuint index, Vec4 & value)
 {
-    addUniform( uniformName );
-    setUniformMatrix4f( uniformName, value);
+    glUniform4f( index, value.x, value.y, value.z, value.w );
 }
 
-void ShaderProgram::setUniform1f(const char * uniformName, float value)
+void ShaderProgram::setUniformValueByAddress(GLuint index, Mat4 & value)
 {
-    glUseProgram(m_programId);
-    glUniform1f( uniform( uniformName ), value );
-}
-
-void ShaderProgram::setUniform3f(const char * uniformName, Vec3 value)
-{
-    glUseProgram(m_programId);
-    glUniform3f( uniform( uniformName ), value.x, value.y, value.z );
-}
-
-void ShaderProgram::setUniform4f(const char * uniformName, Vec4 value)
-{
-    glUseProgram(m_programId);
-    glUniform4f( uniform( uniformName ), value.x, value.y, value.z, value.w );
-}
-
-void ShaderProgram::setUniformMatrix4f(const char * uniformName, Mat4 value)
-{
-    glUseProgram(m_programId);
-    glUniformMatrix4fv( uniform( uniformName ), 1, GL_FALSE, value.get() );
-}
-
-void ShaderProgram::setUniform1i(const char * uniformName, int value)
-{
-    glUseProgram(m_programId);
-    glUniform1i( uniform( uniformName ), value );
+    glUniformMatrix4fv( index, 1, GL_FALSE, value.get() );
 }
 
 }

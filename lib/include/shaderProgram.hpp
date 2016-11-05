@@ -65,35 +65,66 @@ public:
     void bindTextures(Textures * textures);
     void unbindTextures(Textures * textures);
 
-    GLuint uniform(const char * uniform);
-    int addUniform(const char * uniformName);
-    void addUniformsForTextures(Textures * textures);
+    template<typename T>
+    int uniform(const char * uniformName)
+    {
+        std::string typeName = typeid(T).name();
+        std::map<std::string, int>::iterator it = uniformsList.find( typeName+"+"+std::string(uniformName) );
+        if ( it == uniformsList.end() )
+        {
+            if (!addUniform<T>(uniformName))
+            {
+                std::cout << "Could not find uniform in shader program: " << uniformName << std::endl;
+                return -1;
+            }
+        }
 
-    int setUniform(const char * uniformName, float value);
-    int setUniform(const char * uniformName, int value);
-    int setUniform(const char * uniformName, Vec3 & value);
-    int setUniform(const char * uniformName, Vec4 & value);
-    int setUniform(const char * uniformName, Mat4 & value);
+        return uniformsList[typeName+"+"+std::string(uniformName)];
+    }
 
-    void setUniform1f(const char * uniformName, float value);
-    void setUniform3f(const char * uniformName, Vec3 value);
-    void setUniform4f(const char * uniformName, Vec4 value);
-    void setUniformMatrix4f(const char * uniformName, Mat4 value);
-    void setUniform1i(const char * uniformName, int value);
+    template<typename T>
+    bool addUniform(const char * uniformName)
+    {
+        int index = glGetUniformLocation( m_programId, uniformName );
+        if (index != -1)
+        {
+            std::string typeName = typeid(T).name();
+            uniformsList[typeName+"+"+std::string(uniformName)] = index;
+        }
+        else
+        {
+            std::cout << "Could not add uniform: " << uniformName << " - location returned -1!" << std::endl;
+        }
+
+        return index != -1;
+    }
+
+    template<typename T>
+    void setUniform(const char * uniformName, T & value)
+    {
+        glUseProgram(m_programId);
+        setUniformValueByAddress(uniform<T>( uniformName ), value);
+    }
+
 
 private:
+    void setUniformValueByAddress(GLuint index, float value);
+    void setUniformValueByAddress(GLuint index, int value);
+    void setUniformValueByAddress(GLuint index, uint value);
+    void setUniformValueByAddress(GLuint index, Vec3 & value);
+    void setUniformValueByAddress(GLuint index, Vec4 & value);
+    void setUniformValueByAddress(GLuint index, Mat4 & value);
+
     friend class Model;
 
     Shader * m_vertexShader = nullptr;
     Shader * m_fragmentShader = nullptr;
 
-//    GLuint shaderCount; // How many shaders are attached to the shader program
-
     // Map of attributes and their binding locations
     std::map<std::string, Attribute> attributesList;
 
     // Map of uniforms and their binding locations
-    std::map<std::string,int> uniformLocList;
+    std::map<std::string,int> uniformsList;
 };
 
 }

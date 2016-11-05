@@ -16,7 +16,7 @@ Model::Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgra
     }
 
     m_shaderProgram->bindAttributesWithBuffers(m_geometry);
-    m_shaderProgram->addUniformsForTextures(m_textures);
+//    m_shaderProgram->addUniformsForTextures(m_textures);
     glBindVertexArray ( 0 );
 
 }
@@ -49,9 +49,9 @@ void Model::draw(Camera * camera)
 
     m_shaderProgram->bindTextures(m_textures);
 
-    glUniformMatrix4fv( m_shaderProgram->uniform( "projection" ), 1, GL_FALSE, camera->projectionMatrix().get() );
-    glUniformMatrix4fv( m_shaderProgram->uniform( "view" ),       1, GL_FALSE, camera->transformationMatrix().get() );
-    glUniformMatrix4fv( m_shaderProgram->uniform( "model" ),      1, GL_FALSE, transformationMatrix().get() );
+    glUniformMatrix4fv( m_shaderProgram->uniform<Mat4>( "projection" ), 1, GL_FALSE, camera->projectionMatrix().get() );
+    glUniformMatrix4fv( m_shaderProgram->uniform<Mat4>( "view" ),       1, GL_FALSE, camera->transformationMatrix().get() );
+    glUniformMatrix4fv( m_shaderProgram->uniform<Mat4>( "model" ),      1, GL_FALSE, transformationMatrix().get() );
 
     if (m_wireframeMode) { glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); }
 
