@@ -15,8 +15,7 @@ Model::Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgra
         m_indicesBuffer = new IndicesBufferTemplate<uint>(geometry->getIndices());
     }
 
-    m_shaderProgram->bindAttributesWithBuffers(m_geometry);
-//    m_shaderProgram->addUniformsForTextures(m_textures);
+    m_shaderProgram->fillAttributes(m_geometry);
     glBindVertexArray ( 0 );
 
 }

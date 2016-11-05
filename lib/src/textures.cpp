@@ -27,18 +27,6 @@ Texture* Textures::texture(const char * uniformName)
 
 }
 
-bool Textures::isExistTexture(const int index)
-{
-    if ( m_textures.size() > index && index >= 0 )
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
 Texture* Textures::texture(const int index)
 {
     if ( m_textures.size() > index && index >= 0 )
@@ -55,6 +43,32 @@ Texture* Textures::texture(const int index)
     {
         return nullptr;
     }
+}
+
+bool Textures::isExistTexture(const int index)
+{
+    if ( m_textures.size() > index && index >= 0 )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool Textures::isExistTexture(const char * uniformName)
+{
+    auto it = m_textures.find( uniformName );
+    if ( it != m_textures.end() )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
 }
 
 const char * Textures::textureUniformName(const int index)

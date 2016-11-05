@@ -15,9 +15,10 @@ public:
 
     void setTexture(const char * uniformName, Texture * texture);
 
+    Texture * texture(const int index);
     Texture * texture(const char * uniformName);
     bool isExistTexture(const int index);
-    Texture * texture(const int index);
+    bool isExistTexture(const char * uniformName);
     const char * textureUniformName(const int index);
     int size();
     ~Textures();

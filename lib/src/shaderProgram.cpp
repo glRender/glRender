@@ -128,156 +128,29 @@ bool ShaderProgram::link()
 
 }
 
-// Returns the bound location of a named attribute
-Attribute ShaderProgram::attribute(const char * attribute)
-{
-    // You could do this function with the single line:
-    //
-    //      return attributeLocList[attribute];
-    //
-    // BUT, if you did, and you asked it for a named attribute
-    // which didn't exist, like, attributeLocList["ThisAttribDoesn'tExist!"]
-    // then the method would return an invalid value which will likely cause
-    // the program to segfault. So we're making sure the attribute asked
-    // for exists, and if it doesn't we can alert the user and stop rather than bombing out later.
-
-    // Create an iterator to look through our attribute map and try to find the named attribute
-    std::map<std::string, Attribute>::iterator it = attributesList.find(attribute);
-
-    // Found it? Great -return the bound location! Didn't find it? Alert user and halt.
-    if ( it != attributesList.end() )
-    {
-        return attributesList[attribute];
-    }
-    else
-    {
-        std::cout << "Could not find attribute in shader program: " << attribute << std::endl;
-        return {0, 0, 0, 0, 0};
-//        exit(-1);
-    }
-}
-
-bool ShaderProgram::hasAttribute(const char * attributeName)
-{
-    GLuint index = glGetAttribLocation( m_programId, attributeName );
-    return index != -1;
-}
-
-// Method to add an attrbute to the shader and return the bound location
-void ShaderProgram::setAttributeType(const char * attributeName, AttributeType type)
-{
-    GLuint index = glGetAttribLocation( m_programId, attributeName );
-    // Check to ensure that the shader contains an attribute with this name
-    if (index == -1)
-    {
-        std::cout << "Could not add attribute: " << attributeName << " - location returned -1!" << std::endl;
-        exit(-1);
-    }
-    else
-    {
-        Attribute attr;
-
-        switch( type )
-        {
-            case AttributeType::XYZW: {
-                attr.index = index;
-                attr.size = 4;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 4 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-            }; break;
-
-            case AttributeType::XYZ: {
-                attr.index = index;
-                attr.size = 3;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 3 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-            }; break;
-
-            case AttributeType::XY: {
-                attr.index = index;
-                attr.size = 2;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 2 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-            }; break;
-
-            case AttributeType::X: {
-                attr.index = index;
-                attr.size = 1;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 1 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-            }; break;
-
-            case AttributeType::UVW: {
-                attr.index = index;
-                attr.size = 3;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 3 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-
-            }; break;
-
-            case AttributeType::UV: {
-                attr.index = index;
-                attr.size = 2;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 2 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-
-            }; break;
-
-            case AttributeType::RGB: {
-                attr.index = index;
-                attr.size = 3;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 3 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-
-            }; break;
-
-            case AttributeType::RGBA: {
-                attr.index = index;
-                attr.size = 4;
-                attr.type = GL_FLOAT;
-                attr.normalized = GL_FALSE;
-                attr.stride = 4 * sizeof(GLfloat);
-                attr.pointer = (GLvoid*)0;
-
-            }; break;
-        }
-
-        attributesList[ attributeName ] = attr;
-    }
-}
-
-void ShaderProgram::bindAttributesWithBuffers(Geometry *geometry)
+void ShaderProgram::fillAttributes(Geometry *geometry)
 {
     // Set up the Vertex attribute pointer for the Vertex attribute
-    for( auto attr : attributesList )
+    for( auto item : attributesList )
     {
-        AttributeBuffer * buffer = geometry->get( attr.first.c_str() );
+        std::string key = item.first;
+        std::vector<std::string> words = split(key, '+');
+        std::string typeName = words[0];
+        std::string attributeName = words[1];
+
+        AttributeBuffer * buffer = geometry->get( attributeName.c_str() );
         if (buffer != nullptr)
         {
             buffer->bind();
 
-            glEnableVertexAttribArray( attr.second.index );
+            glEnableVertexAttribArray( item.second.index );
             glVertexAttribPointer(
-                attr.second.index,     // Attribute location
-                attr.second.size,      // Number of elements per vertex, here (x,y,z), so 3
-                attr.second.type,      // Data type of each element
-                attr.second.normalized,// Normalised?
-                attr.second.stride,    // Stride
-                attr.second.pointer    // Offset
+                item.second.index,     // Attribute location
+                item.second.size,      // Number of elements per vertex, here (x,y,z), so 3
+                item.second.type,      // Data type of each element
+                item.second.normalized,// Normalised?
+                item.second.stride,    // Stride
+                item.second.pointer    // Offset
             );
         }
 
@@ -307,7 +180,6 @@ void ShaderProgram::bindTextures(Textures * textures)
                 if ( texture != nullptr )
                 {
                     glBindTexture(GL_TEXTURE_2D, texture->id() );
-                    setUniform<uint>( uniformName.c_str(), textureIndex );
                 }
                 textureIndex++;
             }
