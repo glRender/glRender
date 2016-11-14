@@ -1,14 +1,14 @@
 cmake_minimum_required (VERSION 2.8.11)
 
-set (CMAKE_CXX_STANDARD 11)
+add_compile_options(-std=c++11)
 
 set (CATCH_INCLUDES libs/Catch/include)
 
 set (SRC src)
 set (bin_src
-${SRC}/main.cpp
-${SRC}/vec3.cpp
-${SRC}/aabb.cpp
+    ${SRC}/main.cpp
+    ${SRC}/vec3.cpp
+    ${SRC}/aabb.cpp
 )
 
 include_directories (${SRC} ${LIB_INCLUDE_DIR} ${CATCH_INCLUDES})
