@@ -1,4 +1,5 @@
 #include "texture.hpp"
+#include "opengl.h"
 
 namespace glRender {
 
@@ -41,7 +42,7 @@ Texture::~Texture()
 {
 };
 
-GLuint Texture::id()
+uint Texture::id()
 {
 	return m_id;
 };

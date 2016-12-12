@@ -17,11 +17,12 @@
 #include <limits>
 #include <algorithm>
 #include <typeinfo>
-
+#include <assert.h>
 #include <map>
 #include <vector>
 
-#include <GL/glew.h>
+//#include <GL/glew.h>
+//#include "glad/glad.h"
 
 // Math
 #define MATH_DEG_TO_RAD(x)          ((x) * 0.0174532925f)

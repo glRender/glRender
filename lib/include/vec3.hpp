@@ -75,7 +75,7 @@ inline Vec3& Vec3::operator-=(const Vec3& rhs) {
     x -= rhs.x; y -= rhs.y; z -= rhs.z; return *this;
 }
 
-inline Vec3 Vec3::operator*(const GLfloat a) const {
+inline Vec3 Vec3::operator*(const float a) const {
     return Vec3(x*a, y*a, z*a);
 }
 
@@ -83,7 +83,7 @@ inline Vec3 Vec3::operator*(const Vec3& rhs) const {
     return Vec3(x*rhs.x, y*rhs.y, z*rhs.z);
 }
 
-inline Vec3& Vec3::operator*=(const GLfloat a) {
+inline Vec3& Vec3::operator*=(const float a) {
     x *= a; y *= a; z *= a; return *this;
 }
 
@@ -91,11 +91,11 @@ inline Vec3& Vec3::operator*=(const Vec3& rhs) {
     x *= rhs.x; y *= rhs.y; z *= rhs.z; return *this;
 }
 
-inline Vec3 Vec3::operator/(const GLfloat a) const {
+inline Vec3 Vec3::operator/(const float a) const {
     return Vec3(x/a, y/a, z/a);
 }
 
-inline Vec3& Vec3::operator/=(const GLfloat a) {
+inline Vec3& Vec3::operator/=(const float a) {
     x /= a; y /= a; z /= a; return *this;
 }
 
@@ -117,7 +117,7 @@ inline bool Vec3::operator<(const Vec3& rhs) const {
     return false;
 }
 
-inline GLfloat Vec3::operator[](GLint index) const {
+inline float Vec3::operator[](int index) const {
     return (&x)[index];
 }
 
@@ -127,37 +127,37 @@ inline const char *Vec3::toStdString() const
     return str.c_str();
 }
 
-inline GLfloat& Vec3::operator[](GLint index) {
+inline float& Vec3::operator[](int index) {
     return (&x)[index];
 }
 
-inline void Vec3::set(GLfloat x, GLfloat y, GLfloat z) {
+inline void Vec3::set(float x, float y, float z) {
     this->x = x; this->y = y; this->z = z;
 }
 
-inline GLfloat Vec3::length() const {
+inline float Vec3::length() const {
     return sqrtf(x*x + y*y + z*z);
 }
 
-inline GLfloat Vec3::distance(const Vec3& vec) const {
+inline float Vec3::distance(const Vec3& vec) const {
     return sqrtf((vec.x-x)*(vec.x-x) + (vec.y-y)*(vec.y-y) + (vec.z-z)*(vec.z-z));
 }
 
 inline Vec3& Vec3::normalize() {
-    const GLfloat EPSILON = 0.000001f;
-    GLfloat xxyyzz = x*x + y*y + z*z;
+    const float EPSILON = 0.000001f;
+    float xxyyzz = x*x + y*y + z*z;
     if(xxyyzz < EPSILON)
         return *this; // do nothing if it is ~zero vector
 
-    //GLfloat invLength = invSqrt(xxyyzz);
-    GLfloat invLength = 1.0f / sqrtf(xxyyzz);
+    //float invLength = invSqrt(xxyyzz);
+    float invLength = 1.0f / sqrtf(xxyyzz);
     x *= invLength;
     y *= invLength;
     z *= invLength;
     return *this;
 }
 
-inline GLfloat Vec3::dot(const Vec3& rhs) const {
+inline float Vec3::dot(const Vec3& rhs) const {
     return (x*rhs.x + y*rhs.y + z*rhs.z);
 }
 
@@ -165,11 +165,11 @@ inline Vec3 Vec3::cross(const Vec3& rhs) const {
     return Vec3(y*rhs.z - z*rhs.y, z*rhs.x - x*rhs.z, x*rhs.y - y*rhs.x);
 }
 
-inline bool Vec3::equal(const Vec3& rhs, GLfloat epsilon) const {
+inline bool Vec3::equal(const Vec3& rhs, float epsilon) const {
     return fabs(x - rhs.x) < epsilon && fabs(y - rhs.y) < epsilon && fabs(z - rhs.z) < epsilon;
 }
 
-inline Vec3 operator*(const GLfloat a, const Vec3 vec) {
+inline Vec3 operator*(const float a, const Vec3 vec) {
     return Vec3(a*vec.x, a*vec.y, a*vec.z);
 }
 

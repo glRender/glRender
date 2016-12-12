@@ -34,7 +34,7 @@ bool ResourceManager::hasShader(const char * path)
     return true;
 }
 
-bool ResourceManager::initShader(const char * path, const GLenum & type)
+bool ResourceManager::initShader(const char * path, const ShaderType & type)
 {
     std::string key = std::string(path);
     Shader * shader = new Shader(type);
@@ -50,7 +50,7 @@ bool ResourceManager::initShader(const char * path, const GLenum & type)
 
     if (!isLoadedFromFile)
     {
-        std::cout << "Can't shader from file!" << std::endl;
+        std::cout << "Can't load shader from file!" << std::endl;
         return false;
     }
 

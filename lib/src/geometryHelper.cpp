@@ -26,7 +26,7 @@ namespace glRender
             uvs.push_back( Vec2(0.0f, 0.0f) );
             uvs.push_back( Vec2(1.0f, 0.0f) );
 
-            std::vector<GLuint> indices;
+            std::vector<uint> indices;
             /////////////////////
             indices.push_back( 0 );
             indices.push_back( 1 );
@@ -82,8 +82,8 @@ namespace glRender
             indices.push_back( 6 );
 
             Geometry * geometry = new Geometry(indices);
-            geometry->set( "vertex", new AtributeBufferTemplate<Vec3>( vertices ) );
-            geometry->set( "uv", new AtributeBufferTemplate<Vec2>( uvs ) );
+            geometry->set( "vertex", new Buffer<Vec3>( vertices, 0x8892) );
+            geometry->set( "uv", new Buffer<Vec2>( uvs, 0x8892) );
 
             return geometry;
       }
@@ -102,7 +102,7 @@ namespace glRender
             uvs.push_back( Vec2(0.0, 0.0) );
             uvs.push_back( Vec2(1.0, 0.0) );
 
-            std::vector<GLuint> indices;
+            std::vector<uint> indices;
             indices.push_back( 0 );
             indices.push_back( 1 );
             indices.push_back( 2 );
@@ -112,8 +112,8 @@ namespace glRender
             indices.push_back( 3 );
 
             Geometry* geometry = new Geometry(indices);
-            geometry->set( "vertex", new AtributeBufferTemplate<Vec3>( vertices ) );
-            geometry->set( "uv", new AtributeBufferTemplate<Vec2>( uvs ) );
+            geometry->set( "vertex", new Buffer<Vec3>( vertices, 0x8892) );
+            geometry->set( "uv", new Buffer<Vec2>( uvs, 0x8892) );
 
             return geometry;
       }
@@ -131,7 +131,7 @@ namespace glRender
           }
 
           Geometry* geometry = new Geometry();
-          geometry->set( "vertex", new AtributeBufferTemplate<Vec3>( vertices ) );
+          geometry->set( "vertex", new Buffer<Vec3>( vertices, 0x8892) );
 
           return geometry;
 
@@ -149,7 +149,7 @@ namespace glRender
           }
 
           Geometry* geometry = new Geometry();
-          geometry->set( "vertex", new AtributeBufferTemplate<Vec3>( vertices ) );
+          geometry->set( "vertex", new Buffer<Vec3>( vertices, 0x8892) );
 
           return geometry;
 

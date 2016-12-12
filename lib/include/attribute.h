@@ -6,14 +6,14 @@
 namespace glRender
 {
 
-struct Attribute {
-	GLuint index;
- 	GLint size;
- 	GLenum type;
- 	GLboolean normalized;
- 	GLsizei stride;
- 	const GLvoid * pointer;
-};
+//struct Attribute {
+//	GLuint index;
+// 	GLint size;
+// 	GLenum type;
+// 	GLboolean normalized;
+// 	GLsizei stride;
+// 	const GLvoid * pointer;
+//};
 
 }
 

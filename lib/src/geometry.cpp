@@ -21,7 +21,7 @@ Geometry::~Geometry()
     m_attributeBuffers.clear();
 }
 
-void Geometry::set(const char * uniformName, AttributeBuffer* geometryBuffer)
+void Geometry::set(const char * uniformName, AbstractBuffer* geometryBuffer)
 {
     m_attributeBuffers[ uniformName ] = geometryBuffer;
 }
@@ -31,9 +31,9 @@ void Geometry::setIndices(std::vector<uint> &indices)
     m_indices = indices;
 }
 
-AttributeBuffer* Geometry::get(const char * name)
+AbstractBuffer* Geometry::get(const char * name)
 {
-    std::map<std::string, AttributeBuffer*>::iterator it = m_attributeBuffers.find( name );
+    std::map<std::string, AbstractBuffer*>::iterator it = m_attributeBuffers.find( name );
 
     // Found it? Great -return the bound location! Didn't find it? Alert user and halt.
     if ( it != m_attributeBuffers.end() )
@@ -48,11 +48,11 @@ AttributeBuffer* Geometry::get(const char * name)
 
 }
 
-AttributeBuffer* Geometry::get(const int index)
+AbstractBuffer* Geometry::get(const int index)
 {
     if (index < m_attributeBuffers.size())
     {
-        std::map<std::string, AttributeBuffer*>::iterator it = m_attributeBuffers.begin();
+        std::map<std::string, AbstractBuffer*>::iterator it = m_attributeBuffers.begin();
         for(int i=0; i<index; i++)
         {
             ++it;
@@ -75,7 +75,7 @@ const std::vector<uint> & Geometry::getIndices()
 
 bool Geometry::has(const char * name)
 {
-    std::map<std::string, AttributeBuffer*>::iterator it = m_attributeBuffers.find( name );
+    std::map<std::string, AbstractBuffer*>::iterator it = m_attributeBuffers.find( name );
 
     if ( it != m_attributeBuffers.end() )
     {

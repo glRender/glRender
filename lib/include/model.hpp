@@ -18,9 +18,9 @@ class Model : public Positionable
 public:
     enum DrawMode
     {
-        Triangles = GL_TRIANGLES,
-        Points = GL_POINTS,
-        Lines = GL_LINE_STRIP
+        Triangles = 0x0004 /*GL_TRIANGLES*/,
+        Points = 0x0000 /*GL_POINTS*/,
+        Lines = 0x0003 /*GL_LINE_STRIP*/
     };
 
     Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgram);
@@ -50,13 +50,13 @@ public:
     DrawMode drawMode();
 
 private:
-    GLuint m_vaoId;
+    uint m_vaoId;
 
     Geometry * m_geometry;
     ShaderProgram * m_shaderProgram;
     Textures * m_textures;
 
-    IndicesBuffer * m_indicesBuffer = nullptr;
+    AbstractBuffer * m_indicesBuffer = nullptr;
 
     DrawMode m_drawMode = DrawMode::Triangles;
     bool m_wireframeMode = false;

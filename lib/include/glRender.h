@@ -21,5 +21,6 @@
 #include "boundingBox.hpp"
 #include "aabb.hpp"
 #include "nodePicker.hpp"
+#include "render.hpp"
 
 #endif /* __GLRENDER_H__ */

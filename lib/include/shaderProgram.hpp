@@ -10,176 +10,66 @@
 #include "attribute.h"
 #include "geometry.hpp"
 #include "textures.hpp"
+//#include "opengl.h"
 
 namespace glRender
 {
 
+struct Attribute {
+        uint index;
+        int size;
+        uint type;
+        bool normalized;
+        int stride;
+        const void * pointer;
+};
+
 class ShaderProgram
 {
-
 public:
-    GLuint m_programId;   // The unique ID / handle for the shader program
-
     ShaderProgram(const char * pathToVertexShader, const char * pathToFragmentShader);
     ~ShaderProgram();
-
-    inline GLuint id()
-    {
-        return m_programId;
-    }
-
+    uint id();
     void attachVertexShader(Shader * shader);
     void attachFragmentShader(Shader * shader);
-
     void detachVertexShader();
     void detachFragmentShader();
-
     bool link();
-
-    inline void use()
-    {
-        glUseProgram(m_programId);
-    }
-
-    inline void disable()
-    {
-        glUseProgram(0);
-    }
-
+    void use();
+    void disable();
     void fillAttributes(Geometry * geometry);
     void bindTextures(Textures * textures);
     void unbindTextures();
 
     template<typename T>
-    bool hasAttribute(const char * attributeName) const
-    {
-        std::string typeName = typeid(T).name();
-        for( auto item : attributesList )
-        {
-            std::string key = item.first;
-            std::vector<std::string> words = split(key, '+');
-            std::string itemTypeName = words[0];
-            std::string attributeName = words[1];
-
-            if (itemTypeName == typeName && attributeName == std::string(attributeName))
-            {
-                return true;
-            }
-        }
-        return glGetAttribLocation( m_programId, attributeName ) != -1;
-    }
+    bool hasAttribute(const char * attributeName);
 
     template<typename T>
-    int attribute(const char * attributeName)
-    {
-        std::string typeName = typeid(T).name();
-        std::map<std::string, int>::iterator it = uniformsList.find( typeName+"+"+std::string(attributeName) );
-        if ( it == uniformsList.end() )
-        {
-            if (!addAttribute<T>(attributeName))
-            {
-                std::cout << "Could not find attribute in shader program: " << attributeName << std::endl;
-                return -1;
-            }
-        }
-
-        return uniformsList[typeName+"+"+std::string(attributeName)];
-    }
+    int attribute(const char * attributeName);
 
     template<typename T>
-    bool addAttribute(const char * attributeName)
-    {
-        int index = glGetAttribLocation( m_programId, attributeName );
-        if (index != -1)
-        {
-            std::string typeName = typeid(T).name();
-            Attribute attr;
-            attr.index = index;
-            attr.size = sizeof(T) / sizeof(float);
-            attr.type = GL_FLOAT;
-            attr.normalized = GL_FALSE;
-            attr.stride = sizeof(T);
-            attr.pointer = (GLvoid*)0;
-
-            attributesList[typeName+"+"+std::string(attributeName)] = attr;
-        }
-        else
-        {
-            std::cout << "Could not add attribute: " << attributeName << " - location returned -1!" << std::endl;
-        }
-
-        return index != -1;
-    }
+    bool addAttribute(const char * attributeName);
 
     template<typename T>
-    bool hasUniform(const char * uniformName) const
-    {
-        std::string typeName = typeid(T).name();
-        for( auto item : uniformsList )
-        {
-            std::string key = item.first;
-            std::vector<std::string> words = split(key, '+');
-            std::string itemTypeName = words[0];
-            std::string uniformName = words[1];
-
-            if (itemTypeName == typeName && uniformName == std::string(uniformName))
-            {
-                return true;
-            }
-        }
-        return glGetUniformLocation( m_programId, uniformName ) != -1;
-    }
+    bool hasUniform(const char * uniformName);
 
     template<typename T>
-    int uniform(const char * uniformName)
-    {
-        std::string typeName = typeid(T).name();
-        std::map<std::string, int>::iterator it = uniformsList.find( typeName+"+"+std::string(uniformName) );
-        if ( it == uniformsList.end() )
-        {
-            if (!addUniform<T>(uniformName))
-            {
-                std::cout << "Could not find uniform in shader program: " << uniformName << std::endl;
-                return -1;
-            }
-        }
-
-        return uniformsList[typeName+"+"+std::string(uniformName)];
-    }
+    int uniform(const char * uniformName);
 
     template<typename T>
-    bool addUniform(const char * uniformName)
-    {
-        int index = glGetUniformLocation( m_programId, uniformName );
-        if (index != -1)
-        {
-            std::string typeName = typeid(T).name();
-            uniformsList[typeName+"+"+std::string(uniformName)] = index;
-        }
-        else
-        {
-            std::cout << "Could not add uniform: " << uniformName << " - location returned -1!" << std::endl;
-        }
-
-        return index != -1;
-    }
+    bool addUniform(const char * uniformName);
 
     template<typename T>
-    void setUniform(const char * uniformName, T & value)
-    {
-        glUseProgram(m_programId);
-        setUniformValueByAddress(uniform<T>( uniformName ), value);
-    }
-
+    void setUniform(const char * uniformName, T & value);
 
 private:
-    void setUniformValueByAddress(GLuint index, float value);
-    void setUniformValueByAddress(GLuint index, int value);
-    void setUniformValueByAddress(GLuint index, uint value);
-    void setUniformValueByAddress(GLuint index, Vec3 & value);
-    void setUniformValueByAddress(GLuint index, Vec4 & value);
-    void setUniformValueByAddress(GLuint index, Mat4 & value);
-    void setUniformValueByAddress(GLuint index, Texture & value);
+    void setUniformValueByAddress(uint index, float value);
+    void setUniformValueByAddress(uint index, int value);
+    void setUniformValueByAddress(uint index, uint value);
+    void setUniformValueByAddress(uint index, Vec3 & value);
+    void setUniformValueByAddress(uint index, Vec4 & value);
+    void setUniformValueByAddress(uint index, Mat4 & value);
+    void setUniformValueByAddress(uint index, Texture & value);
 
     friend class Model;
 
@@ -187,12 +77,13 @@ private:
     Shader * m_fragmentShader = nullptr;
 
     // Map of attributes and their binding locations
-    std::map<std::string, Attribute> attributesList;
+    std::map<std::string, Attribute > attributesList;
 
     // Map of uniforms and their binding locations
-    std::map<std::string,int> uniformsList;
+    std::map<std::string, int > uniformsList;
 
     uint m_lastFreeTextureUnit = 0;
+    uint m_programId;   // The unique ID / handle for the shader program
 
 };
 

@@ -3,7 +3,7 @@
 #define STBI_NO_GIF 1
 #define STB_IMAGE_IMPLEMENTATION 1
 
-#include "../libs/stb/stb_image.h"
+#include "stb/stb_image.h"
 
 namespace glRender {
 Image::Image(const char * pathToFile) :

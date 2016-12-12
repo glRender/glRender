@@ -10,105 +10,33 @@
 namespace glRender
 {
 
-class Buffer
+class AbstractBuffer
 {
 public:
-    ~Buffer()
-    {
-        glDeleteBuffers(1, &m_id);
-    }
-
-    virtual const int size() = 0;
-    virtual const int memorySize() = 0;
-
-    inline const GLuint id()
-    {
-        return m_id;
-    }
-
-protected:
-    GLuint m_id;
-
-};
-
-class AttributeBuffer : public Buffer
-{
-public:
-    virtual const int size() = 0;
-    virtual const int memorySize() = 0;
-
-    inline virtual void bind()
-    {
-        glBindBuffer ( GL_ARRAY_BUFFER, m_id );
-    }
-
-    inline virtual void unbind()
-    {
-        glBindBuffer ( GL_ARRAY_BUFFER, 0 );
-    }
-
+    virtual uint size() = 0;
+    virtual uint memorySize() = 0;
+    virtual uint id() = 0;
+    virtual void bind() = 0;
+    virtual void unbind() = 0;
 };
 
 template<typename T>
-class AtributeBufferTemplate : public AttributeBuffer
+class Buffer : public AbstractBuffer
 {
 public:
-    AtributeBufferTemplate(std::vector<T> & data)
-        : m_data(data)
-    {
-        glGenBuffers(1, &m_id);
-        glBindBuffer(GL_ARRAY_BUFFER, m_id);
-        glBufferData(GL_ARRAY_BUFFER, m_data.size() * sizeof(T), m_data.data(), GL_STATIC_DRAW);
-    };
+    Buffer(const std::vector<T> & data, int type);
+    ~Buffer();
 
-    const int size() override
-    {
-        return m_data.size();
-    }
+    uint size();
+    uint memorySize();
+    uint id();
+    void bind();
+    void unbind();
 
-    const int memorySize() override
-    {
-        return m_data.size() * sizeof(T);
-    }
-
-protected:
+private:
+    uint m_id;
     std::vector<T> m_data;
-
-};
-
-class IndicesBuffer : public Buffer
-{
-public:
-    virtual const int size() = 0;
-    virtual const int memorySize() = 0;
-
-};
-
-template<typename T>
-class IndicesBufferTemplate : public IndicesBuffer
-{
-public:
-    IndicesBufferTemplate(const std::vector<T> & data)
-        : m_data(data)
-    {
-        glGenBuffers(1, &m_id);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_data.size() * sizeof(uint), m_data.data(), GL_STATIC_DRAW);
-    };
-
-    virtual const int size()
-    {
-        return m_data.size();
-    }
-
-    virtual const int memorySize()
-    {
-        return m_data.size() * sizeof(uint);
-    }
-
-protected:
-    std::vector<T> m_data;
-
+    int m_type;
 };
 
 }

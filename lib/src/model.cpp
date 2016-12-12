@@ -1,4 +1,5 @@
 #include "model.hpp"
+#include "opengl.h"
 
 namespace glRender {
 
@@ -12,7 +13,7 @@ Model::Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgra
 
     if (geometry->hasIndices())
     {
-        m_indicesBuffer = new IndicesBufferTemplate<uint>(geometry->getIndices());
+        m_indicesBuffer = new Buffer<uint>(geometry->getIndices(), 0x8893);
     }
 
     m_shaderProgram->fillAttributes(m_geometry);

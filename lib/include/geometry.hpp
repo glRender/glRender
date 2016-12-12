@@ -16,11 +16,11 @@ public:
     Geometry(std::vector<uint> & indices);
     ~Geometry();
 
-    void set(const char * uniformName, AttributeBuffer * geometryBuffer);
+    void set(const char * uniformName, AbstractBuffer * geometryBuffer);
     void setIndices(std::vector<uint> & indices);
 
-    AttributeBuffer * get(const char * name);
-    AttributeBuffer * get(const int index);
+    AbstractBuffer * get(const char * name);
+    AbstractBuffer * get(const int index);
     const std::vector<uint> & getIndices();
 
     bool has(const char * name);
@@ -39,7 +39,7 @@ public:
 
 
 protected:
-    std::map<std::string, AttributeBuffer*> m_attributeBuffers;
+    std::map<std::string, AbstractBuffer*> m_attributeBuffers;
     std::vector<uint> m_indices;
 };
 

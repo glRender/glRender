@@ -1,25 +1,51 @@
 #include "shader.hpp"
+#include "opengl.h"
 
 namespace glRender {
-Shader::Shader(const GLenum &type)
+
+std::map<ShaderType, GLenum> shaderTypeToGLenumMap =
 {
-    // Get the type of the shader
-    if (type == GL_VERTEX_SHADER)
-    {
-        m_typeString = "Vertex";
-    }
-    else if (type == GL_FRAGMENT_SHADER)
-    {
-        m_typeString = "Fragment";
-    }
-    else
-    {
-        m_typeString = "Geometry";
-    }
+    {ShaderType::VertexShader, GL_VERTEX_SHADER},
+    {ShaderType::FragmentShander, GL_FRAGMENT_SHADER}
+};
+
+std::map<ShaderType, const char *> shaderTypeToCharMap =
+{
+    {ShaderType::VertexShader, "Vertex"},
+    {ShaderType::FragmentShander, "Fragment"}
+};
+
+inline GLenum convertShaderTypeToGLenum(ShaderType type)
+{
+    return shaderTypeToGLenumMap[type];
+}
+
+inline const char * convertShaderTypeToChar(ShaderType type)
+{
+    return shaderTypeToCharMap[type];
+}
+
+Shader::Shader(ShaderType type)
+    : m_type(type)
+{
+    m_typeString = convertShaderTypeToChar(type);
+//    // Get the type of the shader
+//    if (type == GL_VERTEX_SHADER)
+//    {
+//        m_typeString = "Vertex";
+//    }
+//    else if (type == GL_FRAGMENT_SHADER)
+//    {
+//        m_typeString = "Fragment";
+//    }
+//    else
+//    {
+//        m_typeString = "Geometry";
+//    }
 
     // Create the vertex shader id / handle
     // Note: If you segfault here you probably don't have a valid rendering context.
-    m_id = glCreateShader(type);
+    m_id = glCreateShader(convertShaderTypeToGLenum(type));
 }
 
 Shader::~Shader()
@@ -27,7 +53,7 @@ Shader::~Shader()
     glDeleteShader(m_id);
 }
 
-GLuint Shader::id()
+uint Shader::id()
 {
     return m_id;
 }
