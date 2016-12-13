@@ -13,6 +13,11 @@ namespace glRender
 class AbstractBuffer
 {
 public:
+    virtual ~AbstractBuffer()
+    {
+
+    }
+
     virtual uint size() = 0;
     virtual uint memorySize() = 0;
     virtual uint id() = 0;

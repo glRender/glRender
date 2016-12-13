@@ -13,7 +13,7 @@ namespace glRender
 class Node
 {
 public:
-  ~Node();
+  virtual ~Node();
 
   bool addChild(Node * node);
   std::vector<Node *> childs();

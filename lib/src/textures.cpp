@@ -27,12 +27,12 @@ Texture* Textures::texture(const char * uniformName) const
 
 }
 
-Texture* Textures::texture(const int index) const
+Texture* Textures::texture(const uint index) const
 {
-    if ( m_textures.size() > index && index >= 0 )
+    if (m_textures.size() > index)
     {
         auto it = m_textures.begin();
-        for(int i=0; i<index; i++)
+        for(uint i=0; i<index; i++)
         {
             it++;
         }
@@ -45,9 +45,9 @@ Texture* Textures::texture(const int index) const
     }
 }
 
-bool Textures::isExistTexture(const int index) const
+bool Textures::isExistTexture(const uint index) const
 {
-    if ( m_textures.size() > index && index >= 0 )
+    if (m_textures.size() > index)
     {
         return true;
     }
@@ -71,12 +71,12 @@ bool Textures::isExistTexture(const char * uniformName) const
 
 }
 
-const char * Textures::textureUniformName(const int index) const
+const char * Textures::textureUniformName(const uint index) const
 {
-    if ( isExistTexture( index ) )
+    if (isExistTexture(index))
     {
         auto it = m_textures.begin();
-        for(int i=0; i<index; i++)
+        for(uint i=0; i<index; i++)
         {
             it++;
         }

@@ -29,7 +29,7 @@ Node * Node::parent()
 void Node::traverse(std::function<void(Node * node)> handler)
 {
 	handler(this);
-	for (Node * node : m_childs)
+    for (uint i=0; i<m_childs.size(); i++)
 	{
 		traverse(handler);
     }

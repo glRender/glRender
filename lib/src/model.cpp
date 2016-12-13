@@ -21,7 +21,7 @@ Model::Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgra
 
 }
 
-bool Model::setWireframeMode(bool status)
+void Model::setWireframeMode(bool status)
 {
     m_wireframeMode = status;
 }
@@ -31,7 +31,7 @@ bool Model::isWireframeMode()
     return m_wireframeMode;
 }
 
-bool Model::setDrawMode(Model::DrawMode drawMode)
+void Model::setDrawMode(Model::DrawMode drawMode)
 {
     m_drawMode = drawMode;
 }

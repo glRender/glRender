@@ -93,9 +93,7 @@ private:
 
     uint m_lastFreeTextureUnit = 0;
     uint m_programId;   // The unique ID / handle for the shader program
-
 };
 
 }
-
 #endif /* __SHADER_PROGRAM_HPP__ */

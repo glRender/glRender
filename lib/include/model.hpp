@@ -43,10 +43,10 @@ public:
         return m_textures;
     }
 
-    bool setWireframeMode(bool status);
+    void setWireframeMode(bool status);
     bool isWireframeMode();
 
-    bool setDrawMode(DrawMode drawMode);
+    void setDrawMode(DrawMode drawMode);
     DrawMode drawMode();
 
 private:

@@ -53,8 +53,8 @@ protected:
     Vec3 m_target = -Vec3::AXE_Z();
     Vec3 m_direction;
 
-    float m_farPlane;
     float m_nearPlane;
+    float m_farPlane;
 
     Vec3 m_front;
     Vec3 m_right;

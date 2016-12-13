@@ -12,7 +12,7 @@ ShaderProgram::ShaderProgram(const char * pathToVertexShader, const char * pathT
 
     bool vertexShaderReady = false;
     bool fragmentShaderReady = false;
-    bool isShadersLinked = false;
+//    bool isShadersLinked = false;
 
     Shader * vertexShader;
     Shader * fragmentShader;
@@ -117,7 +117,7 @@ bool ShaderProgram::link()
 
             detachVertexShader();
             detachFragmentShader();
-
+            return true;
         }
     }
     else
@@ -125,6 +125,7 @@ bool ShaderProgram::link()
         std::cout << "Can't link shaders" << std::endl;
     }
 
+    return false;
 }
 
 void ShaderProgram::use()

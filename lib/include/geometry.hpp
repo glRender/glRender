@@ -20,11 +20,11 @@ public:
     void setIndices(std::vector<uint> & indices);
 
     AbstractBuffer * get(const char * name);
-    AbstractBuffer * get(const int index);
+    AbstractBuffer * get(const uint index);
     const std::vector<uint> & getIndices();
 
     bool has(const char * name);
-    bool has(const int index) const;
+    bool has(const uint index) const;
     bool hasIndices() const;
 
     inline uint size() const

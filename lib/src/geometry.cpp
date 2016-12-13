@@ -48,12 +48,12 @@ AbstractBuffer* Geometry::get(const char * name)
 
 }
 
-AbstractBuffer* Geometry::get(const int index)
+AbstractBuffer* Geometry::get(const uint index)
 {
     if (index < m_attributeBuffers.size())
     {
         std::map<std::string, AbstractBuffer*>::iterator it = m_attributeBuffers.begin();
-        for(int i=0; i<index; i++)
+        for(uint i=0; i<index; i++)
         {
             ++it;
         }
@@ -87,7 +87,7 @@ bool Geometry::has(const char * name)
     }
 }
 
-bool Geometry::has(const int index) const
+bool Geometry::has(const uint index) const
 {
     if (index < m_attributeBuffers.size())
     {

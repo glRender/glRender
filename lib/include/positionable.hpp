@@ -12,15 +12,8 @@ namespace glRender
 
 class Positionable
 {
-protected:
-    Mat4 m_transformationMatrix;
-    Mat4 m_modelRotationMatrix;
-    
-    Vec4 m_up    = {0.0, 1.0, 0.0, 1.0};
-    Vec4 m_front = {0.0, 0.0, -1.0, 1.0};
-    Vec4 m_right = {1.0, 0.0, 0.0, 1.0};
-
 public:
+    virtual ~Positionable() {};
     void setOrigin(const float x, const float y, const float z);
     void setOrigin(const Vec3 & pos);
 
@@ -43,7 +36,13 @@ public:
     const Vec3 frontOrig() const;
     const Vec3 rightOrig() const;
 
+protected:
+    Mat4 m_transformationMatrix;
+    Mat4 m_modelRotationMatrix;
 
+    Vec4 m_up    = {0.0, 1.0, 0.0, 1.0};
+    Vec4 m_front = {0.0, 0.0, -1.0, 1.0};
+    Vec4 m_right = {1.0, 0.0, 0.0, 1.0};
 };
 
 }

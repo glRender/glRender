@@ -10,10 +10,6 @@ namespace glRender
 
 class PerspectiveCamera : public Camera
 {
-private:
-    float m_aspectRatio;
-    float m_fieldOfView;
-
 public:
     PerspectiveCamera(float fieldOfView, float aspectRatio, float nearPlane, float farPlane);
     void calculateProjectionMatrix();
@@ -23,9 +19,10 @@ public:
 
     float aspectRatio() const;
     void setAspectRatio(float aspectRatio);
-
+private:
+    float m_fieldOfView;
+    float m_aspectRatio;
 };
 
 }
-
 #endif // PERSPECTIVECAMERA_H
