@@ -39,13 +39,6 @@ ShaderProgram::ShaderProgram(const char * pathToVertexShader, const char * pathT
     fragmentShader = ResourceManager::getInstance().getShader(pathToFragmentShader);
     std::cout << " * ShaderFragment " << fragmentShader << std::endl;
 
-//    Shader * vertexShader = new Shader( GL_VERTEX_SHADER );
-//    vertexShader->loadFromFile( pathToVertexShader );
-//    vertexShader->compile();
-
-//    Shader * fragmentShader = new Shader( GL_FRAGMENT_SHADER );
-//    fragmentShader->loadFromFile( pathToFragmentShader );
-//    fragmentShader->compile();
     attachVertexShader(vertexShader);
     attachFragmentShader(fragmentShader);
     link();
@@ -149,10 +142,6 @@ void ShaderProgram::fillAttributes(Geometry *geometry)
     // Set up the Vertex attribute pointer for the Vertex attribute
     for( auto item : attributesList )
     {
-//        std::string key = item.first;
-//        std::vector<std::string> words = split(key, '+');
-//        std::string typeName = words[0];
-//        std::string attributeName = words[1];
         std::string attributeName = item.first;
 
         AbstractBuffer * buffer = geometry->get( attributeName.c_str() );
@@ -177,23 +166,16 @@ void ShaderProgram::fillAttributes(Geometry *geometry)
 
 void ShaderProgram::bindTextures(Textures * textures)
 {
-    std::string textureTypeName = typeid(Texture).name();
-
-    for ( auto item : uniformsList )
+    for (int i=0; i<textures->size(); i++)
     {
-        std::string key = item.first;
-        std::vector<std::string> words = split(key, '+');
-        std::string typeName = words[0];
-        std::string uniformName = words[1];
-
-        if (typeName == textureTypeName)
+        const char * uniformName = textures->textureUniformName(i);
         {
-            if (textures->isExistTexture(uniformName.c_str()))
+            if (hasUniform<Texture>(uniformName))
             {
-                Texture * texture = textures->texture(uniformName.c_str());
+                Texture * texture = textures->texture(i);
                 if ( texture != nullptr )
                 {
-                    setUniform<Texture>(uniformName.c_str(), (*texture));
+                    setUniform<Texture>(uniformName, (*texture));
                 }
             }
         }
@@ -251,23 +233,8 @@ void ShaderProgram::setUniformValueByAddress(uint index, Texture & value)
 template<typename T >
 bool ShaderProgram::hasAttribute(const char * attributeName)
 {
-//        std::string typeName = typeid(T).name();
-//        for( auto item : attributesList )
-//        {
-//            std::string key = item.first;
-////            std::vector<std::string> words = split(key, '+');
-////            std::string itemTypeName = words[0];
-////            std::string attributeName = words[1];
-
-//            if (/*itemTypeName == typeName && */attributeName == std::string(attributeName))
-//            {
-//                return true;
-//            }
-//        }
-    std::map<std::string, Attribute>::iterator it = attributesList.find( /*typeName+"+"+*/std::string(attributeName) );
+    std::map<std::string, Attribute>::iterator it = attributesList.find(std::string(attributeName));
     if ( it == attributesList.end() )
-//    std::map<std::string, Attribute >::iterator it = attributesList.find( std::string(attributeName) );
-//    if ( it == attributesList.end() )
     {
         return true;
     }
@@ -298,7 +265,6 @@ bool ShaderProgram::addAttribute(const char * attributeName)
     int index = glGetAttribLocation( m_programId, attributeName );
     if (index != -1)
     {
-//            std::string typeName = typeid(T).name();
         Attribute attr;
         attr.index = index;
         attr.size = sizeof(T) / sizeof(float);
@@ -307,7 +273,7 @@ bool ShaderProgram::addAttribute(const char * attributeName)
         attr.stride = sizeof(T);
         attr.pointer = (GLvoid*)0;
 
-        attributesList[/*typeName+"+"+*/std::string(attributeName)] = attr;
+        attributesList[std::string(attributeName)] = attr;
     }
     else
     {
@@ -320,23 +286,10 @@ bool ShaderProgram::addAttribute(const char * attributeName)
 template<typename T>
 bool ShaderProgram::hasUniform(const char * uniformName)
 {
-//        std::string typeName = typeid(T).name();
-//        for( auto item : uniformsList )
-//        {
-//            std::string key = item.first;
-//            std::vector<std::string> words = split(key, '+');
-//            std::string itemTypeName = words[0];
-//            std::string uniformName = words[1];
-
-//            if (itemTypeName == typeName && uniformName == std::string(uniformName))
-//            {
-//                return true;
-//            }
-//        }
     std::map<std::string, int>::iterator it = uniformsList.find( std::string(uniformName) );
     if ( it == uniformsList.end() )
     {
-        return true;
+        return false;
     }
 
     return glGetUniformLocation( m_programId, uniformName ) != -1;
@@ -345,8 +298,7 @@ bool ShaderProgram::hasUniform(const char * uniformName)
 template<typename T>
 int ShaderProgram::uniform(const char * uniformName)
 {
-//        std::string typeName = typeid(T).name();
-    std::map<std::string, int>::iterator it = uniformsList.find( /*typeName+"+"+*/std::string(uniformName) );
+    std::map<std::string, int>::iterator it = uniformsList.find( std::string(uniformName) );
     if ( it == uniformsList.end() )
     {
         if (addUniform<T>(uniformName) == false)
@@ -356,7 +308,7 @@ int ShaderProgram::uniform(const char * uniformName)
         }
     }
 
-    return uniformsList[/*typeName+"+"+*/std::string(uniformName)];
+    return uniformsList[std::string(uniformName)];
 }
 
 template<typename T>
@@ -365,8 +317,7 @@ bool ShaderProgram::addUniform(const char * uniformName)
     int index = glGetUniformLocation( m_programId, uniformName );
     if (index != -1)
     {
-//            std::string typeName = typeid(T).name();
-        uniformsList[/*typeName+"+"+*/std::string(uniformName)] = index;
+        uniformsList[std::string(uniformName)] = index;
     }
     else
     {

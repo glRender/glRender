@@ -15,13 +15,14 @@
 namespace glRender
 {
 
-struct Attribute {
-        uint index;
-        int size;
-        uint type;
-        bool normalized;
-        int stride;
-        const void * pointer;
+struct Attribute
+{
+    uint index;
+    int size;
+    uint type;
+    bool normalized;
+    int stride;
+    const void * pointer;
 };
 
 class ShaderProgram
