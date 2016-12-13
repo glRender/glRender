@@ -233,7 +233,7 @@ void ShaderProgram::setUniformValueByAddress(uint index, Texture & value)
 template<typename T >
 bool ShaderProgram::hasAttribute(const char * attributeName)
 {
-    std::map<std::string, Attribute>::iterator it = attributesList.find(std::string(attributeName));
+    std::map<const char *, Attribute>::iterator it = attributesList.find(attributeName);
     if ( it == attributesList.end() )
     {
         return true;
@@ -245,8 +245,7 @@ bool ShaderProgram::hasAttribute(const char * attributeName)
 template<typename T>
 int ShaderProgram::attribute(const char * attributeName)
 {
-//        std::string typeName = typeid(T).name();
-    std::map<std::string, Attribute>::iterator it = attributesList.find( /*typeName+"+"+*/std::string(attributeName) );
+    std::map<const char *, Attribute>::iterator it = attributesList.find(attributeName);
     if ( it == attributesList.end() )
     {
         if (addAttribute<T>(attributeName) == false)
@@ -256,7 +255,7 @@ int ShaderProgram::attribute(const char * attributeName)
         }
     }
 
-    return attributesList[/*typeName+"+"+*/std::string(attributeName)].index;
+    return attributesList[attributeName].index;
 }
 
 template<typename T>
@@ -273,7 +272,7 @@ bool ShaderProgram::addAttribute(const char * attributeName)
         attr.stride = sizeof(T);
         attr.pointer = (GLvoid*)0;
 
-        attributesList[std::string(attributeName)] = attr;
+        attributesList[attributeName] = attr;
     }
     else
     {
@@ -286,19 +285,19 @@ bool ShaderProgram::addAttribute(const char * attributeName)
 template<typename T>
 bool ShaderProgram::hasUniform(const char * uniformName)
 {
-    std::map<std::string, int>::iterator it = uniformsList.find( std::string(uniformName) );
+    std::map<const char *, int>::iterator it = uniformsList.find(uniformName);
     if ( it == uniformsList.end() )
     {
         return false;
     }
 
-    return glGetUniformLocation( m_programId, uniformName ) != -1;
+    return glGetUniformLocation(m_programId, uniformName) != -1;
 }
 
 template<typename T>
 int ShaderProgram::uniform(const char * uniformName)
 {
-    std::map<std::string, int>::iterator it = uniformsList.find( std::string(uniformName) );
+    std::map<const char *, int>::iterator it = uniformsList.find(uniformName);
     if ( it == uniformsList.end() )
     {
         if (addUniform<T>(uniformName) == false)
@@ -308,16 +307,16 @@ int ShaderProgram::uniform(const char * uniformName)
         }
     }
 
-    return uniformsList[std::string(uniformName)];
+    return uniformsList[uniformName];
 }
 
 template<typename T>
 bool ShaderProgram::addUniform(const char * uniformName)
 {
-    int index = glGetUniformLocation( m_programId, uniformName );
+    int index = glGetUniformLocation(m_programId, uniformName);
     if (index != -1)
     {
-        uniformsList[std::string(uniformName)] = index;
+        uniformsList[uniformName] = index;
     }
     else
     {
@@ -330,7 +329,7 @@ bool ShaderProgram::addUniform(const char * uniformName)
 template<typename T>
 void ShaderProgram::setUniform(const char * uniformName, T & value)
 {
-    int uniformAddress = uniform<T>( uniformName );
+    int uniformAddress = uniform<T>(uniformName);
     if (uniformAddress != -1)
     {
         glUseProgram(m_programId);

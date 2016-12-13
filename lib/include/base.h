@@ -20,9 +20,7 @@
 #include <assert.h>
 #include <map>
 #include <vector>
-
-//#include <GL/glew.h>
-//#include "glad/glad.h"
+#include <cstring>
 
 // Math
 #define MATH_DEG_TO_RAD(x)          ((x) * 0.0174532925f)

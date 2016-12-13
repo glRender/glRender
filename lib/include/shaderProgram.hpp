@@ -77,11 +77,19 @@ private:
     Shader * m_vertexShader = nullptr;
     Shader * m_fragmentShader = nullptr;
 
+    struct cmp_str
+    {
+       bool operator()(char const *a, char const *b)
+       {
+          return std::strcmp(a, b) < 0;
+       }
+    };
+
     // Map of attributes and their binding locations
-    std::map<std::string, Attribute > attributesList;
+    std::map<const char *, Attribute, cmp_str > attributesList;
 
     // Map of uniforms and their binding locations
-    std::map<std::string, int > uniformsList;
+    std::map<const char *, int, cmp_str > uniformsList;
 
     uint m_lastFreeTextureUnit = 0;
     uint m_programId;   // The unique ID / handle for the shader program
