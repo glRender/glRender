@@ -6,24 +6,20 @@
 
 using namespace glRender;
 
-template<typename T>
-Buffer<T>::Buffer(const std::vector<T> & data, int type)
-    : m_data(data)
-    , m_type(type)
+std::map<BufferType, GLenum> bufferTypeToGlenum =
 {
-    if (type == 0x8892)
-    {
-        glGenBuffers(1, &m_id);
-        glBindBuffer(GL_ARRAY_BUFFER, m_id);
-        glBufferData(GL_ARRAY_BUFFER, m_data.size() * sizeof(T), m_data.data(), GL_STATIC_DRAW);
-    }
-    else if (type == 0x8893)
-    {
-        glGenBuffers(1, &m_id);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_data.size() * sizeof(T), m_data.data(), GL_STATIC_DRAW);
-    }
+    {BufferType::ArrayBuffer, GL_ARRAY_BUFFER},
+    {BufferType::ElementArrayBuffer, GL_ELEMENT_ARRAY_BUFFER}
+};
 
+template<typename T>
+Buffer<T>::Buffer(const std::vector<T> & data, BufferType type)
+    : m_data(data)
+    , m_type(bufferTypeToGlenum[type])
+{
+    glGenBuffers(1, &m_id);
+    glBindBuffer(m_type, m_id);
+    glBufferData(m_type, m_data.size() * sizeof(T), m_data.data(), GL_STATIC_DRAW);
 }
 
 template<typename T>

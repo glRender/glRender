@@ -82,8 +82,8 @@ namespace glRender
             indices.push_back( 6 );
 
             Geometry * geometry = new Geometry(indices);
-            geometry->set( "vertex", new Buffer<Vec3>( vertices, 0x8892) );
-            geometry->set( "uv", new Buffer<Vec2>( uvs, 0x8892) );
+            geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
+            geometry->set( "uv", new Buffer<Vec2>( uvs, BufferType::ArrayBuffer) );
 
             return geometry;
       }
@@ -112,8 +112,8 @@ namespace glRender
             indices.push_back( 3 );
 
             Geometry* geometry = new Geometry(indices);
-            geometry->set( "vertex", new Buffer<Vec3>( vertices, 0x8892) );
-            geometry->set( "uv", new Buffer<Vec2>( uvs, 0x8892) );
+            geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
+            geometry->set( "uv", new Buffer<Vec2>( uvs, BufferType::ArrayBuffer) );
 
             return geometry;
       }
@@ -131,7 +131,7 @@ namespace glRender
           }
 
           Geometry* geometry = new Geometry();
-          geometry->set( "vertex", new Buffer<Vec3>( vertices, 0x8892) );
+          geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
 
           return geometry;
 
@@ -149,7 +149,7 @@ namespace glRender
           }
 
           Geometry* geometry = new Geometry();
-          geometry->set( "vertex", new Buffer<Vec3>( vertices, 0x8892) );
+          geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
 
           return geometry;
 

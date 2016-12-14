@@ -13,7 +13,7 @@ Model::Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgra
 
     if (geometry->hasIndices())
     {
-        m_indicesBuffer = new Buffer<uint>(geometry->getIndices(), 0x8893);
+        m_indicesBuffer = new Buffer<uint>(geometry->getIndices(), BufferType::ElementArrayBuffer);
     }
 
     m_shaderProgram->fillAttributes(m_geometry);

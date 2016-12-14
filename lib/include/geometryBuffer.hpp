@@ -25,11 +25,17 @@ public:
     virtual void unbind() = 0;
 };
 
+enum class BufferType
+{
+    ArrayBuffer,       /*GL_ARRAY_BUFFER*/
+    ElementArrayBuffer /*GL_ELEMENT_ARRAY_BUFFER*/
+};
+
 template<typename T>
 class Buffer : public AbstractBuffer
 {
 public:
-    Buffer(const std::vector<T> & data, int type);
+    Buffer(const std::vector<T> & data, BufferType type);
     ~Buffer();
 
     uint size();
@@ -41,7 +47,7 @@ public:
 private:
     uint m_id;
     std::vector<T> m_data;
-    int m_type;
+    uint m_type;
 };
 
 }
