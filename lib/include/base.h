@@ -61,4 +61,8 @@ inline std::vector<std::string> split(const std::string &s, char delim) {
     return tokens;
 }
 
+#ifdef _WIN32
+    typedef unsigned int uint;
+#endif
+
 #endif /* BASE_H_ */
