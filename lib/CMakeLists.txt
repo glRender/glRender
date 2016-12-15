@@ -2,8 +2,12 @@ cmake_minimum_required (VERSION 2.8.11)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror")
 
-if (UNIX)
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl")
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
+	set(LINUX 1)
+endif(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
+
+if (LINUX)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl")
 endif()
 
 aux_source_directory(src GLRENDER_SRC_LIST)
@@ -15,7 +19,7 @@ target_include_directories (glRender PUBLIC
 )
 
 target_link_libraries(
-        glRender
+    glRender
 )
 
 include_directories (
