@@ -36,15 +36,15 @@ Texture::Texture(const char * p_pathToFile)
 
 	// }
 
-};
+}
 
 Texture::~Texture()
 {
-};
+}
 
 uint Texture::id()
 {
 	return m_id;
-};
+}
 
 }
