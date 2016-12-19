@@ -9,12 +9,10 @@ class Scene;
 class Render
 {
 public:
-    Render();
-
-    void draw(Scene * scene);
-    void setViewPortSize(int w, int h);
-
     static bool glLoad();
+    static const char * contextInformation();
+    static void draw(Scene * scene);
+    static void setViewPortSize(int w, int h);
 };
 
 }
