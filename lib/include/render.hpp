@@ -10,10 +10,9 @@ class Scene;
 
 class Render
 {
-public:
     Render();
-    static Render * glLoad();
-
+public:
+    static Render * instance();
     const char * contextInformation();
     void draw(Scene * scene);
     void setViewportSize(const int & w, const int & h);

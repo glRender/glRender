@@ -78,21 +78,27 @@ void Render::setBackgroundColor(const Vec4 &background)
     m_background = background;
 }
 
-Render * Render::glLoad()
+Render * Render::instance()
 {
-    if (gladLoadGL())
-    {
-        if (GL_CONTEXT_FLAG_DEBUG_BIT)
-        {
-            glEnable(GL_DEBUG_OUTPUT);
-            glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-            glDebugMessageCallback(glDebugOutput, nullptr);
-            glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
-        }
+    static Render * instance = nullptr;
 
-        return new Render();
+    if (instance == nullptr)
+    {
+        if (gladLoadGL())
+        {
+            if (GL_CONTEXT_FLAG_DEBUG_BIT)
+            {
+                glEnable(GL_DEBUG_OUTPUT);
+                glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+                glDebugMessageCallback(glDebugOutput, nullptr);
+                glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+            }
+
+            instance = new Render();
+        }
     }
-    return nullptr;
+
+    return instance;
 }
 
 const char * getGLString(uint key)
