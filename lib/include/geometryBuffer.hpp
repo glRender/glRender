@@ -43,8 +43,8 @@ public:
     uint id();
     void bind();
     void unbind();
-    void rewrite(const std::vector<T> & data, const uint from);
-    void rewrite(const T & element, const uint index);
+    void rewrite(const uint from, const std::vector<T> & data);
+    void rewrite(const uint index, const T & element);
 
 private:
     uint m_id;
