@@ -1,0 +1,18 @@
+node
+{
+    echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+
+    stage('Checkout')
+    {
+        git url: 'https://github.com/glRender/glRender', branch: 'master'
+    }
+
+    stage('Build')
+    {
+        withEnv(["ENISEY_PATH=/opt/enisey"])
+        {
+            sh 'cmake .'
+            sh 'make'
+        }
+    }
+}
