@@ -23,8 +23,7 @@ public:
 
     }
 
-    template <class T>
-    std::vector<T *> find(Vec2 normDeviceCoords)
+    Vec3 coordOnDistance(Vec2 normDeviceCoords, float distance)
     {
         Vec4 clipCoords(
                     normDeviceCoords.x,
@@ -44,11 +43,40 @@ public:
         Vec3 worldCoords(tmp.x, tmp.y, tmp.z);
         worldCoords.normalize();
 
-        Vec3 cameraPos = m_camera->position();
-        Vec3 origin = cameraPos + worldCoords * m_camera->nearPlane();
-        Vec3 target = cameraPos + worldCoords * m_camera->farPlane();
+        return m_camera->position() + worldCoords * distance;
+    }
 
-        Ray * ray = new Ray(origin, target);
+    Ray * ray(Vec2 normDeviceCoords)
+    {
+//        Vec4 clipCoords(
+//                    normDeviceCoords.x,
+//                    normDeviceCoords.y,
+//                    -1.0f,
+//                    1.0f );
+
+//        Mat4 p = m_camera->projectionMatrix();
+//        p.invert();
+//        Vec4 eyeCoords = p * clipCoords;
+//        eyeCoords.z = -1.0f;
+//        eyeCoords.w = 0.0f;
+
+//        Mat4 t = m_camera->transformationMatrix();
+//        t.invert();
+//        Vec4 tmp = t * eyeCoords;
+//        Vec3 worldCoords(tmp.x, tmp.y, tmp.z);
+//        worldCoords.normalize();
+
+//        Vec3 cameraPos = m_camera->position();
+        Vec3 origin = coordOnDistance(normDeviceCoords, m_camera->nearPlane());
+        Vec3 target = coordOnDistance(normDeviceCoords, m_camera->farPlane());
+
+        return new Ray(origin, target);
+    }
+
+    template <class T>
+    std::vector<T *> find(Vec2 normDeviceCoords)
+    {
+        Ray * ray = this->ray(normDeviceCoords);
 
         std::vector<T *> result;
 

@@ -59,7 +59,7 @@ void Buffer<T>::unbind()
 }
 
 template<typename T>
-void Buffer<T>::rewrite(const std::vector<T> &data, const uint from)
+void Buffer<T>::rewrite(const uint from, const std::vector<T> &data)
 {
     glBindBuffer(m_type, m_id);
     glBufferSubData(m_type, from * sizeof(T), data.size() * sizeof(T), data.data());
@@ -67,7 +67,7 @@ void Buffer<T>::rewrite(const std::vector<T> &data, const uint from)
 }
 
 template<typename T>
-void Buffer<T>::rewrite(const T & element, const uint index)
+void Buffer<T>::rewrite(const uint index, const T & element)
 {
     glBindBuffer(m_type, m_id);
     glBufferSubData(m_type, index * sizeof(T), sizeof(T), &element);
