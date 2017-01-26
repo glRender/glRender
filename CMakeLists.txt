@@ -18,11 +18,17 @@ set (CPACK_PACKAGE_VERSION_MAJOR "${glRender_VERSION_MAJOR}")
 set (CPACK_PACKAGE_VERSION_MINOR "${glRender_VERSION_MINOR}")
 set (CPACK_PACKAGE_VERSION_PATCH "${glRender_VERSION_PATCH}")
 
-SET(CPACK_GENERATOR "DEB")
-SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Aleksandr Lizin <sogimu@nxt.ru>")
-SET(CPACK_PACKAGE_VENDOR "Me, myself, and I")
-SET(CPACK_SET_DESTDIR true)
-SET(CPACK_INSTALL_PREFIX "/opt/glRender_${glRender_VERSION_MAJOR}.${glRender_VERSION_MINOR}.${glRender_VERSION_PATCH}")
-SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.3.1-6), libgcc1 (>= 1:3.4.2-12), cmake (>= 2.8.11)")
+set(CPACK_PACKAGE_VENDOR "Aleksandr Lizin <sogimu@nxt.ru>")
+
+if(WIN32)
+    set(CPACK_GENERATOR "NSIS")
+else()
+    # set(CPACK_GENERATOR "DEB")
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Aleksandr Lizin <sogimu@nxt.ru>")
+    set(CPACK_SET_DESTDIR true)
+    set(CPACK_INSTALL_PREFIX "/opt/glRender_${glRender_VERSION_MAJOR}.${glRender_VERSION_MINOR}.${glRender_VERSION_PATCH}")
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.3.1-6), libgcc1 (>= 1:3.4.2-12)")
+endif()
 
 include (CPack)
+
