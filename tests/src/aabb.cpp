@@ -83,9 +83,6 @@ TEST_CASE("Into bb along Y", "")
     CHECK( bb.intersects(ray) );
 }
 
-
-
-
 TEST_CASE("Into bb along Z", "")
 {
     AABB bb(Vec3(0,0,0), 0.5f);

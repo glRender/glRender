@@ -1,26 +1,18 @@
 cmake_minimum_required (VERSION 2.8.11)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -pedantic -Wno-parentheses")
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
-    set(LINUX 1)
-endif(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
+set (SRC_PATH src)
+set (CATCH_PATH libs/Catch/include)
 
-if (LINUX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl")
-endif()
-
-set (CATCH_INCLUDES libs/Catch/include)
-
-set (SRC src)
-set (bin_src
-    ${SRC}/main.cpp
-    # ${SRC}/vec3.cpp
-    ${SRC}/aabb.cpp
+aux_source_directory(${SRC_PATH} SRC_FILES)
+set (SRC_FILES ${SRC_FILES}
+    # ${SRC_PATH}/vec3.cpp
+    # ${SRC_PATH}/aabb.cpp
+    # ${SRC_PATH}/test.cpp
+    main.cpp
 )
 
-include_directories (${SRC} ${LIB_INCLUDE_DIR} ${CATCH_INCLUDES})
-
-add_executable(Tests ${bin_src})
-
-target_link_libraries (Tests ${LIB_LIBRARIES})
+add_executable(tests ${SRC_FILES})
+include_directories (${TEST_SRC_PATH} ${CATCH_PATH})
+target_link_libraries (tests glRender)
