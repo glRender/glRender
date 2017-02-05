@@ -5,7 +5,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 endif(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 
 if (LINUX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl -lgcc_s -lgcc")
 endif()
 
 set (SRC_PATH src)
