@@ -11,7 +11,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 endif(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 
 add_subdirectory (lib)
-add_subdirectory (tests)
+# add_subdirectory (tests)
 
 INSTALL(FILES "cmake/Modules/FindglRender.cmake" DESTINATION "lib/glRender/cmake/")
 
