@@ -13,7 +13,7 @@ endif(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 add_subdirectory (lib)
 # add_subdirectory (tests)
 
-INSTALL(FILES "cmake/Modules/FindglRender.cmake" DESTINATION "lib/glRender/cmake/")
+INSTALL(FILES "cmake/Modules/FindglRender.cmake" DESTINATION ${CMAKE_ROOT}/Modules/)
 
 # build a CPack driven installer package
 # include (InstallRequiredSystemLibraries)
