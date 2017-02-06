@@ -23,6 +23,8 @@ set (CPACK_PACKAGE_VERSION_PATCH "${glRender_VERSION_PATCH}")
 
 set(CPACK_PACKAGE_VENDOR "Aleksandr Lizin <sogimu@nxt.ru>")
 
+set(CPACK_SOURCE_GENERATOR "ZIP")
+
 if(LINUX)
     set(CPACK_GENERATOR "DEB")
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Aleksandr Lizin <sogimu@nxt.ru>")
