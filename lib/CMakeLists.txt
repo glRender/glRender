@@ -1,11 +1,11 @@
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -pedantic -Wno-parentheses -Wl,-no-as-needed")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wno-parentheses -Wl,-no-as-needed")
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
     set(LINUX 1)
 endif(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 
 if (LINUX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl -lgcc_s -lgcc")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl -Werror -pedantic")
 endif()
 
 set (SRC_PATH src)

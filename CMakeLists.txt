@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 2.8.11)
 
-project(glRender)
+project("glRender")
 
 set (glRender_VERSION_MAJOR 0)
 set (glRender_VERSION_MINOR 8)
@@ -11,9 +11,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 endif(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 
 add_subdirectory (lib)
-# add_subdirectory (tests)
+add_subdirectory (tests)
 
-INSTALL(FILES "cmake/Modules/FindglRender.cmake" DESTINATION ${CMAKE_ROOT}/Modules/)
+# INSTALL(FILES "cmake/Modules/FindglRender.cmake" DESTINATION ${CMAKE_ROOT}/Modules/)
 
 # build a CPack driven installer package
 # include (InstallRequiredSystemLibraries)
