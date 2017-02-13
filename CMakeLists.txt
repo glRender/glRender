@@ -8,7 +8,6 @@ set (glRender_VERSION_PATCH 0)
 
 # INSTALL(FILES "cmake/Modules/FindglRender.cmake" DESTINATION ${CMAKE_ROOT}/Modules/)
 
-option(WithTests "Run tests" ON)
 option(Arch "Target arch" "x64")
 
 if (${Arch} STREQUAL "x64")
@@ -23,8 +22,4 @@ endif()
 
 add_subdirectory (lib)
 add_subdirectory (package)
-
-if (WithTests)
-    message(STATUS "Build with tests")
-    add_subdirectory (tests)
-endif()
+add_subdirectory (tests)
