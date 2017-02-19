@@ -1,0 +1,38 @@
+#version 330 core 
+layout (location = 0) in vec3 vertex; 
+layout (location = 1) in float index;
+
+uniform mat4 model; 
+uniform mat4 view; 
+uniform mat4 projection;
+
+uniform float r;
+uniform float g;
+uniform float b;
+
+uniform vec3 p0;
+uniform vec3 p1;
+uniform float offset;
+
+out float keyring_index;
+out float keyring_r; 
+out float keyring_g; 
+out float keyring_b; 
+
+void main(void) 
+{ 
+   keyring_index = index;
+   keyring_r = r; 
+   keyring_g = g; 
+   keyring_b = b;
+
+    vec3 dir = p1 - p0;
+    vec3 moveDir = cross(dir, p0);
+    moveDir = normalize(moveDir);
+
+    vec3 pn = p1 - p0;
+
+    vec3 p = p0 + pn * index + moveDir * sin(offset + 50 * index);
+
+   gl_Position   = projection * view * model * vec4 ( vertex + p, 1.0 ); 
+}

@@ -1,5 +1,5 @@
 [submodule "tests/libs/Catch"]
-	path = tests/libs/Catch
+	path = tests/unit-tests/libs/Catch
 	url = https://github.com/philsquared/Catch
 [submodule "lib/libs/stb"]
 	path = lib/libs/stb

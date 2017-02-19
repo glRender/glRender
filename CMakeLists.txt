@@ -21,5 +21,6 @@ if (${Arch} STREQUAL "x86")
 endif()
 
 add_subdirectory (lib)
+add_subdirectory (tests/unit-tests)
+add_subdirectory (tests/integration-tests/glutApp)
 add_subdirectory (package)
-add_subdirectory (tests)

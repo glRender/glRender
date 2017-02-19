@@ -7,7 +7,7 @@ cd build
 cmake ..
 make -j 2
 
-./tests/tests
+./tests/unit-tests/tests
 
 # make package_source
 make package

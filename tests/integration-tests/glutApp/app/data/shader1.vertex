@@ -1,0 +1,17 @@
+#version 330 core 
+uniform mat4 model; 
+uniform mat4 view; 
+uniform mat4 projection; 
+uniform float angle; 
+layout (location = 2) in vec3 vertex; 
+layout (location = 3) in vec2 uv; 
+out vec3 keyring_vertex; 
+out vec2 keyring_uv; 
+void main(void) 
+{ 
+   keyring_vertex = vertex; 
+   keyring_uv = uv; 
+   gl_Position      = projection * view * model * vec4 ( sin(angle) * vertex.x, sin(angle) * vertex.y, vertex.z, 1.0 ); 
+  // gl_Position      = projection * view * model * vec4 ( vertex.x, vertex.y, vertex.z, 1.0 ); 
+
+}
