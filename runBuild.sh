@@ -32,6 +32,9 @@ make package
 # echo ${HEAD_SHA} > ${BUILDS_DIR}/${label}/latest/COMMIT_SHA.txt
 
 if [[ "${GLRENDER_DEPLOY_PACKAGES}" == "ON" ]]; then
+    if [[ -z ${GLRENDER_SLAVE_NAME+x} ]]; then
+        GLRENDER_SLAVE_NAME="$(uname -s)_$(uname -r)"
+    fi
     PUBLIC_DIR=public
     PROJECT_DIR=glRender
     HEAD_SHA=$(git rev-parse --short HEAD)
