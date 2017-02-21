@@ -1,36 +1,37 @@
 #!/bin/bash -e
 git submodule update --init --recursive
 
+# Build lib, unit-tests and integration-tests
 mkdir -p build
 cd build
-
 cmake ..
 make -j 2
 
-./tests/unit-tests/tests
+# Run unit-tests ...
+cd ./tests/
+./unit-tests/tests
 
+# Run and kill integration-tests one by one ...
+cd ./integration-tests/
+for f in * ; do
+    if [[ -d $f ]]; then
+        echo "Run integration test $f"
+        cd ${f}
+        ./${f} &
+        sleep 5s
+        echo "Stoping integration test $f..."
+        sudo killall ${f}
+        cd ..
+        echo "Done"
+    fi
+done
+cd ../../
+
+# Make binary package or installer depend to current platform
 # make package_source
 make package
 
-#mkdir -p ~/glRender/builds/${NODE_NAME}/"build-Arch=${Arch}WithTests=${WithTests}"/${BUILD_ID}
-
-#cp glRender*.deb ~/glRender/builds/${NODE_NAME}/"build-Arch=${Arch}WithTests=${WithTests}"/${BUILD_ID}
-#cp glRender*.zip ~/glRender/builds/${NODE_NAME}/"build-Arch=${Arch}WithTests=${WithTests}"/${BUILD_ID}	
-
-# PUBLIC_DIR=~/public
-# PROJECT_DIR=glRender
-# BUILDS_DIR=${PUBLIC_DIR}/${PROJECT_DIR}/builds
-# HEAD_SHA=$(git rev-parse --short HEAD)
-
-# mkdir -p ${BUILDS_DIR}/${label}/${HEAD_SHA}/${BUILD_ID}/
-# rm -rf ${BUILDS_DIR}/${label}/${HEAD_SHA}/${BUILD_ID}/*
-# cp -r glRender*.* ${BUILDS_DIR}/${label}/${HEAD_SHA}/${BUILD_ID}/
-
-# mkdir -p ${BUILDS_DIR}/${label}/latest/
-# rm -rf ${BUILDS_DIR}/${label}/latest/*
-# cp -r glRender*.* ${BUILDS_DIR}/${label}/latest/
-# echo ${HEAD_SHA} > ${BUILDS_DIR}/${label}/latest/COMMIT_SHA.txt
-
+# Deploy binares to 83.220.170.171
 if [[ "${GLRENDER_DEPLOY_PACKAGES}" == "ON" ]]; then
     if [[ -z ${GLRENDER_SLAVE_NAME+x} ]]; then
         GLRENDER_SLAVE_NAME="$(uname -s)_$(uname -r)"
@@ -50,7 +51,7 @@ if [[ "${GLRENDER_DEPLOY_PACKAGES}" == "ON" ]]; then
     echo ${HEAD_SHA} > ${LATEST_BUILD_LINK}/COMMIT_SHA.txt
     echo ${HEAD_SHA} > ${LATEST_BUILD_LINK}/${GLRENDER_SLAVE_NAME}/COMMIT_SHA.txt
     echo ${HEAD_SHA} > ${LATEST_BUILD_LINK}/${GLRENDER_SLAVE_NAME}/packages/COMMIT_SHA.txt
-    
+
     cp *glRender*.* ${PACKAGES_DIR}
     scp -r ${PROJECT_DIR} jenkins@83.220.170.171:~/${PUBLIC_DIR}
     rm -rf ${PROJECT_DIR}
