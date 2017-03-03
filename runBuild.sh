@@ -12,12 +12,16 @@ cd ./tests/
 ./unit-tests/tests
 
 # Run and kill integration-tests one by one ...
+
+Xvfb :99 &
+export DISPLAY=:99
+
 cd ./integration-tests/
 for f in * ; do
     if [[ -d $f ]]; then
         echo "Run integration test $f"
         cd ${f}
-        xvfb-run ./${f} &
+        LD_LIBRARY_PATH=../../../lib/ ./${f} &
         sleep 5s
         echo "Stoping integration test $f..."
         killall ${f}
