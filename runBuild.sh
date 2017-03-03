@@ -17,10 +17,10 @@ for f in * ; do
     if [[ -d $f ]]; then
         echo "Run integration test $f"
         cd ${f}
-        ./${f} &
+        xvfb-run ./${f} &
         sleep 5s
         echo "Stoping integration test $f..."
-        sudo killall ${f}
+        killall ${f}
         cd ..
         echo "Done"
     fi
