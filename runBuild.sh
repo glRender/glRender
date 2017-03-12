@@ -31,6 +31,7 @@ cd ./tests/
 #done
 #cd ../../
 
+cd ..
 # Make binary package or installer depend to current platform
 # make package_source
 make package
