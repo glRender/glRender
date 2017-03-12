@@ -13,23 +13,23 @@ cd ./tests/
 
 # Run and kill integration-tests one by one ...
 
-Xvfb :99 &
-export DISPLAY=:99
+#Xvfb :99 &
+#export DISPLAY=:99
 
-cd ./integration-tests/
-for f in * ; do
-    if [[ -d $f ]]; then
-        echo "Run integration test $f"
-        cd ${f}
-        LD_LIBRARY_PATH=../../../lib/ ./${f} &
-        sleep 5s
-        echo "Stoping integration test $f..."
-        killall ${f}
-        cd ..
-        echo "Done"
-    fi
-done
-cd ../../
+#cd ./integration-tests/
+#for f in * ; do
+#    if [[ -d $f ]]; then
+       # echo "Run integration test $f"
+        #cd ${f}
+        #LD_LIBRARY_PATH=../../../lib/ ./${f} &
+        #sleep 5s
+        #echo "Stoping integration test $f..."
+        #killall ${f}
+        #cd ..
+        #echo "Done"
+    #fi
+#done
+#cd ../../
 
 # Make binary package or installer depend to current platform
 # make package_source
