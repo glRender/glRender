@@ -1,0 +1,37 @@
+[install_deps]
+run("apt-get update")
+run("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev")
+
+[init_git]
+run("git submodule update --init --recursive")
+
+[build]
+if not exists("./build"):
+    makedirs("./build")
+with cd("./build"):
+    run("cmake ..")
+    run("make glRender")
+    run("make glRender_static")
+    run("make tests")
+
+[unit-tests]
+with cd("./build/tests/"):
+    run("./unit-tests/tests")
+
+[make_package]
+with cd("./build"):
+    run("make package")
+
+[deploy]
+with cd("./build"):
+    run("""
+        bash -xec '\
+        currentTag=$(git tag -l --points-at HEAD) \
+        if [ -z ${currentTag} ]; then \
+            echo "no tag"; \
+        else \
+            echo "has tag"; \
+            IMAGE_NAME=(${OS//\//_})
+            rsync glRender-*.deb jenkins@sogimu.fvds.ru:~/public/glRender/${IMAGE_NAME}/
+        fi\
+    '""")
