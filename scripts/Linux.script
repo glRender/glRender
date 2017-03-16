@@ -2,7 +2,7 @@
 run("apt-get update")
 run("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev")
 
-[init]
+[init_git]
 run("git submodule update --init --recursive")
 
 [build]
@@ -12,20 +12,22 @@ with cd("./build"):
     run("cmake ..")
     run("make -j 2")
 
-[run_unit-tests]
+[unit-tests]
 with cd("./build/tests/"):
     run("./unit-tests/tests")
 
-[package]
-run("make package")
+[make_package]
+with cd("./build"):
+    run("make package")
 
 [deploy]
-run("""bash -xec '\
-currentTag=$(git tag -l --points-at HEAD) \
-if [ -z ${currentTag} ]; then \
-    echo "no tag"; \
-else \
-    echo "has tag"; \
-    scp -r ./build/ jenkins@83.220.170.171:~/public/
-fi\
-'""")
+with cd("./build"):
+    run("""bash -xec '\
+    currentTag=$(git tag -l --points-at HEAD) \
+    if [ -z ${currentTag} ]; then \
+        echo "no tag"; \
+    else \
+        echo "has tag"; \
+        scp -r glRender-*.deb jenkins@83.220.170.171:~/public/glRender/
+    fi\
+    '""")
