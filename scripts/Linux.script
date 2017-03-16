@@ -22,12 +22,14 @@ with cd("./build"):
 
 [deploy]
 with cd("./build"):
-    run("""bash -xec '\
-    currentTag=$(git tag -l --points-at HEAD) \
-    if [ -z ${currentTag} ]; then \
-        echo "no tag"; \
-    else \
-        echo "has tag"; \
-        scp -r glRender-*.deb jenkins@83.220.170.171:~/public/glRender/
-    fi\
+    run("""
+        bash -xec '\
+        currentTag=$(git tag -l --points-at HEAD) \
+        if [ -z ${currentTag} ]; then \
+            echo "no tag"; \
+        else \
+            echo "has tag"; \
+            IMAGE_NAME=(${OS//\//_})
+            scp -r glRender-*.deb jenkins@83.220.170.171:~/public/glRender/${IMAGE_NAME}/
+        fi\
     '""")
