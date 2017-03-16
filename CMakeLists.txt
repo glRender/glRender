@@ -4,7 +4,7 @@ project("glRender")
 
 set (glRender_VERSION_MAJOR 0)
 set (glRender_VERSION_MINOR 8)
-set (glRender_VERSION_PATCH 0)
+set (glRender_VERSION_PATCH 2)
 
 # INSTALL(FILES "cmake/Modules/FindglRender.cmake" DESTINATION ${CMAKE_ROOT}/Modules/)
 
