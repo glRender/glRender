@@ -30,6 +30,6 @@ with cd("./build"):
         else \
             echo "has tag"; \
             IMAGE_NAME=(${OS//\//_})
-            scp -r glRender-*.deb jenkins@83.220.170.171:~/public/glRender/${IMAGE_NAME}/
+            rsync glRender-*.deb jenkins@sogimu.fvds.ru:~/public/glRender/${IMAGE_NAME}/
         fi\
     '""")
