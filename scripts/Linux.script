@@ -20,6 +20,10 @@ with cd("./build/tests/"):
 with cd("./build"):
     run("make package")
 
+[make_docs]
+with cd("./lib"):
+    run("doxygen Doxyfile")
+
 [deploy]
 with cd("./build"):
     run(
