@@ -1,0 +1,46 @@
+[init_git]
+run("git submodule update --init --recursive")
+
+[build]
+if not exists("./build"):
+    makedirs("./build")
+with cd("./build"):
+    try:
+        run("cmake -G \"MinGW Makefiles\" ..")
+    except Exception:
+        pass
+    run("cmake -G \"MinGW Makefiles\" ..")
+    run("mingw32-make -j 2")
+
+[unit-tests]
+with cd("./build/tests/"):
+    run("./unit-tests/tests")
+
+[make_package]
+with cd("./build"):
+    run("make package")
+
+[deploy]
+with cd("./build"):
+    run(
+    """
+    bash -ec
+    '
+        currentTag=$(git tag -l --points-at HEAD)
+        if [ -z ${currentTag} ]; then
+            echo "No tag. I will not publish that commit!";
+        else
+            if [ -z ${OS} ]; then
+                echo "Varibale OS not exist! I do not where to publish debs!"
+            else
+                echo "Tag: "${currentTag}
+                IMAGE_NAME=(${OS//\//_})
+                echo "Image name: "${IMAGE_NAME}
+                REPO=./public/glRender/${IMAGE_NAME}
+                echo "Path to repo: "${REPO}
+                rsync glRender-*.deb jenkins@sogimu.fvds.ru:${REPO}
+                ssh jenkins@sogimu.fvds.ru "cd ${REPO}; ls; dpkg-scanpackages -m . | gzip --fast > Packages.gz"
+            fi
+        fi
+    '
+    """)
