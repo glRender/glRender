@@ -18,6 +18,11 @@ endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(CPACK_GENERATOR "NSIS")
+    set(CPACK_NSIS_CONTACT "Aleksandr Lizin <sogimu@nxt.ru>")
+    set(CPACK_NSIS_PACKAGE_NAME "glRender")
+    set(CPACK_NSIS_DISPLAY_NAME "glRender")
+    set(CPACK_NSIS_MODIFY_PATH ON)
+    set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 endif()
 
 include (CPack)
