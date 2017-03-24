@@ -56,8 +56,10 @@ with cd("./build/lib/"):
     bash -ec
     '
         HEAD_SHA=$(git rev-parse --short HEAD)
-        REPO=./public/glRender/docs/${HEAD_SHA}/
+        DIR=./public/glRender/docs/${HEAD_SHA}/
+        LATEST_DIR=./public/glRender/docs/latest/
         echo "Path to docs: "${REPO}
-        rsync -r ./docs/html/* jenkins@sogimu.fvds.ru:${REPO}
+        rsync -r ./docs/html/* jenkins@sogimu.fvds.ru:${DIR}
+        rsync -r ./docs/html/* jenkins@sogimu.fvds.ru:${LATEST_DIR}
     '
     """) 
