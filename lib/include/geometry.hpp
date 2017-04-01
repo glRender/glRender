@@ -13,21 +13,21 @@ class Geometry
 {
 public:
     Geometry();
-    Geometry(std::vector<uint> & indices);
+    Geometry(std::vector<uint32_t> & indices);
     ~Geometry();
 
     void set(const char * uniformName, AbstractBuffer * geometryBuffer);
-    void setIndices(std::vector<uint> & indices);
+    void setIndices(std::vector<uint32_t> & indices);
 
     AbstractBuffer * get(const char * name);
-    AbstractBuffer * get(const uint index);
-    const std::vector<uint> & getIndices();
+    AbstractBuffer * get(const uint32_t index);
+    const std::vector<uint32_t> & getIndices();
 
     bool has(const char * name);
-    bool has(const uint index) const;
+    bool has(const uint32_t index) const;
     bool hasIndices() const;
 
-    inline uint size() const
+    inline uint32_t size() const
     {
         return m_attributeBuffers.size();
     }
@@ -40,7 +40,7 @@ public:
 
 protected:
     std::map<std::string, AbstractBuffer*> m_attributeBuffers;
-    std::vector<uint> m_indices;
+    std::vector<uint32_t> m_indices;
 };
 
 }

@@ -17,9 +17,9 @@ namespace glRender
 
 struct Attribute
 {
-    uint index;
+    uint32_t index;
     int size;
-    uint type;
+    uint32_t type;
     bool normalized;
     int stride;
     const void * pointer;
@@ -30,7 +30,7 @@ class ShaderProgram
 public:
     ShaderProgram(const char * pathToVertexShader, const char * pathToFragmentShader);
     ~ShaderProgram();
-    uint id();
+    uint32_t id();
     void attachVertexShader(Shader * shader);
     void attachFragmentShader(Shader * shader);
     void detachVertexShader();
@@ -64,13 +64,13 @@ public:
     void setUniform(const char * uniformName, T & value);
 
 private:
-    void setUniformValueByAddress(uint index, float value);
-    void setUniformValueByAddress(uint index, int value);
-    void setUniformValueByAddress(uint index, uint value);
-    void setUniformValueByAddress(uint index, Vec3 & value);
-    void setUniformValueByAddress(uint index, Vec4 & value);
-    void setUniformValueByAddress(uint index, Mat4 & value);
-    void setUniformValueByAddress(uint index, Texture & value);
+    void setUniformValueByAddress(uint32_t index, float value);
+    void setUniformValueByAddress(uint32_t index, int value);
+    void setUniformValueByAddress(uint32_t index, uint32_t value);
+    void setUniformValueByAddress(uint32_t index, Vec3 & value);
+    void setUniformValueByAddress(uint32_t index, Vec4 & value);
+    void setUniformValueByAddress(uint32_t index, Mat4 & value);
+    void setUniformValueByAddress(uint32_t index, Texture & value);
 
     friend class Model;
 
@@ -91,8 +91,8 @@ private:
     // Map of uniforms and their binding locations
     std::map<const char *, int, cmp_str > uniformsList;
 
-    uint m_lastFreeTextureUnit = 0;
-    uint m_programId;   // The unique ID / handle for the shader program
+    uint32_t m_lastFreeTextureUnit = 0;
+    uint32_t m_programId;   // The unique ID / handle for the shader program
 };
 
 }

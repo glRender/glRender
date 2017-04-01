@@ -53,7 +53,7 @@ Shader::~Shader()
     glDeleteShader(m_id);
 }
 
-uint Shader::id()
+uint32_t Shader::id()
 {
     return m_id;
 }

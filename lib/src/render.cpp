@@ -4,10 +4,10 @@
 
 using namespace glRender;
 
-void APIENTRY glDebugOutput(uint source,
-                            uint type,
-                            uint id,
-                            uint severity,
+void APIENTRY glDebugOutput(uint32_t source,
+                            uint32_t type,
+                            uint32_t id,
+                            uint32_t severity,
                             int length,
                             const char * message,
                             const void * userParam)
@@ -68,7 +68,7 @@ void Render::draw(Scene *scene)
     scene->draw();
 }
 
-void Render::setViewportSize(const int & w, const int & h)
+void Render::setViewportSize(const uint32_t & w, const uint32_t & h)
 {
     glViewport(0, 0, w, h);
 }
@@ -101,7 +101,7 @@ Render * Render::instance()
     return instance;
 }
 
-const char * getGLString(uint key)
+const char * getGLString(uint32_t key)
 {
     return reinterpret_cast<const char*>(glGetString(key));
 }

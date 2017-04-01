@@ -5,12 +5,8 @@ run("git submodule update --init --recursive")
 if not exists("./build"):
     makedirs("./build")
 with cd("./build"):
-    try:
-        run("cmake -G \"MinGW Makefiles\" ..")
-    except Exception:
-        pass
-    run("cmake -G \"MinGW Makefiles\" ..")
-    run("mingw32-make -j 2")
+    run("cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=/mingw64/ ..")
+    run("make -j")
 
 [unit-tests]
 with cd("./build/tests/"):

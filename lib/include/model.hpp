@@ -50,7 +50,7 @@ public:
     DrawMode drawMode();
 
 private:
-    uint m_vaoId;
+    uint32_t m_vaoId;
 
     Geometry * m_geometry;
     ShaderProgram * m_shaderProgram;

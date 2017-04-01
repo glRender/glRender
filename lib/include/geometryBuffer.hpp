@@ -18,9 +18,9 @@ public:
 
     }
 
-    virtual uint size() = 0;
-    virtual uint memorySize() = 0;
-    virtual uint id() = 0;
+    virtual uint32_t size() = 0;
+    virtual uint32_t memorySize() = 0;
+    virtual uint32_t id() = 0;
     virtual void bind() = 0;
     virtual void unbind() = 0;
 };
@@ -38,18 +38,18 @@ public:
     Buffer(const std::vector<T> & data, BufferType type);
     ~Buffer();
 
-    uint size();
-    uint memorySize();
-    uint id();
+    uint32_t size();
+    uint32_t memorySize();
+    uint32_t id();
     void bind();
     void unbind();
-    void rewrite(const uint from, const std::vector<T> & data);
-    void rewrite(const uint index, const T & element);
+    void rewrite(const uint32_t from, const std::vector<T> & data);
+    void rewrite(const uint32_t index, const T & element);
 
 private:
-    uint m_id;
+    uint32_t m_id;
     std::vector<T> m_data;
-    uint m_type;
+    uint32_t m_type;
 };
 
 }

@@ -56,7 +56,7 @@ ShaderProgram::~ShaderProgram()
     glDeleteProgram(m_programId);
 }
 
-uint ShaderProgram::id()
+uint32_t ShaderProgram::id()
 {
     return m_programId;
 }
@@ -193,37 +193,37 @@ void ShaderProgram::unbindTextures()
     }
 }
 
-void ShaderProgram::setUniformValueByAddress(uint index, float value)
+void ShaderProgram::setUniformValueByAddress(uint32_t index, float value)
 {
     glUniform1f( index, value );
 }
 
-void ShaderProgram::setUniformValueByAddress(uint index, int value)
+void ShaderProgram::setUniformValueByAddress(uint32_t index, int value)
 {
     glUniform1i( index, value );
 }
 
-void ShaderProgram::setUniformValueByAddress(uint index, uint value)
+void ShaderProgram::setUniformValueByAddress(uint32_t index, uint32_t value)
 {
     setUniformValueByAddress(index, static_cast<int>(value));
 }
 
-void ShaderProgram::setUniformValueByAddress(uint index, Vec3 & value)
+void ShaderProgram::setUniformValueByAddress(uint32_t index, Vec3 & value)
 {
     glUniform3f( index, value.x, value.y, value.z );
 }
 
-void ShaderProgram::setUniformValueByAddress(uint index, Vec4 & value)
+void ShaderProgram::setUniformValueByAddress(uint32_t index, Vec4 & value)
 {
     glUniform4f( index, value.x, value.y, value.z, value.w );
 }
 
-void ShaderProgram::setUniformValueByAddress(uint index, Mat4 & value)
+void ShaderProgram::setUniformValueByAddress(uint32_t index, Mat4 & value)
 {
     glUniformMatrix4fv( index, 1, GL_FALSE, value.get() );
 }
 
-void ShaderProgram::setUniformValueByAddress(uint index, Texture & value)
+void ShaderProgram::setUniformValueByAddress(uint32_t index, Texture & value)
 {
     glActiveTexture( GL_TEXTURE0 + m_lastFreeTextureUnit );
     glBindTexture(GL_TEXTURE_2D, value.id() );

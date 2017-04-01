@@ -29,19 +29,19 @@ Buffer<T>::~Buffer()
 }
 
 template<typename T>
-uint Buffer<T>::size()
+uint32_t Buffer<T>::size()
 {
     return m_data.size();
 }
 
 template<typename T>
-uint Buffer<T>::memorySize()
+uint32_t Buffer<T>::memorySize()
 {
     return m_data.size() * sizeof(T);
 }
 
 template<typename T>
-uint Buffer<T>::id()
+uint32_t Buffer<T>::id()
 {
     return m_id;
 }
@@ -59,7 +59,7 @@ void Buffer<T>::unbind()
 }
 
 template<typename T>
-void Buffer<T>::rewrite(const uint from, const std::vector<T> &data)
+void Buffer<T>::rewrite(const uint32_t from, const std::vector<T> &data)
 {
     glBindBuffer(m_type, m_id);
     glBufferSubData(m_type, from * sizeof(T), data.size() * sizeof(T), data.data());
@@ -67,7 +67,7 @@ void Buffer<T>::rewrite(const uint from, const std::vector<T> &data)
 }
 
 template<typename T>
-void Buffer<T>::rewrite(const uint index, const T & element)
+void Buffer<T>::rewrite(const uint32_t index, const T & element)
 {
     glBindBuffer(m_type, m_id);
     glBufferSubData(m_type, index * sizeof(T), sizeof(T), &element);
@@ -75,6 +75,6 @@ void Buffer<T>::rewrite(const uint index, const T & element)
 }
 
 template class Buffer<Vec3>;
-template class Buffer<uint>;
+template class Buffer<uint32_t>;
 template class Buffer<Vec2>;
 template class Buffer<float>;

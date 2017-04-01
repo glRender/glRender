@@ -1,7 +1,7 @@
 #include "geometry.hpp"
 
 namespace glRender {
-Geometry::Geometry(std::vector<uint> & indices)
+Geometry::Geometry(std::vector<uint32_t> & indices)
     : m_indices(indices)
 {
 
@@ -26,7 +26,7 @@ void Geometry::set(const char * uniformName, AbstractBuffer* geometryBuffer)
     m_attributeBuffers[ uniformName ] = geometryBuffer;
 }
 
-void Geometry::setIndices(std::vector<uint> &indices)
+void Geometry::setIndices(std::vector<uint32_t> &indices)
 {
     m_indices = indices;
 }
@@ -48,12 +48,12 @@ AbstractBuffer* Geometry::get(const char * name)
 
 }
 
-AbstractBuffer* Geometry::get(const uint index)
+AbstractBuffer* Geometry::get(const uint32_t index)
 {
     if (index < m_attributeBuffers.size())
     {
         std::map<std::string, AbstractBuffer*>::iterator it = m_attributeBuffers.begin();
-        for(uint i=0; i<index; i++)
+        for(uint32_t i=0; i<index; i++)
         {
             ++it;
         }
@@ -68,7 +68,7 @@ AbstractBuffer* Geometry::get(const uint index)
 
 }
 
-const std::vector<uint> & Geometry::getIndices()
+const std::vector<uint32_t> & Geometry::getIndices()
 {
     return m_indices;
 }
@@ -87,7 +87,7 @@ bool Geometry::has(const char * name)
     }
 }
 
-bool Geometry::has(const uint index) const
+bool Geometry::has(const uint32_t index) const
 {
     if (index < m_attributeBuffers.size())
     {

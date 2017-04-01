@@ -42,7 +42,7 @@ Texture::~Texture()
 {
 }
 
-uint Texture::id()
+uint32_t Texture::id()
 {
 	return m_id;
 }

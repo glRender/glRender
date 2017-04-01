@@ -26,7 +26,7 @@ namespace glRender
             uvs.push_back( Vec2(0.0f, 0.0f) );
             uvs.push_back( Vec2(1.0f, 0.0f) );
 
-            std::vector<uint> indices;
+            std::vector<uint32_t> indices;
             /////////////////////
             indices.push_back( 0 );
             indices.push_back( 1 );
@@ -102,7 +102,7 @@ namespace glRender
             uvs.push_back( Vec2(0.0, 0.0) );
             uvs.push_back( Vec2(1.0, 0.0) );
 
-            std::vector<uint> indices;
+            std::vector<uint32_t> indices;
             indices.push_back( 0 );
             indices.push_back( 1 );
             indices.push_back( 2 );
@@ -118,7 +118,7 @@ namespace glRender
             return geometry;
       }
 
-      Geometry *GeometryHelper::Line(const Vec3 &p0, const Vec3 &p1, uint segmentsNumber)
+      Geometry *GeometryHelper::Line(const Vec3 &p0, const Vec3 &p1, uint32_t segmentsNumber)
       {
           std::vector<Vec3> vertices;
 
@@ -137,14 +137,14 @@ namespace glRender
 
       }
 
-      Geometry *GeometryHelper::QuadraticBezierCurve(const Vec3 &p0, const Vec3 &p1, const Vec3 &p2, uint segmentsNumber)
+      Geometry *GeometryHelper::QuadraticBezierCurve(const Vec3 &p0, const Vec3 &p1, const Vec3 &p2, uint32_t segmentsNumber)
       {
           std::vector<Vec3> vertices;
 
           float step = 1.0 / segmentsNumber;
           for (float t=0.0; t<=1.0; t+=step)
           {
-              Vec3 p = std::pow((1 - t), 2) * p0 + 2 * t * (1 - t) * p1 + std::pow(t, 2) * p2;
+              Vec3 p = pow((1 - t), 2) * p0 + 2 * t * (1 - t) * p1 + pow(t, 2) * p2;
               vertices.push_back(p);
           }
 

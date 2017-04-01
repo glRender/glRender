@@ -13,10 +13,10 @@ public:
     Texture(const char * pathToFile);
     ~Texture();
 
-        uint id();
+        uint32_t id();
 
 protected:
-        uint m_id;
+        uint32_t m_id;
 
 };
 

@@ -21,6 +21,7 @@
 #include <map>
 #include <vector>
 #include <cstring>
+#include <stdint.h>
 
 // Math
 #define MATH_DEG_TO_RAD(x)          ((x) * 0.0174532925f)

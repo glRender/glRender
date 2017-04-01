@@ -16,11 +16,11 @@ public:
 
     void setTexture(const char * uniformName, Texture * texture);
 
-    Texture * texture(const uint index) const;
+    Texture * texture(const uint32_t index) const;
     Texture * texture(const char * uniformName) const;
-    bool isExistTexture(const uint index) const;
+    bool isExistTexture(const uint32_t index) const;
     bool isExistTexture(const char * uniformName) const;
-    const char * textureUniformName(const uint index) const;
+    const char * textureUniformName(const uint32_t index) const;
 
     inline int size() const
     {
