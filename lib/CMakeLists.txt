@@ -27,6 +27,37 @@ file(COPY include DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(REMOVE ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 file(COPY Doxyfile DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-INSTALL(DIRECTORY "include/"  DESTINATION "include/glRender")
-INSTALL(TARGETS "glRender" DESTINATION "lib/glRender")
-INSTALL(TARGETS "glRender_static" DESTINATION "lib/glRender")
+INSTALL(DIRECTORY 
+    "include/"  
+    DESTINATION "include/glRender" COMPONENT dev)
+
+INSTALL(TARGETS 
+    "glRender" 
+    "glRender_static" 
+    DESTINATION "lib")
+
+configure_file(Config.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/glRenderConfig.cmake" @ONLY)
+
+configure_file(ConfigVersion.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/glRenderConfigVersion.cmake" @ONLY)
+
+# install(FILES
+#   "${PROJECT_SOURCE_DIR}/src/simpleLib++.h"
+#   DESTINATION "include/SimpleLib++" COMPONENT dev)
+
+# install(TARGETS simpleLib++
+#   DESTINATION "lib" COMPONENT dev)
+
+if(WIN32 AND NOT CYGWIN)
+  set(DEF_INSTALL_CMAKE_DIR CMake)
+else()
+  set(DEF_INSTALL_CMAKE_DIR lib/cmake/glRender)
+endif()
+set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH
+  "Installation directory for CMake files")
+
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/glRenderConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/glRenderConfigVersion.cmake"
+  DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)

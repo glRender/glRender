@@ -1,0 +1,9 @@
+# - Config file for the glRender package
+# It defines the following variables
+#  GLRENDER_INCLUDE_DIRS - include directories for SimpleLib
+#  GLRENDER_LIBRARIES    - libraries to link against
+
+set(GLRENDER_INCLUDE_DIRS "/usr/include")
+find_library(GLRENDER_LIBRARIES "glRender" HINTS "/usr/lib")
+
+set(GLRENDER_FOUND ON)

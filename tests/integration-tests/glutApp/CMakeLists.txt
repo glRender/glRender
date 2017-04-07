@@ -14,7 +14,7 @@ include_directories(
 
 target_link_libraries(glutApp
     ${GLUT_LIBRARIES}
-    glRender_static
+    glRender
 )
 
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
