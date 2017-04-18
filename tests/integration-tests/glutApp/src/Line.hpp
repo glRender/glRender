@@ -14,7 +14,7 @@ public:
   void draw(Camera * camera) override;
 
   Model * model() override;
-  IBoundingBox * bb() override;
+  IBoundingBox * bb() const override;
 
 private:
   Model * m_model;

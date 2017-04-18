@@ -20,15 +20,16 @@ public:
   Node * parent();
 
   void traverse(std::function<void(Node * node)> handler);
-  
+  std::vector<Node *> query(std::function<bool(const Node * node)> condition);
+
   virtual void update() = 0;
   virtual void draw(Camera * camera) = 0;
   virtual Model * model() = 0;
-  virtual IBoundingBox * bb() = 0;
+  virtual IBoundingBox * bb() const = 0;
   virtual void setOrigin(const Vec3 & pos);
   void setOrigin(float x, float y, float z);
   void setSelectable(bool isSelectable);
-  bool isSelectable();
+  bool isSelectable() const;
 
 private:
   std::vector<Node * > m_childs;

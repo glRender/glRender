@@ -123,7 +123,7 @@ Model * SinusLine::model()
     return m_model;
 }
 
-IBoundingBox * SinusLine::bb()
+IBoundingBox * SinusLine::bb() const
 {
     return m_aabb;
 }

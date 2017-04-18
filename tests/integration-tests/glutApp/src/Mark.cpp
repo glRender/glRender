@@ -53,7 +53,7 @@ Model * Mark::model()
     return m_model;
 }
 
-IBoundingBox * Mark::bb()
+IBoundingBox * Mark::bb() const
 {
     return m_aabb;
 }

@@ -58,7 +58,7 @@ Model * QuadraticBezeirCurve::model()
     return m_model;
 }
 
-IBoundingBox * QuadraticBezeirCurve::bb()
+IBoundingBox * QuadraticBezeirCurve::bb() const
 {
     return m_aabb;
 }

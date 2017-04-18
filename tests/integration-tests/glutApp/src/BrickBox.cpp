@@ -45,7 +45,7 @@ Model * BrickBox::model()
     return m_model;
 }
 
-AABB *BrickBox::bb()
+AABB *BrickBox::bb() const
 {
     return m_aabb;
 }

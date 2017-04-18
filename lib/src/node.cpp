@@ -51,9 +51,27 @@ void Node::setSelectable(bool isSelectable)
     m_isSelectable = isSelectable;
 }
 
-bool Node::isSelectable()
+bool Node::isSelectable() const
 {
     return m_isSelectable;
+}
+
+std::vector<glRender::Node *> glRender::Node::query(std::function<bool (const glRender::Node *)> condition)
+{
+    std::vector<glRender::Node *> result;
+    for (auto node : m_childs)
+    {
+        auto sample = node->query(condition);
+        result.insert(result.end(), sample.begin(), sample.end());
+    }
+
+    if (condition(this))
+    {
+        result.push_back(this);
+    }
+
+    return result;
+
 }
 
 }

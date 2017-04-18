@@ -22,6 +22,8 @@ public:
     Camera * activeCamera();
 
     void traverse(std::function<void(Node * node)> handler);
+    std::vector<Node *> query(std::function<bool(const Node * node)> condition);
+
     void draw();
     void update();
 

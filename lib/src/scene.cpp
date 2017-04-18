@@ -52,7 +52,18 @@ void Scene::update()
 {
 	traverse([=](Node * node) {
 		node->update();
-	});
+        });
+}
+
+std::vector<glRender::Node *> glRender::Scene::query(std::function<bool (const glRender::Node *)> condition)
+{
+    std::vector<glRender::Node *> result;
+    for (auto node : _nodes)
+    {
+        auto sample = node->query(condition);
+        result.insert(result.end(), sample.begin(), sample.end());
+    }
+    return result;
 }
 
 }

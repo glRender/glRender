@@ -28,7 +28,7 @@ NodePicker * nodePicker;
 
 void init ()
 {
-    camera = new PerspectiveCamera( 90.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f );
+    camera = new PerspectiveCamera( 35.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f );
     camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
 //    camera->lookAt(Vec3(-10,0,-10), Vec3(10,0,-10), Vec3::AXE_Y());
 
@@ -206,38 +206,58 @@ void mouse(int button, int state, int x, int y)
 //    a->rewrite(0, ray->origin());
 //    a->rewrite(1, ray->target());
 
-    scene->traverse([ray, normDeviceCoords](Node * node) {
+    auto nodes = scene->query([ray, normDeviceCoords](const Node * node) {
         if (node->isSelectable())
         {
-            if (node->bb()->intersects(ray))
-            {
-                Mark * mark = dynamic_cast<Mark *>(node);
-                if (mark != nullptr)
-                {
-                    mark->changeColor();
-                }
-
-                Vec3 n = camera->front();
-                Vec3 M1 = camera->position();
-                Vec3 M2 = mark->model()->origin();
-
-                float D1 = -(n.x*M1.x + n.y*M1.y + n.z*M1.z);
-                float D2 = -(n.x*M2.x + n.y*M2.y + n.z*M2.z);
-
-                float top = fabs(D2-D1);
-                float bottom = sqrt( pow(n.x, 2) +
-                                     pow(n.y, 2) +
-                                     pow(n.z, 2) );
-
-                distance = top / bottom;
-                pressedNode = node;
-
-                std::cout << "Has intersection!" << std::endl;
-                printf("The distance to plane: %f\n", distance);
-                std::cout << "" << std::endl;
-            }
+            return node->bb()->intersects(ray);
         }
+        return false;
     });
+
+    std::cout << nodes.size() << std::endl;
+
+    Node * nearestNode = nullptr;
+    float nearestNodeDistance = camera->farPlane();
+
+    for (auto node : nodes)
+    {
+        float distance = node->bb()->origin().distance(camera->position());
+        if (distance < nearestNodeDistance)
+        {
+            nearestNode = node;
+            nearestNodeDistance = distance;
+        }
+    }
+
+    pressedNode = nearestNode;
+
+    if (nearestNode != nullptr)
+    {
+        Mark * mark = dynamic_cast<Mark *>(nearestNode);
+        if (mark != nullptr)
+        {
+            mark->changeColor();
+        }
+
+        Vec3 n = camera->front();
+        Vec3 M1 = camera->position();
+        Vec3 M2 = mark->model()->origin();
+
+        float D1 = -(n.x*M1.x + n.y*M1.y + n.z*M1.z);
+        float D2 = -(n.x*M2.x + n.y*M2.y + n.z*M2.z);
+
+        float top = fabs(D2-D1);
+        float bottom = sqrt( pow(n.x, 2) +
+                             pow(n.y, 2) +
+                             pow(n.z, 2) );
+
+        distance = top / bottom;
+
+        std::cout << "Has intersection!" << std::endl;
+        printf("The distance to plane: %f\n", distance);
+        std::cout << "" << std::endl;
+
+    }
 
     delete ray;
 

@@ -44,7 +44,7 @@ Model * WoodenBox::model()
     return m_model;
 }
 
-IBoundingBox * WoodenBox::bb()
+IBoundingBox * WoodenBox::bb() const
 {
     return m_aabb;
 }

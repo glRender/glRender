@@ -61,7 +61,7 @@ Model * Line::model()
     return m_model;
 }
 
-IBoundingBox * Line::bb()
+IBoundingBox * Line::bb() const
 {
     return m_aabb;
 }
