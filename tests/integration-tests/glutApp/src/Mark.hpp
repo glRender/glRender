@@ -23,8 +23,9 @@ public:
   {
   }
 
-  void onSelect(Ray * ray, Camera * camera) override;
-  void onMove(Vec3 & toPosition) override;
+  void onMouseUp(Ray * ray, Camera * camera) override;
+  void onMouseDown(Ray * ray, Camera * camera) override;
+  void onMouseMove(Vec3 & toPosition) override;
 
   void changeColor();
 
@@ -35,6 +36,8 @@ private:
   float m_r;
   float m_g;
   float m_b;
+
+  bool m_isSelected = false;
 
 };
 

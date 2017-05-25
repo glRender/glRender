@@ -87,8 +87,9 @@ public:
 
     virtual bool intersects(const Ray * ray) const = 0;
     virtual IBoundingBox * bb() const = 0;
-    virtual void onSelect(Ray * ray, Camera * camera) = 0;
-    virtual void onMove(Vec3 & toPosition) = 0;
+    virtual void onMouseUp(Ray * ray, Camera * camera) = 0;
+    virtual void onMouseDown(Ray * ray, Camera * camera) = 0;
+    virtual void onMouseMove(Vec3 & toPosition) = 0;
 
     virtual void onIntersection(IIntersectable * o) = 0;
 

@@ -8,7 +8,6 @@ Mark::Mark(float r, float g, float b, float size)
     , m_g(g)
     , m_b(b)
 {
-//    setSelectable(true);
     Geometry * geometry = GeometryHelper::Cube(size);
 
     Textures * textures = new Textures();
@@ -24,8 +23,12 @@ Mark::Mark(float r, float g, float b, float size)
     shaderProgram->addUniform<float>("g");
     shaderProgram->addUniform<float>("b");
 
+    shaderProgram->setUniform<float>("r", m_r);
+    shaderProgram->setUniform<float>("g", m_g);
+    shaderProgram->setUniform<float>("b", m_b);
+
     m_model = new Model(geometry, textures, shaderProgram);
-    m_model->setWireframeMode(false);
+    m_model->setWireframeMode(true);
     m_model->setOrigin(0.0, 0.0, 0.0);
 }
 
@@ -63,7 +66,7 @@ IBoundingBox * Mark::bb() const
     return m_aabb;
 }
 
-void Mark::onSelect(Ray * ray, Camera * camera)
+void Mark::onMouseDown(Ray * ray, Camera * camera)
 {
     changeColor();
 
@@ -82,13 +85,20 @@ void Mark::onSelect(Ray * ray, Camera * camera)
     float distance = bb()->origin().distance(camera->position());
     distance = top / bottom;
 
+    m_isSelected = true;
+
     std::cout << "Selected!" << std::endl;
     printf("The distance to plane of camera: %f\n", distance);
     std::cout << "" << std::endl;
 
 }
 
-void Mark::onMove(Vec3 & toPosition)
+void Mark::onMouseUp(Ray *ray, Camera *camera)
+{
+    m_isSelected = false;
+}
+
+void Mark::onMouseMove(Vec3 & toPosition)
 {
     model()->setOrigin(toPosition);
     bb()->setOrigin(toPosition);
@@ -112,6 +122,7 @@ void Mark::changeColor()
         m_g = 0;
         m_b = 0;
     }
+
 }
 
 }

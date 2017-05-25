@@ -109,7 +109,6 @@ void init ()
             m->model()->setWireframeMode(false);
 //            m->model()->setOrigin(Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, 0));
             m->model()->setOrigin(Vec3(i * 3, j * 3 - 25, k * 3 - 25));
-            m->model()->setWireframeMode(true);
             m->bb()->setOrigin(m->model()->origin());
             t->add(m);
 
@@ -270,31 +269,40 @@ void mouse(int button, int state, int x, int y)
 //    a->rewrite(0, ray->origin());
 //    a->rewrite(1, ray->target());
 
-    auto nodes = scene->query([ray, normDeviceCoords](const IIntersectable * o) {
-        return o->intersects(ray);
-    });
-
-    std::cout << nodes.size() << std::endl;
-
-    IIntersectable * nearestNode = nullptr;
-    float nearestNodeDistance = camera->farPlane() + 1.0f;
-
-    for (auto & node : nodes)
+    if (state == GLUT_DOWN)
     {
-        float distance = node->bb()->origin().distance(camera->position());
-        if (distance < nearestNodeDistance)
+        auto nodes = scene->query([ray, normDeviceCoords](const IIntersectable * o) {
+            return o->intersects(ray);
+        });
+
+        std::cout << nodes.size() << std::endl;
+
+        IIntersectable * nearestNode = nullptr;
+        float nearestNodeDistance = camera->farPlane() + 1.0f;
+
+        for (auto & node : nodes)
         {
-            nearestNode = node;
-            nearestNodeDistance = distance;
+            float distance = node->bb()->origin().distance(camera->position());
+            if (distance < nearestNodeDistance)
+            {
+                nearestNode = node;
+                nearestNodeDistance = distance;
+            }
         }
-    }
 
-    pressedNode = nearestNode;
-    pressedNodeDistance = nearestNodeDistance;
+        pressedNode = nearestNode;
+        pressedNodeDistance = nearestNodeDistance;
 
-    if (nearestNode != nullptr)
+        if (pressedNode != nullptr)
+        {
+            pressedNode->onMouseDown(ray, camera);
+        }
+    } else if (state == GLUT_UP)
     {
-        nearestNode->onSelect(ray, camera);
+        if (pressedNode != nullptr)
+        {
+            pressedNode->onMouseUp(ray, camera);
+        }
     }
 
     delete ray;
@@ -312,7 +320,7 @@ void mouseMotion(int x, int y)
             1.0f - 2.0f * (float)y / WINDOW_HEIGHT );
 
         Vec3 newPos = nodePicker->coordOnDistance(normDeviceCoords, pressedNodeDistance);
-        pressedNode->onMove(newPos);
+        pressedNode->onMouseMove(newPos);
     }
 
     glutPostRedisplay();
