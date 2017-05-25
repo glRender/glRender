@@ -18,13 +18,44 @@ Render * render;
 
 PerspectiveCamera * camera;
 
+int counter = 0;
+clock_t start;
+
 Mark * np;
-Mark * fp;
-Line * l;
+//Mark * fp;
+//Line * l;
 
 Scene * scene;
 
 NodePicker * nodePicker;
+
+class Tran : public IUpdateable
+{
+    void update() override
+    {
+        transforms().rotateZ(0.1f);
+    }
+
+};
+
+class Tran1 : public IUpdateable
+{
+    void update() override
+    {
+        transforms().rotateX(0.1f);
+    }
+
+};
+
+class Tran2 : public IUpdateable
+{
+    void update() override
+    {
+//        transforms().rotateY(1.0f);
+    }
+
+};
+
 
 void init ()
 {
@@ -33,43 +64,59 @@ void init ()
 //    camera->lookAt(Vec3(-10,0,-10), Vec3(10,0,-10), Vec3::AXE_Y());
 
     scene = new Scene();
-    scene->setActiveCamera(camera);
+    scene->setCamera(camera);
 
     nodePicker = new NodePicker(camera, scene);
 
     srand( time(0) );
 
-    Mark * m = new Mark(0,1,0,1);
-    m->model()->setWireframeMode(false);
-    m->setOrigin(0.0f, 0.0f, -3.0f);
-    scene->addNode(m);
+//    Mark * m = new Mark(0,1,0,1);
+//    m->model()->setWireframeMode(false);
+//    m->setOrigin(0.0f, 0.0f, -3.0f);
+//    scene->addNode(m);
 
-    for (int i=0; i<1000; i++)
+    Tran * t = new Tran();
+    Tran1 * t1 = new Tran1();
+    Tran2 * t2 = new Tran2();
+    t1->add(t);
+    t2->add(t1);
+
+    for (int i=0; i<1; i++)
     {
-        if ((int)(rand() % 5) == 0)
-        {
-//             WoodenBox *n = new WoodenBox();
-//             n->model()->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
-//             n->model()->setWireframeMode(false);
-//             scene->addNode(n);
-        } else
-        if ((int)(rand() % 3) == 1)
-        {
-//             BrickBox *bb = new BrickBox();
-//             bb->model()->setWireframeMode(false);
-//             bb->model()->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
-//             scene->addNode(bb);
-        } else
-        if ((int)(rand() % 3) == 0)
-        {
-             Mark * m = new Mark(0,1,0,1);
-             m->model()->setWireframeMode(false);
-             m->setOrigin(Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, 0));
-             scene->addNode(m);
-        }
-        else
-        if ((int)(rand() % 3) == 1)
-        {
+
+    for (int j=0; j<25; j++)
+    {
+
+    for (int k=0; k<25; k++)
+    {
+//        if ((int)(rand() % 5) == 0)
+//        {
+////             WoodenBox *n = new WoodenBox();
+////             n->model()->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
+////             n->model()->setWireframeMode(false);
+////             scene->addNode(n);
+//        } else
+//        if ((int)(rand() % 3) == 1)
+//        {
+////             BrickBox *bb = new BrickBox();
+////             bb->model()->setWireframeMode(false);
+////             bb->model()->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
+////             scene->addNode(bb);
+//        } else
+//        if ((int)(rand() % 3) == 0)
+//        {
+            Mark * m = new Mark(0,1,0,1);
+            m->model()->setWireframeMode(false);
+//            m->model()->setOrigin(Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, 0));
+            m->model()->setOrigin(Vec3(i * 3, j * 3 - 25, k * 3 - 25));
+            m->model()->setWireframeMode(true);
+            m->bb()->setOrigin(m->model()->origin());
+            t->add(m);
+
+//        }
+//        else
+//        if ((int)(rand() % 3) == 1)
+//        {
 ////            Vec3 p0 = Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25));
 ////            Vec3 p1 = Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25));
 //            Vec3 p0 = Vec3(-25.0f, 0.0f, -1.0f);
@@ -83,10 +130,10 @@ void init ()
 //            l->setOrigin(Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25)));
 
 //            scene->addNode(l);
-        }
-        else
-        if ((int)(rand() % 5) == 4)
-        {
+//        }
+//        else
+//        if ((int)(rand() % 5) == 4)
+//        {
 //            Vec3 p0 = Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25));
 //            Vec3 p1 = Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25));
 //            Vec3 p2 = Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25));
@@ -97,20 +144,25 @@ void init ()
 
 //            QuadraticBezeirCurve * l = new QuadraticBezeirCurve(p0, p1, p2, 512, r, g, b);
 //            scene->addNode(l);
-        }
+//        }
     }
+    }
+    }
+    scene->add(t2);
 
-    Vec3 p0 = Vec3(0.0f, 0.0f, 0.0f);
-    Vec3 p1 = Vec3(10.0f, 0.0f, -1.0f);
+//    scene->updateCache();
 
-    float r = 0.0f;
-    float g = 0.0f;
-    float b = 1.0f;
+//    Vec3 p0 = Vec3(0.0f, 0.0f, 0.0f);
+//    Vec3 p1 = Vec3(10.0f, 0.0f, -1.0f);
 
-    l = new Line(p0, p1, 1, r, g, b);
+//    float r = 0.0f;
+//    float g = 0.0f;
+//    float b = 1.0f;
+
+//    l = new Line(p0, p1, 1, r, g, b);
 //    l->setOrigin(Vec3(0.0f, 0.0f, 0.0f));
 
-    scene->addNode(l);
+//    scene->addNode(l);
 
 }
 
@@ -124,6 +176,18 @@ void display()
 {
     render->draw(scene);
     glutSwapBuffers ();
+    counter++;
+
+    if (counter % 50 == 0)
+    {
+        float frameTime = ((float)(clock() - start) / counter) / CLOCKS_PER_SEC * 1000.0;
+        float fps = 1000.0 / frameTime;
+        std::cout << "FPS = " << fps << std::endl;
+        counter = 0;
+        start = clock();
+    }
+
+
 }
 
 void reshape ( int w, int h )
@@ -143,7 +207,7 @@ void key ( unsigned char key, int x, int y )
     if(key == 'w')
     {
         camera->setPosition( camera->position() + camera->front() * cameraMoveSpeed );
-        std::cout << "w" << std::endl;
+//        std::cout << "w" << std::endl;
 
     }
 
@@ -151,7 +215,7 @@ void key ( unsigned char key, int x, int y )
     if(key == 's')
     {
         camera->setPosition( camera->position() - camera->front() * cameraMoveSpeed );
-        std::cout << "s" << std::endl;
+//        std::cout << "s" << std::endl;
     }
 
     // a
@@ -182,13 +246,13 @@ void key ( unsigned char key, int x, int y )
         std::cout << "e" << std::endl;
     }
 
-    std::cout << "camera: " << camera->position().x << camera->position().y << camera->position().z << std::endl;
+//    std::cout << "camera: " << camera->position().x << camera->position().y << camera->position().z << std::endl;
 
     glutPostRedisplay();
 }
 
-float distance = 0;
-Node * pressedNode = nullptr;
+IIntersectable * pressedNode = nullptr;
+float pressedNodeDistance = 0;
 
 void mouse(int button, int state, int x, int y)
 {
@@ -206,20 +270,16 @@ void mouse(int button, int state, int x, int y)
 //    a->rewrite(0, ray->origin());
 //    a->rewrite(1, ray->target());
 
-    auto nodes = scene->query([ray, normDeviceCoords](const Node * node) {
-        if (node->isSelectable())
-        {
-            return node->bb()->intersects(ray);
-        }
-        return false;
+    auto nodes = scene->query([ray, normDeviceCoords](const IIntersectable * o) {
+        return o->intersects(ray);
     });
 
     std::cout << nodes.size() << std::endl;
 
-    Node * nearestNode = nullptr;
-    float nearestNodeDistance = camera->farPlane();
+    IIntersectable * nearestNode = nullptr;
+    float nearestNodeDistance = camera->farPlane() + 1.0f;
 
-    for (auto node : nodes)
+    for (auto & node : nodes)
     {
         float distance = node->bb()->origin().distance(camera->position());
         if (distance < nearestNodeDistance)
@@ -230,33 +290,11 @@ void mouse(int button, int state, int x, int y)
     }
 
     pressedNode = nearestNode;
+    pressedNodeDistance = nearestNodeDistance;
 
     if (nearestNode != nullptr)
     {
-        Mark * mark = dynamic_cast<Mark *>(nearestNode);
-        if (mark != nullptr)
-        {
-            mark->changeColor();
-        }
-
-        Vec3 n = camera->front();
-        Vec3 M1 = camera->position();
-        Vec3 M2 = mark->model()->origin();
-
-        float D1 = -(n.x*M1.x + n.y*M1.y + n.z*M1.z);
-        float D2 = -(n.x*M2.x + n.y*M2.y + n.z*M2.z);
-
-        float top = fabs(D2-D1);
-        float bottom = sqrt( pow(n.x, 2) +
-                             pow(n.y, 2) +
-                             pow(n.z, 2) );
-
-        distance = top / bottom;
-
-        std::cout << "Has intersection!" << std::endl;
-        printf("The distance to plane: %f\n", distance);
-        std::cout << "" << std::endl;
-
+        nearestNode->onSelect(ray, camera);
     }
 
     delete ray;
@@ -273,11 +311,8 @@ void mouseMotion(int x, int y)
             2.0f * (float)x / WINDOW_WIDTH - 1.0f,
             1.0f - 2.0f * (float)y / WINDOW_HEIGHT );
 
-        Vec3 newPos = nodePicker->coordOnDistance(normDeviceCoords, distance);
-        pressedNode->setOrigin(newPos);
-
-        printf("New position: %f, %f, %f\n", newPos.x, newPos.y, newPos.z);
-        std::cout << "" << std::endl;
+        Vec3 newPos = nodePicker->coordOnDistance(normDeviceCoords, pressedNodeDistance);
+        pressedNode->onMove(newPos);
     }
 
     glutPostRedisplay();

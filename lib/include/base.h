@@ -16,10 +16,13 @@
 #include <iomanip>
 #include <limits>
 #include <algorithm>
+#include <time.h>
 #include <typeinfo>
 #include <assert.h>
 #include <map>
 #include <vector>
+#include <list>
+#include <unordered_map>
 #include <cstring>
 #include <stdint.h>
 

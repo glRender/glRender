@@ -18,7 +18,7 @@ public:
     void setOrigin(const Vec3 & origin) override;
     void setHalfSide(float halfSide);
 
-    bool intersects(Ray * ray) const override;
+    bool intersects(const Ray * ray) const override;
 
 private:
     void _updateMinMax();

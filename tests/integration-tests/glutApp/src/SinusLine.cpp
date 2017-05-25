@@ -13,7 +13,7 @@ SinusLine::SinusLine(Vec3 p0, Vec3 p1, uint segmentsNumber, float r, float g, fl
     , m_g(g)
     , m_b(b)
 {
-    setSelectable(false);
+//    setSelectable(false);
 
     std::vector<Vec3> vertices;
     std::vector<float> indexes;

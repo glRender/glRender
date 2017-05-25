@@ -12,56 +12,116 @@ Scene::~Scene()
 
 }
 
-bool Scene::addNode(Node * node)
+void Scene::updateCache()
 {
-	_nodes.push_back(node);
-	return true;
+    CacheNodeAdder v(m_updateables, m_drawables, m_intersectables);
+    traverse([&v](Node * node) {
+        node->accept(v);
+    });
 }
 
-void Scene::setActiveCamera(Camera * camera)
+void Scene::addToCache(Node * node)
 {
-	_activeCamera = camera;
+    CacheNodeAdder v(m_updateables, m_drawables, m_intersectables);
+    node->accept(v);
+    node->traverse([&v](Node * node) {
+        node->accept(v);
+    });
 }
 
-bool Scene::hasActiveCamera()
+void Scene::removeFromCache(Node * p_node)
 {
-	return _activeCamera != nullptr;
+    CacheNodeRemover v(m_updateables, m_drawables, m_intersectables);
+    p_node->traverse([&v](Node * node) {
+        node->accept(v);
+    });
 }
 
-Camera * Scene::activeCamera()
+void Scene::add(Node * node)
 {
-	return _activeCamera;
+    m_childs.push_back(node);
+    node->subscribeTo(Node::Event::ADD, [this](Node * node) {
+        addToCache(node);
+    });
+
+    node->subscribeTo(Node::Event::REMOVE, [this](Node * node) {
+        removeFromCache(node);
+    });
+
+    addToCache(node);
+}
+
+void Scene::setCamera(Camera * camera)
+{
+    m_camera = camera;
+}
+
+bool Scene::hasCamera()
+{
+    return m_camera != nullptr;
+}
+
+Camera * Scene::camera()
+{
+    return m_camera;
 }
 
 void Scene::traverse(std::function<void(Node * node)> handler)
 {
-	for (Node * node : _nodes)
-	{
-		node->traverse(handler);
-	}	
+    for (Node * node : m_childs)
+    {
+        node->traverse(handler);
+    }
 }
 
-void Scene::draw()
+void Scene::drawFrame()
 {
-	traverse([=](Node * node) {
-		node->draw(activeCamera());
-	});
+    for (const auto & node : m_drawables)
+    {
+        node.second->draw(camera());
+    }
 }
 
 void Scene::update()
 {
-	traverse([=](Node * node) {
-		node->update();
-        });
+    for (const auto & node : m_updateables)
+    {
+        node.second->update();
+    }
 }
 
-std::vector<glRender::Node *> glRender::Scene::query(std::function<bool (const glRender::Node *)> condition)
+//std::vector<Node *> Scene::query(std::function<bool (const Node *)> condition)
+//{
+//    std::vector<glRender::Node *> result;
+//    for (auto child : m_childs)
+//    {
+//        auto sample = child->query(condition);
+//        result.insert(result.end(), sample.begin(), sample.end());
+//    }
+//    return result;
+//}
+
+//std::vector<IUpdateable *> Scene::query(std::function<bool (IUpdateable *)> condition)
+//{
+//    std::vector<IUpdateable *> result;
+//    return result;
+//}
+
+//std::vector<IDrawable *> Scene::query(std::function<bool (IDrawable *)> condition)
+//{
+//    std::vector<IDrawable *> result;
+//    return result;
+//}
+
+std::vector<IIntersectable *> Scene::query(std::function<bool (const IIntersectable * o)> condition) const
 {
-    std::vector<glRender::Node *> result;
-    for (auto node : _nodes)
+    std::vector<IIntersectable *> result;
+    for (auto & o : m_intersectables)
     {
-        auto sample = node->query(condition);
-        result.insert(result.end(), sample.begin(), sample.end());
+        if (condition(o.second))
+        {
+            result.push_back(o.second);
+        }
     }
     return result;
 }

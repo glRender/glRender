@@ -1,5 +1,7 @@
 #include "node.hpp"
 
+#include "visitor.hpp"
+
 namespace glRender {
 
 Node::~Node()
@@ -10,13 +12,14 @@ Node::~Node()
     }
 }
 
-bool Node::addChild(Node * node)
+void Node::add(Node * node)
 {
-	m_childs.push_back( node );
-	return true;
+    node->m_parent = this;
+    m_childs.push_back(node);
+    notifyUp(Event::ADD, node);
 }
 
-std::vector<Node * > Node::childs()
+std::vector<Node * > & Node::childs()
 {
 	return m_childs;
 }
@@ -29,31 +32,10 @@ Node * Node::parent()
 void Node::traverse(std::function<void(Node * node)> handler)
 {
 	handler(this);
-    for (uint32_t i=0; i<m_childs.size(); i++)
+    for (auto & o : m_childs)
 	{
-		traverse(handler);
+        o->traverse(handler);
     }
-}
-
-void Node::setOrigin(const Vec3 & pos)
-{
-    model()->setOrigin(pos);
-    bb()->setOrigin(pos);
-}
-
-void Node::setOrigin(float x, float y, float z)
-{
-    setOrigin(Vec3(x, y, z));
-}
-
-void Node::setSelectable(bool isSelectable)
-{
-    m_isSelectable = isSelectable;
-}
-
-bool Node::isSelectable() const
-{
-    return m_isSelectable;
 }
 
 std::vector<glRender::Node *> glRender::Node::query(std::function<bool (const glRender::Node *)> condition)
@@ -71,6 +53,39 @@ std::vector<glRender::Node *> glRender::Node::query(std::function<bool (const gl
     }
 
     return result;
+
+}
+
+void Node::subscribeTo(Node::Event event, std::function<void (Node *)> handler)
+{
+    eventHandlers[event] = handler;
+}
+
+Mat4 Node::parentsTransforms()
+{
+    Mat4 result;
+    TransformsAccumulator v(result);
+    Node * p = parent();
+
+    while (p != nullptr)
+    {
+        p->accept(v);
+        p = p->parent();
+    }
+    return result;
+}
+
+void Node::notifyUp(Node::Event event, Node *node)
+{
+    if (m_parent != nullptr)
+    {
+        m_parent->notifyUp(event, node);
+    }
+
+    if (eventHandlers.find(event) != eventHandlers.end())
+    {
+        eventHandlers[event](node);
+    }
 
 }
 

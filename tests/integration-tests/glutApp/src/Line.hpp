@@ -4,7 +4,7 @@
 
 namespace glRender {
 
-class Line : public Node
+class Line : public IDrawable
 {
 public:
   Line(Vec3 p0, Vec3 p1, uint segmentsNumber, float r, float g, float b);
@@ -13,8 +13,8 @@ public:
   void update() override;
   void draw(Camera * camera) override;
 
-  Model * model() override;
-  IBoundingBox * bb() const override;
+  Model * model()/* override*/;
+  IBoundingBox * bb() const/* override*/;
 
 private:
   Model * m_model;

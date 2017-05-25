@@ -48,25 +48,24 @@ public:
 
     Ray * ray(Vec2 normDeviceCoords)
     {
-//        Vec4 clipCoords(
-//                    normDeviceCoords.x,
-//                    normDeviceCoords.y,
-//                    -1.0f,
-//                    1.0f );
+        Vec4 clipCoords(
+                    normDeviceCoords.x,
+                    normDeviceCoords.y,
+                    -1.0f,
+                    1.0f );
 
-//        Mat4 p = m_camera->projectionMatrix();
-//        p.invert();
-//        Vec4 eyeCoords = p * clipCoords;
-//        eyeCoords.z = -1.0f;
-//        eyeCoords.w = 0.0f;
+        Mat4 p = m_camera->projectionMatrix();
+        p.invert();
+        Vec4 eyeCoords = p * clipCoords;
+        eyeCoords.z = -1.0f;
+        eyeCoords.w = 0.0f;
 
-//        Mat4 t = m_camera->transformationMatrix();
-//        t.invert();
-//        Vec4 tmp = t * eyeCoords;
-//        Vec3 worldCoords(tmp.x, tmp.y, tmp.z);
-//        worldCoords.normalize();
+        Mat4 t = m_camera->transformationMatrix();
+        t.invert();
+        Vec4 tmp = t * eyeCoords;
+        Vec3 worldCoords(tmp.x, tmp.y, tmp.z);
+        worldCoords.normalize();
 
-//        Vec3 cameraPos = m_camera->position();
         Vec3 origin = coordOnDistance(normDeviceCoords, m_camera->nearPlane());
         Vec3 target = coordOnDistance(normDeviceCoords, m_camera->farPlane());
 
@@ -80,19 +79,24 @@ public:
 
         std::vector<T *> result;
 
-        m_scene->traverse([ray, &result](Node * node) {
-            if (node->isSelectable())
-            {
-                if (node->bb()->intersects(ray))
-                {
-                    T * c = dynamic_cast<T *>(node);
-                    if (c != nullptr)
-                    {
-                        result.push_back(c);
-                    }
-                }
-            }
-        });
+//        m_scene->traverse([ray, &result](IBaseIntersectable * o) {
+//            if (node->isSelectable())
+//            {
+//                if (node->bb()->intersects(ray))
+//                {
+//                    T * c = dynamic_cast<T *>(node);
+//                    if (c != nullptr)
+//                    {
+//                        result.push_back(c);
+//                    }
+//                }
+//            }
+//            if (o->isIntersected(ray))
+//            {
+//                result.push_back(o);
+//            }
+
+//        });
 
         delete ray;
 

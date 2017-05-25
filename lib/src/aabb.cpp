@@ -46,7 +46,7 @@ void AABB::setHalfSide(float halfSide)
     _updateMinMax();
 }
 
-bool AABB::intersects(Ray * ray) const
+bool AABB::intersects(const Ray * ray) const
 {
     float tmin, tmax, tymin, tymax, tzmin, tzmax;
     if (ray->target().x >= 0)

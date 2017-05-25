@@ -5,7 +5,7 @@
 
 namespace glRender {
 
-class WoodenBox : public Node
+class WoodenBox : public IDrawable
 {
 public:
   WoodenBox();
@@ -14,8 +14,8 @@ public:
   void update() override;
   void draw(Camera * camera) override;
 
-  Model * model() override;
-  IBoundingBox * bb() const override;
+  Model * model()/* override*/;
+  IBoundingBox * bb() const/* override*/;
 
 private:
   Model * m_model;

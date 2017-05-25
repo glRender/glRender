@@ -8,7 +8,7 @@ Mark::Mark(float r, float g, float b, float size)
     , m_g(g)
     , m_b(b)
 {
-    setSelectable(true);
+//    setSelectable(true);
     Geometry * geometry = GeometryHelper::Cube(size);
 
     Textures * textures = new Textures();
@@ -45,10 +45,15 @@ void Mark::draw(Camera *camera)
     m_model->shaderProgram()->setUniform<float>("g", m_g);
     m_model->shaderProgram()->setUniform<float>("b", m_b);
 
-    m_model->draw(camera);
+    m_model->draw(camera, parentsTransforms());
 }
 
-Model * Mark::model()
+bool Mark::intersects(const Ray *ray) const
+{
+    return m_aabb->intersects(ray);
+}
+
+Model * Mark::model() const
 {
     return m_model;
 }
@@ -56,6 +61,41 @@ Model * Mark::model()
 IBoundingBox * Mark::bb() const
 {
     return m_aabb;
+}
+
+void Mark::onSelect(Ray * ray, Camera * camera)
+{
+    changeColor();
+
+    Vec3 n = camera->front();
+    Vec3 M1 = camera->position();
+    Vec3 M2 = model()->origin();
+
+    float D1 = -(n.x*M1.x + n.y*M1.y + n.z*M1.z);
+    float D2 = -(n.x*M2.x + n.y*M2.y + n.z*M2.z);
+
+    float top = fabs(D2-D1);
+    float bottom = sqrt( pow(n.x, 2) +
+                         pow(n.y, 2) +
+                         pow(n.z, 2) );
+
+    float distance = bb()->origin().distance(camera->position());
+    distance = top / bottom;
+
+    std::cout << "Selected!" << std::endl;
+    printf("The distance to plane of camera: %f\n", distance);
+    std::cout << "" << std::endl;
+
+}
+
+void Mark::onMove(Vec3 & toPosition)
+{
+    model()->setOrigin(toPosition);
+    bb()->setOrigin(toPosition);
+
+    printf("New position: %f, %f, %f\n", toPosition.x, toPosition.y, toPosition.z);
+    std::cout << "" << std::endl;
+
 }
 
 void Mark::changeColor()

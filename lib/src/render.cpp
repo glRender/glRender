@@ -65,7 +65,7 @@ void Render::draw(Scene *scene)
     glBlendFunc  ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClear      ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    scene->draw();
+    scene->drawFrame();
 }
 
 void Render::setViewportSize(const uint32_t & w, const uint32_t & h)
@@ -88,10 +88,10 @@ Render * Render::instance()
         {
             if (GL_CONTEXT_FLAG_DEBUG_BIT)
             {
-                glEnable(GL_DEBUG_OUTPUT);
-                glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-                glDebugMessageCallback(glDebugOutput, nullptr);
-                glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+//                glEnable(GL_DEBUG_OUTPUT);
+//                glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+//                glDebugMessageCallback(glDebugOutput, nullptr);
+//                glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
             }
 
             instance = new Render();

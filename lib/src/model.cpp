@@ -78,6 +78,43 @@ void Model::draw(Camera * camera)
     glBindVertexArray ( 0 );
 }
 
+void Model::draw(Camera *camera, Mat4 && transforms)
+{
+    glBindVertexArray ( m_vaoId );
+
+    m_shaderProgram->use();
+
+    if (!m_textures->isEmpty())
+    {
+        m_shaderProgram->bindTextures(m_textures);
+    }
+
+    glUniformMatrix4fv( m_shaderProgram->uniform<Mat4>( "projection" ), 1, GL_FALSE, camera->projectionMatrix().get() );
+    glUniformMatrix4fv( m_shaderProgram->uniform<Mat4>( "view" ),       1, GL_FALSE, camera->transformationMatrix().get() );
+    glUniformMatrix4fv( m_shaderProgram->uniform<Mat4>( "model" ),      1, GL_FALSE, (transforms * transformationMatrix()).get() );
+
+    if (m_wireframeMode) { glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); }
+
+    if (m_indicesBuffer != nullptr)
+    {
+        glDrawElements(m_drawMode, m_indicesBuffer->size(), GL_UNSIGNED_INT, (void*)(0));
+    } else if (m_geometry->has("vertex"))
+    {
+        glDrawArrays(m_drawMode, 0, m_geometry->get("vertex")->size());
+    }
+
+    if (m_wireframeMode) { glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ); }
+
+    if (!m_textures->isEmpty())
+    {
+        shaderProgram()->unbindTextures();
+    }
+
+    shaderProgram()->disable();
+
+    glBindVertexArray ( 0 );
+}
+
 Model::~Model()
 {
     delete m_geometry;

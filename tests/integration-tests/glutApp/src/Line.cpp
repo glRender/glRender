@@ -13,7 +13,7 @@ Line::Line(Vec3 p0, Vec3 p1, uint segmentsNumber, float r, float g, float b)
     , m_g(g)
     , m_b(b)
 {
-    setSelectable(false);
+//    setSelectable(false);
 
     Geometry* geometry = GeometryHelper::Line(p0, p1, segmentsNumber);
 

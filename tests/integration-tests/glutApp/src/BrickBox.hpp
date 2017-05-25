@@ -5,7 +5,7 @@
 
 namespace glRender {
 
-class BrickBox : public Node
+class BrickBox : public IDrawable
 {
 public:
   BrickBox();
@@ -14,8 +14,8 @@ public:
   void update() override;
   void draw(Camera * camera) override;
 
-  Model * model() override;
-  AABB * bb() const override;
+  Model * model()/* override*/;
+  AABB * bb() const/* override*/;
 
 private:
   Model * m_model;

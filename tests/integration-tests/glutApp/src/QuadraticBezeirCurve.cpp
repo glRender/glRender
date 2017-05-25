@@ -12,7 +12,7 @@ QuadraticBezeirCurve::QuadraticBezeirCurve(Vec3 p0, Vec3 p1, Vec3 p2, uint segme
     , m_g(g)
     , m_b(b)
 {
-    setSelectable(false);
+//    setSelectable(false);
     Geometry * geometry = GeometryHelper::QuadraticBezierCurve(p0, p1, p2, segmentsNumber);
 \
     Textures * textures = new Textures();
@@ -41,7 +41,7 @@ QuadraticBezeirCurve::~QuadraticBezeirCurve()
 void QuadraticBezeirCurve::update()
 {
 
-//    m_model->rotate(0.1, Vec3::AXE_Y());
+    m_model->rotate(0.1, Vec3::AXE_Y());
 }
 
 void QuadraticBezeirCurve::draw(Camera *camera)
