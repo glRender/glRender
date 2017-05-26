@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vec4.hpp"
+#include "scene.hpp"
 
 namespace glRender
 {

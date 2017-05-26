@@ -16,7 +16,7 @@ namespace glRender
 class NodePicker
 {
 public:
-    NodePicker(Camera * camera, Scene * scene)
+    NodePicker(CameraPtr camera, Scene * scene)
         : m_camera(camera)
         , m_scene(scene)
     {
@@ -46,7 +46,7 @@ public:
         return m_camera->position() + worldCoords * distance;
     }
 
-    Ray * ray(Vec2 normDeviceCoords)
+    RayPtr ray(Vec2 normDeviceCoords)
     {
         Vec4 clipCoords(
                     normDeviceCoords.x,
@@ -69,13 +69,13 @@ public:
         Vec3 origin = coordOnDistance(normDeviceCoords, m_camera->nearPlane());
         Vec3 target = coordOnDistance(normDeviceCoords, m_camera->farPlane());
 
-        return new Ray(origin, target);
+        return RayPtr(new Ray(origin, target));
     }
 
     template <class T>
     std::vector<T *> find(Vec2 normDeviceCoords)
     {
-        Ray * ray = this->ray(normDeviceCoords);
+        RayPtr ray = this->ray(normDeviceCoords);
 
         std::vector<T *> result;
 
@@ -98,8 +98,6 @@ public:
 
 //        });
 
-        delete ray;
-
         return result;
 
     }
@@ -111,10 +109,12 @@ public:
     }
 
 private:
-    Camera * m_camera = nullptr;
+    CameraPtr m_camera = nullptr;
     Scene * m_scene = nullptr;
 
 };
+
+using NodePickerPtr = std::shared_ptr<NodePicker>;
 
 }
 

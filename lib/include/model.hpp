@@ -26,8 +26,8 @@ public:
     Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgram);
     ~Model();
 
-    void draw(Camera * camera);
-    void draw(Camera * camera, Mat4 && transforms);
+    void draw(CameraPtr camera);
+    void draw(CameraPtr camera, Mat4 && transforms);
 
     inline Geometry* geometry()
     {

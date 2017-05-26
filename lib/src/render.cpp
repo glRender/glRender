@@ -56,7 +56,7 @@ Render::Render()
 
 }
 
-void Render::draw(Scene *scene)
+void Render::draw(Scene * scene)
 {
     glClearColor ( m_background.x, m_background.y, m_background.z, m_background.w );
     glEnable     ( GL_DEPTH_TEST );

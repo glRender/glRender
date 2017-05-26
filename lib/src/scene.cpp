@@ -51,7 +51,7 @@ void Scene::add(Node * node)
     addToCache(node);
 }
 
-void Scene::setCamera(Camera * camera)
+void Scene::setCamera(CameraPtr camera)
 {
     m_camera = camera;
 }
@@ -61,7 +61,7 @@ bool Scene::hasCamera()
     return m_camera != nullptr;
 }
 
-Camera * Scene::camera()
+CameraPtr Scene::camera()
 {
     return m_camera;
 }

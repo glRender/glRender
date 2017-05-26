@@ -9,12 +9,12 @@ namespace glRender {
 class Mark : public IIntersectable
 {
 public:
-  Mark(float r, float g, float b, float size);
+  Mark(Vec3 color, float size, uint i, uint j, uint k);
   ~Mark();
 
   void update() override;
-  void draw(Camera * camera) override;
-  bool intersects(const Ray * ray) const override;
+  void draw(CameraPtr camera) override;
+  bool intersects(const RayPtr ray) const override;
 
   Model * model() const;
   IBoundingBox * bb() const override;
@@ -23,8 +23,8 @@ public:
   {
   }
 
-  void onMouseUp(Ray * ray, Camera * camera) override;
-  void onMouseDown(Ray * ray, Camera * camera) override;
+  void onMouseUp(RayPtr ray, CameraPtr camera) override;
+  void onMouseDown(RayPtr ray, CameraPtr camera) override;
   void onMouseMove(Vec3 & toPosition) override;
 
   void changeColor();
@@ -33,9 +33,11 @@ private:
   Model * m_model;
   AABB * m_aabb;
 
-  float m_r;
-  float m_g;
-  float m_b;
+  Vec3 m_color;
+
+  uint m_i;
+  uint m_j;
+  uint m_k;
 
   bool m_isSelected = false;
 

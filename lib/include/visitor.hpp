@@ -2,6 +2,7 @@
 #define VISITOR_HPP
 
 #include "base.h"
+#include "ray.hpp"
 
 namespace glRender
 {
@@ -28,7 +29,7 @@ public:
 class IBaseDrawable
 {
 public:
-    virtual void draw(Camera * camera) = 0;
+    virtual void draw(CameraPtr camera) = 0;
 };
 
 class IBaseUpdateable
@@ -85,10 +86,10 @@ public:
         v.visit(this);
     }
 
-    virtual bool intersects(const Ray * ray) const = 0;
+    virtual bool intersects(const RayPtr ray) const = 0;
     virtual IBoundingBox * bb() const = 0;
-    virtual void onMouseUp(Ray * ray, Camera * camera) = 0;
-    virtual void onMouseDown(Ray * ray, Camera * camera) = 0;
+    virtual void onMouseUp(RayPtr ray, CameraPtr camera) = 0;
+    virtual void onMouseDown(RayPtr ray, CameraPtr camera) = 0;
     virtual void onMouseMove(Vec3 & toPosition) = 0;
 
     virtual void onIntersection(IIntersectable * o) = 0;

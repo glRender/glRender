@@ -7,6 +7,7 @@
 #include <string.h>
 #include <math.h>
 #include <cstdlib>
+#include <memory>
 #include <ctime>
 #include <sstream>
 #include <fstream>

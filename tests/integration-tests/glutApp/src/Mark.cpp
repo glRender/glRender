@@ -2,11 +2,12 @@
 
 namespace glRender {
 
-Mark::Mark(float r, float g, float b, float size)
+Mark::Mark(Vec3 color, float size, uint i, uint j, uint k)
     : m_aabb(new AABB(Vec3(0,0,0), size))
-    , m_r(r)
-    , m_g(g)
-    , m_b(b)
+    , m_color(color)
+    , m_i(i)
+    , m_j(j)
+    , m_k(k)
 {
     Geometry * geometry = GeometryHelper::Cube(size);
 
@@ -23,13 +24,16 @@ Mark::Mark(float r, float g, float b, float size)
     shaderProgram->addUniform<float>("g");
     shaderProgram->addUniform<float>("b");
 
-    shaderProgram->setUniform<float>("r", m_r);
-    shaderProgram->setUniform<float>("g", m_g);
-    shaderProgram->setUniform<float>("b", m_b);
+    shaderProgram->setUniform<float>("r", m_color.x);
+    shaderProgram->setUniform<float>("g", m_color.y);
+    shaderProgram->setUniform<float>("b", m_color.z);
 
     m_model = new Model(geometry, textures, shaderProgram);
     m_model->setWireframeMode(true);
     m_model->setOrigin(0.0, 0.0, 0.0);
+
+    m_model->setOrigin(Vec3(i * 3, j * 3 - 25, k * 3 - 25));
+    m_aabb->setOrigin(m_model->origin());
 }
 
 Mark::~Mark()
@@ -42,16 +46,16 @@ void Mark::update()
 //    m_model->rotate(0.1, Vec3::AXE_Y());
 }
 
-void Mark::draw(Camera *camera)
+void Mark::draw(CameraPtr camera)
 {
-    m_model->shaderProgram()->setUniform<float>("r", m_r);
-    m_model->shaderProgram()->setUniform<float>("g", m_g);
-    m_model->shaderProgram()->setUniform<float>("b", m_b);
+    m_model->shaderProgram()->setUniform<float>("r", m_color.x);
+    m_model->shaderProgram()->setUniform<float>("g", m_color.y);
+    m_model->shaderProgram()->setUniform<float>("b", m_color.z);
 
     m_model->draw(camera, parentsTransforms());
 }
 
-bool Mark::intersects(const Ray *ray) const
+bool Mark::intersects(const RayPtr ray) const
 {
     return m_aabb->intersects(ray);
 }
@@ -66,7 +70,7 @@ IBoundingBox * Mark::bb() const
     return m_aabb;
 }
 
-void Mark::onMouseDown(Ray * ray, Camera * camera)
+void Mark::onMouseDown(RayPtr ray, CameraPtr camera)
 {
     changeColor();
 
@@ -93,7 +97,7 @@ void Mark::onMouseDown(Ray * ray, Camera * camera)
 
 }
 
-void Mark::onMouseUp(Ray *ray, Camera *camera)
+void Mark::onMouseUp(RayPtr ray, CameraPtr camera)
 {
     m_isSelected = false;
 }
@@ -110,17 +114,13 @@ void Mark::onMouseMove(Vec3 & toPosition)
 
 void Mark::changeColor()
 {
-    if (m_r == 1 && m_g == 0 && m_b == 0)
+    if (m_color.x == 1 && m_color.y == 0 && m_color.z == 0)
     {
-        m_r = 0;
-        m_g = 1;
-        m_b = 0;
+        m_color.set(0,1,0);
     }
-    else if (m_r == 0 && m_g == 1 && m_b == 0)
+    else if (m_color.x == 0 && m_color.y == 1 && m_color.z == 0)
     {
-        m_r = 1;
-        m_g = 0;
-        m_b = 0;
+        m_color.set(1,0,0);
     }
 
 }

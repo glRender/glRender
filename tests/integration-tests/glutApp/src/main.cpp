@@ -16,7 +16,7 @@ using namespace glRender;
 
 Render * render;
 
-PerspectiveCamera * camera;
+PerspectiveCameraPtr camera;
 
 int counter = 0;
 clock_t start;
@@ -27,7 +27,7 @@ Mark * np;
 
 Scene * scene;
 
-NodePicker * nodePicker;
+NodePickerPtr nodePicker;
 
 class Tran : public IUpdateable
 {
@@ -59,14 +59,14 @@ class Tran2 : public IUpdateable
 
 void init ()
 {
-    camera = new PerspectiveCamera( 35.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f );
+    camera = PerspectiveCameraPtr(new PerspectiveCamera( 35.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f ));
     camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
 //    camera->lookAt(Vec3(-10,0,-10), Vec3(10,0,-10), Vec3::AXE_Y());
 
     scene = new Scene();
     scene->setCamera(camera);
 
-    nodePicker = new NodePicker(camera, scene);
+    nodePicker = NodePickerPtr(new NodePicker(camera, scene));
 
     srand( time(0) );
 
@@ -75,9 +75,9 @@ void init ()
 //    m->setOrigin(0.0f, 0.0f, -3.0f);
 //    scene->addNode(m);
 
-    Tran * t = new Tran();
-    Tran1 * t1 = new Tran1();
-    Tran2 * t2 = new Tran2();
+    Node * t = new Tran();
+    Node * t1 = new Tran1();
+    Node * t2 = new Tran2();
     t1->add(t);
     t2->add(t1);
 
@@ -105,11 +105,8 @@ void init ()
 //        } else
 //        if ((int)(rand() % 3) == 0)
 //        {
-            Mark * m = new Mark(0,1,0,1);
-            m->model()->setWireframeMode(false);
+            Node * m = new Mark(Vec3(0,1,0),1,i,j,k);
 //            m->model()->setOrigin(Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, 0));
-            m->model()->setOrigin(Vec3(i * 3, j * 3 - 25, k * 3 - 25));
-            m->bb()->setOrigin(m->model()->origin());
             t->add(m);
 
 //        }
@@ -262,7 +259,7 @@ void mouse(int button, int state, int x, int y)
         2.0f * (float)x / WINDOW_WIDTH - 1.0f,
         1.0f - 2.0f * (float)y / WINDOW_HEIGHT );
 
-    Ray * ray = nodePicker->ray(normDeviceCoords);
+    RayPtr ray = nodePicker->ray(normDeviceCoords);
 
 //    AbstractBuffer * b = l->model()->geometry()->get("vertex");
 //    Buffer<Vec3> * a = dynamic_cast<Buffer<Vec3> *>(b);
@@ -304,8 +301,6 @@ void mouse(int button, int state, int x, int y)
             pressedNode->onMouseUp(ray, camera);
         }
     }
-
-    delete ray;
 
     glutPostRedisplay();
 }

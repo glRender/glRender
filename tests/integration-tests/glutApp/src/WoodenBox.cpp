@@ -34,7 +34,7 @@ void WoodenBox::update()
     m_model->rotate(0.1, Vec3::AXE_Y());
 }
 
-void WoodenBox::draw(Camera *camera)
+void WoodenBox::draw(CameraPtr camera)
 {
     m_model->draw(camera);
 }

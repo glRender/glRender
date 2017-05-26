@@ -22,6 +22,8 @@ private:
     Vec3 m_target;
 };
 
+using RayPtr = std::shared_ptr<Ray>;
+
 }
 
 #endif // RAY_H

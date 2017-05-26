@@ -66,6 +66,8 @@ protected:
 
 };
 
+using CameraPtr = std::shared_ptr<Camera>;
+
 }
 
 #endif /* __CAMERA_HPP__ */

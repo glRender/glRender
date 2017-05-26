@@ -22,9 +22,9 @@ public:
 
     void add(Node * node);
     
-    void setCamera(Camera * camera);
+    void setCamera(CameraPtr camera);
     bool hasCamera();
-    Camera * camera();
+    CameraPtr camera();
 
     void traverse(std::function<void(Node * node)> handler);
 //    void traverse(std::function<void(IUpdateable * o)> handler);
@@ -41,7 +41,7 @@ public:
 
 private:
     std::vector<Node * > m_childs;
-    Camera * m_camera = nullptr;
+    CameraPtr m_camera = nullptr;
 
     std::unordered_map<void *, IBaseUpdateable *> m_updateables;
     std::unordered_map<void *, IBaseDrawable *> m_drawables;

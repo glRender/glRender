@@ -12,7 +12,7 @@ public:
   ~BrickBox();
 
   void update() override;
-  void draw(Camera * camera) override;
+  void draw(CameraPtr camera) override;
 
   Model * model()/* override*/;
   AABB * bb() const/* override*/;

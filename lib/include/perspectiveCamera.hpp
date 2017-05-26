@@ -24,5 +24,7 @@ private:
     float m_aspectRatio;
 };
 
+using PerspectiveCameraPtr = std::shared_ptr<PerspectiveCamera>;
+
 }
 #endif // PERSPECTIVECAMERA_H
