@@ -8,6 +8,7 @@
 #include "QuadraticBezeirCurve.hpp"
 #include "SinusLine.hpp"
 #include "Line.hpp"
+#include "aabbNodeVisualizator.hpp"
 
 static const int WINDOW_WIDTH = 1280;
 static const int WINDOW_HEIGHT = 720;
@@ -20,6 +21,8 @@ PerspectiveCameraPtr camera;
 
 int counter = 0;
 clock_t start;
+
+
 
 Mark * np;
 //Mark * fp;

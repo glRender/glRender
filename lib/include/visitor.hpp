@@ -3,13 +3,11 @@
 
 #include "base.h"
 #include "ray.hpp"
+#include "camera.hpp"
+#include "node.hpp"
 
 namespace glRender
 {
-
-class Ray;
-class Node;
-class Camera;
 
 class IDrawable;
 class IUpdateable;

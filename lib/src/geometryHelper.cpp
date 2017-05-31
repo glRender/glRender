@@ -2,7 +2,7 @@
 
 namespace glRender
 {
-      Geometry * GeometryHelper::Cube(float halfSideSize)
+      Geometry * GeometryHelper::Box(float halfSideSize)
       {
             std::vector<Vec3> vertices;
             /////////////

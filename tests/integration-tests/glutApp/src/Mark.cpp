@@ -9,7 +9,7 @@ Mark::Mark(Vec3 color, float size, uint i, uint j, uint k)
     , m_j(j)
     , m_k(k)
 {
-    Geometry * geometry = GeometryHelper::Cube(size);
+    Geometry * geometry = GeometryHelper::Box(size);
 
     Textures * textures = new Textures();
 
