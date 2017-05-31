@@ -19,7 +19,7 @@ ShaderProgram::ShaderProgram(const char * pathToVertexShader, const char * pathT
 
     if (!ResourceManager::getInstance().hasShader(pathToVertexShader))
     {
-        vertexShaderReady = ResourceManager::getInstance().initShader(pathToVertexShader, ShaderType::VertexShader);
+        vertexShaderReady = ResourceManager::getInstance().createShader(pathToVertexShader, ShaderType::VertexShader);
         if (!vertexShaderReady)
         {
             std::cout << "Can't init vertex shader!" <<std::endl;
@@ -30,7 +30,7 @@ ShaderProgram::ShaderProgram(const char * pathToVertexShader, const char * pathT
 
     if (!ResourceManager::getInstance().hasShader(pathToFragmentShader))
     {
-        fragmentShaderReady = ResourceManager::getInstance().initShader(pathToFragmentShader, ShaderType::FragmentShander);
+        fragmentShaderReady = ResourceManager::getInstance().createShader(pathToFragmentShader, ShaderType::FragmentShander);
         if (!fragmentShaderReady)
         {
             std::cout << "Can't init fragment shader!" <<std::endl;

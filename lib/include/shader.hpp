@@ -1,5 +1,4 @@
-#ifndef __SHADER_HPP__		
-#define __SHADER_HPP__
+#pragma once
 
 #include "base.h"
 
@@ -16,13 +15,13 @@ enum class ShaderType
 class Shader
 {
 public:
-    Shader(ShaderType type);
+    Shader(const char * text, ShaderType type);
     ~Shader();
 
     uint32_t id();
     const char * source();
-    void loadFromString(const char * sourceString);
-    bool loadFromFile(const char * filename);
+//    void loadFromString(const char * sourceString);
+//    bool loadFromFile(const char * filename);
     bool compile();
 
 private:
@@ -35,5 +34,3 @@ private:
 };
 
 }
-
-#endif /* __SHADER_HPP__ */

@@ -1,5 +1,4 @@
-#ifndef __SHADER_PROGRAM_HPP__		
-#define __SHADER_PROGRAM_HPP__
+#pragma once
 
 #include "base.h"
 
@@ -10,7 +9,6 @@
 #include "attribute.h"
 #include "geometry.hpp"
 #include "textures.hpp"
-//#include "opengl.h"
 
 namespace glRender
 {
@@ -96,4 +94,3 @@ private:
 };
 
 }
-#endif /* __SHADER_PROGRAM_HPP__ */

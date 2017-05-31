@@ -34,7 +34,7 @@ public:
     ShaderProgram * getShaderProgram(const char * pathToVerticesShader, const char * pathToFragmentShader);
 
     bool hasShader(const char * path);
-    bool initShader(const char * path, const ShaderType & type);
+    bool createShader(const char * path, const ShaderType & type);
     Shader * getShader(const char * path);
 
 

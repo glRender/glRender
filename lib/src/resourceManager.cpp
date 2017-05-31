@@ -34,27 +34,28 @@ bool ResourceManager::hasShader(const char * path)
     return true;
 }
 
-bool ResourceManager::initShader(const char * path, const ShaderType & type)
+bool ResourceManager::createShader(const char * path, const ShaderType & type)
 {
     std::string key = std::string(path);
-    Shader * shader = new Shader(type);
 
-    bool isCompiled = false;
-    bool isLoadedFromFile = false;
+    std::ifstream file;
 
-    isLoadedFromFile = shader->loadFromFile(path);
-    if (isLoadedFromFile)
+    file.open(path);
+
+    if (!file.good() )
     {
-        isCompiled = shader->compile();
-    }
-
-    if (!isLoadedFromFile)
-    {
-        std::cout << "Can't load shader from file!" << std::endl;
+        std::cout << "Failed to open file: " << path << std::endl;
         return false;
     }
 
-    if (!isCompiled)
+    std::stringstream stream;
+    stream << file.rdbuf();
+    file.close();
+
+    std::string text = stream.str();
+
+    Shader * shader = new Shader(text.c_str(), type);
+    if (!shader->compile())
     {
         std::cout << "Can't compile shader!" << std::endl;
         return false;
