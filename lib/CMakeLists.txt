@@ -16,10 +16,9 @@ aux_source_directory(${GLAD_PATH} SRC_FILES)
 
 include_directories (libs/glad/include/ libs/ include/)
 add_library (glRender SHARED ${SRC_FILES})
-add_library (glRender_static STATIC ${SRC_FILES})
 
 target_include_directories (glRender PUBLIC include)
-target_include_directories (glRender_static PUBLIC include)
+target_link_libraries(glRender gcc_s gcc)
 
 # Refresh include directory
 file(REMOVE ${CMAKE_CURRENT_BINARY_DIR}/include)
@@ -32,8 +31,7 @@ INSTALL(DIRECTORY
     DESTINATION "include/glRender" COMPONENT dev)
 
 INSTALL(TARGETS 
-    "glRender" 
-    "glRender_static" 
+    "glRender"
     DESTINATION "lib")
 
 configure_file(Config.cmake.in
@@ -41,13 +39,6 @@ configure_file(Config.cmake.in
 
 configure_file(ConfigVersion.cmake.in
   "${CMAKE_CURRENT_BINARY_DIR}/glRenderConfigVersion.cmake" @ONLY)
-
-# install(FILES
-#   "${PROJECT_SOURCE_DIR}/src/simpleLib++.h"
-#   DESTINATION "include/SimpleLib++" COMPONENT dev)
-
-# install(TARGETS simpleLib++
-#   DESTINATION "lib" COMPONENT dev)
 
 if(WIN32 AND NOT CYGWIN)
   set(DEF_INSTALL_CMAKE_DIR CMake)

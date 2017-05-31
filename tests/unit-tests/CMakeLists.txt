@@ -14,5 +14,5 @@ set (SRC_FILES ${SRC_FILES}
 )
 
 add_executable(tests ${SRC_FILES})
-include_directories (${TEST_SRC_PATH} ${CATCH_PATH})
-target_link_libraries (tests glRender_static)
+include_directories (${TEST_SRC_PATH} ${CATCH_PATH} ../../lib/include/)
+target_link_libraries (tests glRender)
