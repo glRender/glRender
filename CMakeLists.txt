@@ -4,7 +4,7 @@ project("glRender")
 
 set (glRender_MAJOR_VERSION 0)
 set (glRender_MINOR_VERSION 8)
-set (glRender_PATCH_VERSION 5)
+set (glRender_PATCH_VERSION 7)
 set (glRender_VERSION ${glRender_MAJOR_VERSION}.${glRender_MINOR_VERSION}.${glRender_PATCH_VERSION})
 
 add_subdirectory (lib)
