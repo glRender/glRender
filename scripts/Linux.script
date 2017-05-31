@@ -46,6 +46,8 @@ with cd("./build"):
     """)
 
 [make_docs]
+if not exists("./build"):
+    run("scenarist.py run build")
 with cd("./build/lib/"):
     run("doxygen Doxyfile") 
 
