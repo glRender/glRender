@@ -18,7 +18,10 @@ include_directories (libs/glad/include/ libs/ include/)
 add_library (glRender SHARED ${SRC_FILES})
 
 target_include_directories (glRender PUBLIC include)
-target_link_libraries(glRender gcc_s gcc)
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
+    target_link_libraries(glRender gcc_s gcc)
+endif()
 
 # Refresh include directory
 file(REMOVE ${CMAKE_CURRENT_BINARY_DIR}/include)
