@@ -38,7 +38,7 @@ with cd("./build"):
                 echo "Image name: "${IMAGE_NAME}
                 REPO=./public/glRender/${IMAGE_NAME}
                 echo "Path to repo: "${REPO}
-                rsync glRender-*.deb jenkins@sogimu.fvds.ru:${REPO}
+                rsync -a --rsync-path="mkdir -p ${REPO} && rsync" glRender-*.deb jenkins@sogimu.fvds.ru:${REPO}
                 ssh jenkins@sogimu.fvds.ru "cd ${REPO}; ls; dpkg-scanpackages -m . | gzip --fast > Packages.gz"
             fi
         fi
