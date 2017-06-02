@@ -5,6 +5,7 @@
 
 namespace glRender {
 
+class AABBNodeVisualizator;
 
 class Mark : public IIntersectable
 {
@@ -32,6 +33,7 @@ public:
 private:
   Model * m_model;
   AABB * m_aabb;
+  AABBNodeVisualizator * m_aabbVisualizator;
 
   Vec3 m_color;
 

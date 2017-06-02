@@ -27,7 +27,7 @@ public:
     ~Model();
 
     void draw(CameraPtr camera);
-    void draw(CameraPtr camera, Mat4 && transforms);
+    void draw(CameraPtr camera, Mat4 transforms);
 
     inline Geometry* geometry()
     {

@@ -1,5 +1,7 @@
 #include "Mark.hpp"
 
+#include "aabbNodeVisualizator.hpp"
+
 namespace glRender {
 
 Mark::Mark(Vec3 color, float size, uint i, uint j, uint k)
@@ -34,6 +36,9 @@ Mark::Mark(Vec3 color, float size, uint i, uint j, uint k)
 
     m_model->setOrigin(Vec3(i * 3, j * 3 - 25, k * 3 - 25));
     m_aabb->setOrigin(m_model->origin());
+
+    m_aabbVisualizator = new AABBNodeVisualizator(m_aabb);
+    add(m_aabbVisualizator);
 }
 
 Mark::~Mark()

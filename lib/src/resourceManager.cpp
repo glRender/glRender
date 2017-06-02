@@ -78,7 +78,7 @@ ShaderProgram *ResourceManager::getShaderProgram(const char * pathToVerticesShad
     size_t key = hash(paths);
     if (m_shaderPrograms.find(key) == m_shaderPrograms.end())
     {
-        if (!createShaderProgram(pathToVerticesShader, pathToFragmentShader))
+        if (!createShaderProgram(pathToVerticesShader, pathToFragmentShader, isPath))
         {
             return nullptr;
         }
@@ -97,25 +97,33 @@ bool ResourceManager::hasShader(const char * path, bool isPath)
     return true;
 }
 
-bool ResourceManager::createShader(const char * path, const ShaderType & type, bool isPath)
+bool ResourceManager::createShader(const char * pathOrText, const ShaderType & type, bool isPath)
 {
-    std::string key = std::string(path);
+    std::string key = std::string(pathOrText);
+    std::string text;
 
-    std::ifstream file;
-
-    file.open(path);
-
-    if (!file.good())
+    if (isPath)
     {
-        std::cout << "Failed to open file: " << path << std::endl;
-        return false;
+        std::ifstream file;
+
+        file.open(pathOrText);
+
+        if (!file.good())
+        {
+            std::cout << "Failed to open file: " << pathOrText << std::endl;
+            return false;
+        }
+
+        std::stringstream stream;
+        stream << file.rdbuf();
+        file.close();
+
+        text = stream.str();
     }
-
-    std::stringstream stream;
-    stream << file.rdbuf();
-    file.close();
-
-    std::string text = stream.str();
+    else
+    {
+        text = pathOrText;
+    }
 
     Shader * shader = new Shader(text.c_str(), type);
     if (!shader->compile())

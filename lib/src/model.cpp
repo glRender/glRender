@@ -78,7 +78,7 @@ void Model::draw(CameraPtr camera)
     glBindVertexArray ( 0 );
 }
 
-void Model::draw(CameraPtr camera, Mat4 && transforms)
+void Model::draw(CameraPtr camera, Mat4 transforms)
 {
     glBindVertexArray ( m_vaoId );
 

@@ -22,8 +22,6 @@ PerspectiveCameraPtr camera;
 int counter = 0;
 clock_t start;
 
-
-
 Mark * np;
 //Mark * fp;
 //Line * l;
@@ -36,7 +34,7 @@ class Tran : public IUpdateable
 {
     void update() override
     {
-        transforms().rotateZ(0.1f);
+//        transforms().rotateZ(0.1f);
     }
 
 };
@@ -79,10 +77,10 @@ void init ()
 //    scene->addNode(m);
 
     Node * t = new Tran();
-    Node * t1 = new Tran1();
-    Node * t2 = new Tran2();
-    t1->add(t);
-    t2->add(t1);
+//    Node * t1 = new Tran1();
+//    Node * t2 = new Tran2();
+//    t1->add(t);
+//    t2->add(t1);
 
     for (int i=0; i<1; i++)
     {
@@ -147,7 +145,7 @@ void init ()
     }
     }
     }
-    scene->add(t2);
+    scene->add(t);
 
 //    scene->updateCache();
 
@@ -221,28 +219,56 @@ void key ( unsigned char key, int x, int y )
     if(key == 'a')
     {
         camera->setPosition( camera->position() - camera->right() * cameraMoveSpeed );
-        std::cout << "a" << std::endl;
+//        std::cout << "a" << std::endl;
     }
 
     // d
     if(key == 'd')
     {
         camera->setPosition( camera->position() + camera->right() * cameraMoveSpeed );
-        std::cout << "d" << std::endl;
+//        std::cout << "d" << std::endl;
     }
 
     // q
     if(key == 'q')
     {
         camera->setEulerAngles( camera->pitch(), camera->yaw() + cameraRotationSpeed, camera->roll() );
-        std::cout << 'q' << std::endl;
+//        std::cout << 'q' << std::endl;
     }
 
     // e
     if(key == 'e')
     {
         camera->setEulerAngles( camera->pitch(), camera->yaw() - cameraRotationSpeed, camera->roll() );
-        std::cout << "e" << std::endl;
+        //        std::cout << 'e' << std::endl;
+    }
+
+    // z
+    if(key == 'z')
+    {
+        camera->setPosition( camera->position() + camera->up() * cameraMoveSpeed );
+//        std::cout << "w" << std::endl;
+    }
+
+    // x
+    if(key == 'x')
+    {
+        camera->setPosition( camera->position() - camera->up() * cameraMoveSpeed );
+//        std::cout << "s" << std::endl;
+    }
+
+    // r
+    if(key == 'r')
+    {
+        camera->setEulerAngles( camera->pitch() + cameraRotationSpeed, camera->yaw(), camera->roll() );
+//        std::cout << 'q' << std::endl;
+    }
+
+    // f
+    if(key == 'f')
+    {
+        camera->setEulerAngles( camera->pitch() - cameraRotationSpeed, camera->yaw(), camera->roll() );
+        //        std::cout << 'e' << std::endl;
     }
 
 //    std::cout << "camera: " << camera->position().x << camera->position().y << camera->position().z << std::endl;
