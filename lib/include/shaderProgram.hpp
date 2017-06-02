@@ -26,13 +26,12 @@ struct Attribute
 class ShaderProgram
 {
 public:
-    ShaderProgram(const char * pathToVertexShader, const char * pathToFragmentShader);
+    ShaderProgram();
     ~ShaderProgram();
     uint32_t id();
-    void attachVertexShader(Shader * shader);
-    void attachFragmentShader(Shader * shader);
-    void detachVertexShader();
-    void detachFragmentShader();
+    void attach(ShaderType type, Shader * shader);
+    void detach(ShaderType type);
+    void detach();
     bool link();
     void use();
     void disable();
@@ -70,11 +69,6 @@ private:
     void setUniformValueByAddress(uint32_t index, Mat4 & value);
     void setUniformValueByAddress(uint32_t index, Texture & value);
 
-    friend class Model;
-
-    Shader * m_vertexShader = nullptr;
-    Shader * m_fragmentShader = nullptr;
-
     struct cmp_str
     {
        bool operator()(char const *a, char const *b)
@@ -82,6 +76,8 @@ private:
           return std::strcmp(a, b) < 0;
        }
     };
+
+    std::map<ShaderType, Shader *> m_shaders;
 
     // Map of attributes and their binding locations
     std::map<const char *, Attribute, cmp_str > attributesList;

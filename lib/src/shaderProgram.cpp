@@ -6,51 +6,14 @@
 
 namespace glRender {
 
-ShaderProgram::ShaderProgram(const char * pathToVertexShader, const char * pathToFragmentShader)
+ShaderProgram::ShaderProgram()
 {
     m_programId = glCreateProgram();
-
-    bool vertexShaderReady = false;
-    bool fragmentShaderReady = false;
-//    bool isShadersLinked = false;
-
-    Shader * vertexShader;
-    Shader * fragmentShader;
-
-    if (!ResourceManager::getInstance().hasShader(pathToVertexShader))
-    {
-        vertexShaderReady = ResourceManager::getInstance().createShader(pathToVertexShader, ShaderType::VertexShader);
-        if (!vertexShaderReady)
-        {
-            std::cout << "Can't init vertex shader!" <<std::endl;
-        }
-    }
-    vertexShader = ResourceManager::getInstance().getShader(pathToVertexShader);
-    std::cout << " * ShaderVertex " << vertexShader << std::endl;
-
-    if (!ResourceManager::getInstance().hasShader(pathToFragmentShader))
-    {
-        fragmentShaderReady = ResourceManager::getInstance().createShader(pathToFragmentShader, ShaderType::FragmentShander);
-        if (!fragmentShaderReady)
-        {
-            std::cout << "Can't init fragment shader!" <<std::endl;
-        }
-    }
-    fragmentShader = ResourceManager::getInstance().getShader(pathToFragmentShader);
-    std::cout << " * ShaderFragment " << fragmentShader << std::endl;
-
-    attachVertexShader(vertexShader);
-    attachFragmentShader(fragmentShader);
-    link();
 }
 
-
-// Destructor
 ShaderProgram::~ShaderProgram()
 {
-    detachVertexShader();
-    detachFragmentShader();
-
+    detach();
     // Delete the shader program from the graphics card memory to
     // free all the resources it's been using
     glDeleteProgram(m_programId);
@@ -61,68 +24,59 @@ uint32_t ShaderProgram::id()
     return m_programId;
 }
 
-void ShaderProgram::attachVertexShader(Shader *shader)
+void ShaderProgram::attach(ShaderType type, Shader * shader)
 {
-    m_vertexShader = shader;
     glAttachShader( m_programId, shader->id() );
+    m_shaders[type] = shader;
     std::cout << " * Vertex shader attached to programm " << m_programId << std::endl;
 }
 
-void ShaderProgram::attachFragmentShader(Shader *shader)
+void ShaderProgram::detach(ShaderType type)
 {
-    m_fragmentShader = shader;
-    glAttachShader( m_programId, shader->id() );
-    std::cout << " * Fragment shader attached to programm " << m_programId << std::endl;
+    if (m_shaders.find(type) != m_shaders.end())
+    {
+        Shader * shader = m_shaders[type];
+        glDetachShader(m_programId, shader->id());
+    }
 }
 
-void ShaderProgram::detachVertexShader()
+void ShaderProgram::detach()
 {
-    glDetachShader(m_programId, m_vertexShader->id());
-}
-
-void ShaderProgram::detachFragmentShader()
-{
-    glDetachShader(m_programId, m_fragmentShader->id());
+    for (auto & i : m_shaders)
+    {
+        detach(i.first);
+    }
 }
 
 // Method to link the shader program and display the link status
 bool ShaderProgram::link()
 {
-    // If we have at least two shaders (like a vertex shader and a fragment shader)...
-    if (m_vertexShader != nullptr && m_fragmentShader != nullptr)
+    // Perform the linking process
+    glLinkProgram(m_programId);
+
+    // Check the status
+    GLint linkStatus;
+    glGetProgramiv(m_programId, GL_LINK_STATUS, &linkStatus);
+    if (linkStatus == GL_FALSE)
     {
-        // Perform the linking process
-        glLinkProgram(m_programId);
+        GLint maxLength = 0;
+        glGetProgramiv(m_programId, GL_INFO_LOG_LENGTH, &maxLength);
 
-        // Check the status
-        GLint linkStatus;
-        glGetProgramiv(m_programId, GL_LINK_STATUS, &linkStatus);
-        if (linkStatus == GL_FALSE)
-        {
-            GLint maxLength = 0;
-            glGetProgramiv(m_programId, GL_INFO_LOG_LENGTH, &maxLength);
+        //The maxLength includes the NULL character
+        std::vector<GLchar> infoLog(maxLength);
+        glGetProgramInfoLog(m_programId, maxLength, &maxLength, &infoLog[0]);
 
-            //The maxLength includes the NULL character
-            std::vector<GLchar> infoLog(maxLength);
-            glGetProgramInfoLog(m_programId, maxLength, &maxLength, &infoLog[0]);
+        //We don't need the program anymore.
+        glDeleteProgram(m_programId);
 
-            //We don't need the program anymore.
-            glDeleteProgram(m_programId);
-
-            std::cout << "Shader program linking failed." << std::endl;
-        }
-        else
-        {
-            std::cout << "Shader program linking OK." << std::endl;
-
-            detachVertexShader();
-            detachFragmentShader();
-            return true;
-        }
+        std::cout << "Shader program linking failed." << std::endl;
     }
     else
     {
-        std::cout << "Can't link shaders" << std::endl;
+        std::cout << "Shader program linking OK." << std::endl;
+
+        detach();
+        return true;
     }
 
     return false;

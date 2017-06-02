@@ -9,7 +9,7 @@ enum class ShaderType
 {
 //    NoType,
     VertexShader,
-    FragmentShander
+    FragmentShader
 };
 
 class Shader

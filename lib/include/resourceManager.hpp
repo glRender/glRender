@@ -31,14 +31,15 @@ public:
 
 public:
     Texture *       getTexture(const char * path);
-    ShaderProgram * getShaderProgram(const char * pathToVerticesShader, const char * pathToFragmentShader);
-
-    bool hasShader(const char * path);
-    bool createShader(const char * path, const ShaderType & type);
-    Shader * getShader(const char * path);
+    Shader *        getShader(const char * path, bool isPath = true);
+    ShaderProgram * getShaderProgram(const char * pathToVerticesShader, const char * pathToFragmentShader, bool isPath = true);
 
 
 private:
+    bool hasShader(const char * path, bool isPath = true);
+    bool createShader(const char * path, const ShaderType & type, bool isPath = true);
+    bool            hasShaderProgram(const char * pathToVerticesShader, const char * pathToFragmentShader, bool isPath = true);
+    bool            createShaderProgram(const char * pathToVerticesShader, const char * pathToFragmentShader, bool isPath = true);
     ResourceManager() {}                    // Constructor? (the {} brackets) are needed here.
 
     // C++ 11
@@ -47,7 +48,7 @@ private:
     // we don't want.
 
     std::map<std::string, Texture *> m_textures;
-    std::map<std::string, ShaderProgram *> m_shaderPrograms;
+    std::map<size_t, ShaderProgram *> m_shaderPrograms;
     std::map<std::string, Shader *> m_shaders;
 
 };

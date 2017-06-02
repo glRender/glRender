@@ -6,13 +6,13 @@ namespace glRender {
 std::map<ShaderType, GLenum> shaderTypeToGLenumMap =
 {
     {ShaderType::VertexShader, GL_VERTEX_SHADER},
-    {ShaderType::FragmentShander, GL_FRAGMENT_SHADER}
+    {ShaderType::FragmentShader, GL_FRAGMENT_SHADER}
 };
 
 std::map<ShaderType, const char *> shaderTypeToCharMap =
 {
     {ShaderType::VertexShader, "Vertex"},
-    {ShaderType::FragmentShander, "Fragment"}
+    {ShaderType::FragmentShader, "Fragment"}
 };
 
 inline GLenum convertShaderTypeToGLenum(ShaderType type)

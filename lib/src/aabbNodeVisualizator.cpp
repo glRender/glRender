@@ -1,5 +1,7 @@
 #include "aabbNodeVisualizator.hpp"
 
+#include "resourceManager.hpp"
+
 namespace glRender {
 
 AABBNodeVisualizator::AABBNodeVisualizator(AABB * aabb) :
@@ -25,17 +27,19 @@ AABBNodeVisualizator::AABBNodeVisualizator(AABB * aabb) :
     "\
     ";
 
-    ShaderProgram * shaderProgram = new ShaderProgram(vertexShaderCode.c_str(), fragmentShaderCode.c_str());
-    shaderProgram->addAttribute<Vec3>("vertex");
+    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram(vertexShaderCode.c_str(), fragmentShaderCode.c_str(), false);
+    if (shaderProgram)
+    {
+        shaderProgram->addAttribute<Vec3>("vertex");
 
-    shaderProgram->addUniform<Mat4>("projection");
-    shaderProgram->addUniform<Mat4>("view");
-    shaderProgram->addUniform<Mat4>("model");
+        shaderProgram->addUniform<Mat4>("projection");
+        shaderProgram->addUniform<Mat4>("view");
+        shaderProgram->addUniform<Mat4>("model");
 
-    m_corner = new Model(geometry, textures, shaderProgram);
-    m_corner->setWireframeMode(true);
-    m_corner->setOrigin(0.0, 0.0, 0.0);
-
+        m_corner = new Model(geometry, textures, shaderProgram);
+        m_corner->setWireframeMode(true);
+        m_corner->setOrigin(0.0, 0.0, 0.0);
+    }
 
 }
 
