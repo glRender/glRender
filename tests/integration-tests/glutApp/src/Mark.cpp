@@ -22,16 +22,12 @@ Mark::Mark(Vec3 color, float size, uint i, uint j, uint k)
     shaderProgram->addUniform<Mat4>("projection");
     shaderProgram->addUniform<Mat4>("view");
     shaderProgram->addUniform<Mat4>("model");
-    shaderProgram->addUniform<float>("r");
-    shaderProgram->addUniform<float>("g");
-    shaderProgram->addUniform<float>("b");
+    shaderProgram->addUniform<Vec3>("color");
 
-    shaderProgram->setUniform<float>("r", m_color.x);
-    shaderProgram->setUniform<float>("g", m_color.y);
-    shaderProgram->setUniform<float>("b", m_color.z);
+    shaderProgram->setUniform<Vec3>("color", m_color);
 
     m_model = new Model(geometry, textures, shaderProgram);
-    m_model->setWireframeMode(true);
+//    m_model->setWireframeMode(true);
     m_model->setOrigin(0.0, 0.0, 0.0);
 
     m_model->setOrigin(Vec3(i * 3, j * 3 - 25, k * 3 - 25));
@@ -49,13 +45,13 @@ Mark::~Mark()
 void Mark::update()
 {
 //    m_model->rotate(0.1, Vec3::AXE_Y());
+    Vec3 pos = parentsTransforms() * m_model->origin();
+    m_aabb->setOrigin(pos);
 }
 
 void Mark::draw(CameraPtr camera)
 {
-    m_model->shaderProgram()->setUniform<float>("r", m_color.x);
-    m_model->shaderProgram()->setUniform<float>("g", m_color.y);
-    m_model->shaderProgram()->setUniform<float>("b", m_color.z);
+    m_model->shaderProgram()->setUniform<Vec3>("color", m_color);
 
     m_model->draw(camera, parentsTransforms());
 }
