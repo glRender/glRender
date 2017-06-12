@@ -66,7 +66,7 @@ void AABBNodeVisualizator::update()
 
 void AABBNodeVisualizator::draw(CameraPtr camera)
 {
-    Mat4 transforms = parentsTransforms();
+    Mat4 transforms/* = parentsTransforms()*/;
     Vec3 leftTop0 = m_aabb->origin() + Vec3(-m_aabb->halfSide(), m_aabb->halfSide(), -m_aabb->halfSide());
     m_corner->setOrigin(leftTop0);
     m_corner->draw(camera, transforms);

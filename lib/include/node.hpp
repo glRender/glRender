@@ -1,16 +1,13 @@
-#ifndef __NODE_HPP__
-#define __NODE_HPP__
+#pragma once
 
 #include "base.h"
-
-#include "camera.hpp"
-#include "boundingBox.hpp"
-#include "model.hpp"
+#include "mat4.hpp"
 
 namespace glRender
 {
-
-class Visitor;
+class NodeVisitor;
+class IBoundingBox;
+class Model;
 
 class Node
 {
@@ -22,7 +19,7 @@ public:
     };
 
     virtual ~Node();
-    virtual void accept(Visitor & v) = 0;
+    virtual void accept(NodeVisitor * v) = 0;
 
     void add(Node * node);
     std::vector<Node *> & childs();
@@ -47,5 +44,3 @@ private:
 };
 
 }
-
-#endif /* __NODE_HPP__ */

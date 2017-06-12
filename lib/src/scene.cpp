@@ -1,5 +1,9 @@
 #include "scene.hpp"
 
+#include "node.hpp"
+#include "nodeCacheAdder.hpp"
+#include "nodeCacheRemover.hpp"
+
 namespace glRender {
 
 Scene::Scene()
@@ -12,28 +16,20 @@ Scene::~Scene()
 
 }
 
-void Scene::updateCache()
-{
-    CacheNodeAdder v(m_updateables, m_drawables, m_intersectables);
-    traverse([&v](Node * node) {
-        node->accept(v);
-    });
-}
-
 void Scene::addToCache(Node * node)
 {
-    CacheNodeAdder v(m_updateables, m_drawables, m_intersectables);
-    node->accept(v);
+    NodeCacheAdder v(m_cache);
+    node->accept(&v);
     node->traverse([&v](Node * node) {
-        node->accept(v);
+        node->accept(&v);
     });
 }
 
-void Scene::removeFromCache(Node * p_node)
+void Scene::removeFromCache(Node * node)
 {
-    CacheNodeRemover v(m_updateables, m_drawables, m_intersectables);
-    p_node->traverse([&v](Node * node) {
-        node->accept(v);
+    NodeCacheRemover v(m_cache);
+    node->traverse([&v](Node * node) {
+        node->accept(&v);
     });
 }
 
@@ -68,62 +64,123 @@ CameraPtr Scene::camera()
 
 void Scene::traverse(std::function<void(Node * node)> handler)
 {
-    for (Node * node : m_childs)
+    for (auto & o : m_cache.nodes)
     {
-        node->traverse(handler);
+        handler(o);
     }
+}
+
+void Scene::traverse(std::function<void (IUpdateable *)> handler)
+{
+    for (auto & o : m_cache.updateables)
+    {
+        handler(o);
+    }
+}
+
+void Scene::traverse(std::function<void (IDrawable *)> handler)
+{
+    for (auto & o : m_cache.drawables)
+    {
+        handler(o);
+    }
+}
+
+void Scene::traverse(std::function<void (IIntersectable *)> handler)
+{
+    for (auto & o : m_cache.intersectables)
+    {
+        handler(o);
+    }
+}
+
+void Scene::traverse(std::function<void (IKeyPressable *)> handler)
+{
+    for (auto & o : m_cache.keyPressable)
+    {
+        handler(o);
+    }
+}
+
+std::vector<Node *> Scene::query(std::function<bool (const Node *)> condition)
+{
+    std::vector<Node *> result;
+    for (auto & o : m_cache.nodes)
+    {
+        if (condition(o))
+        {
+            result.push_back(o);
+        }
+    }
+    return result;
+}
+
+std::vector<IUpdateable *> Scene::query(std::function<bool (const IUpdateable *)> condition)
+{
+    std::vector<IUpdateable *> result;
+    for (auto & o : m_cache.updateables)
+    {
+        if (condition(o))
+        {
+            result.push_back(o);
+        }
+    }
+    return result;
+}
+
+std::vector<IDrawable *> Scene::query(std::function<bool (const IDrawable *)> condition)
+{
+    std::vector<IDrawable *> result;
+    for (auto & o : m_cache.drawables)
+    {
+        if (condition(o))
+        {
+            result.push_back(o);
+        }
+    }
+    return result;
+}
+
+std::vector<IIntersectable *> Scene::query(std::function<bool (const IIntersectable *)> condition)
+{
+    std::vector<IIntersectable *> result;
+    for (auto & o : m_cache.intersectables)
+    {
+        if (condition(o))
+        {
+            result.push_back(o);
+        }
+    }
+    return result;
+}
+
+std::vector<IKeyPressable *> Scene::query(std::function<bool (const IKeyPressable *)> condition)
+{
+    std::vector<IKeyPressable *> result;
+    for (auto & o : m_cache.keyPressable)
+    {
+        if (condition(o))
+        {
+            result.push_back(o);
+        }
+    }
+    return result;
 }
 
 void Scene::drawFrame()
 {
-    for (const auto & node : m_drawables)
+    for (const auto & node : m_cache.drawables)
     {
-        node.second->draw(camera());
+        node->draw(camera());
     }
 }
 
 void Scene::update()
 {
-    for (const auto & node : m_updateables)
+    for (const auto & node : m_cache.updateables)
     {
-        node.second->update();
+        node->update();
     }
-}
-
-//std::vector<Node *> Scene::query(std::function<bool (const Node *)> condition)
-//{
-//    std::vector<glRender::Node *> result;
-//    for (auto child : m_childs)
-//    {
-//        auto sample = child->query(condition);
-//        result.insert(result.end(), sample.begin(), sample.end());
-//    }
-//    return result;
-//}
-
-//std::vector<IUpdateable *> Scene::query(std::function<bool (IUpdateable *)> condition)
-//{
-//    std::vector<IUpdateable *> result;
-//    return result;
-//}
-
-//std::vector<IDrawable *> Scene::query(std::function<bool (IDrawable *)> condition)
-//{
-//    std::vector<IDrawable *> result;
-//    return result;
-//}
-
-std::vector<IIntersectable *> Scene::query(std::function<bool (const IIntersectable * o)> condition) const
-{
-    std::vector<IIntersectable *> result;
-    for (auto & o : m_intersectables)
-    {
-        if (condition(o.second))
-        {
-            result.push_back(o.second);
-        }
-    }
-    return result;
 }
 
 }

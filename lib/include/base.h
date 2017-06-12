@@ -24,6 +24,7 @@
 #include <vector>
 #include <list>
 #include <unordered_map>
+#include <forward_list>
 #include <cstring>
 #include <stdint.h>
 
