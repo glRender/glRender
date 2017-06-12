@@ -5,7 +5,7 @@
 
 namespace glRender {
 
-class BrickBox : public IDrawable
+class BrickBox : public NodeMixedWith<IUpdateable, IDrawable>
 {
 public:
   BrickBox();

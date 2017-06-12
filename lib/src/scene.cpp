@@ -183,4 +183,11 @@ void Scene::update()
     }
 }
 
+void Scene::processKeyboardsKeys(IKeyPressable::KeyboardKey key)
+{
+    traverse([&key](IKeyPressable * mixin) {
+        mixin->onKeyPress(key);
+    });
+}
+
 }

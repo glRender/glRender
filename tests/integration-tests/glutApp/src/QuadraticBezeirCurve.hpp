@@ -5,7 +5,7 @@
 
 namespace glRender {
 
-class QuadraticBezeirCurve : public IDrawable
+class QuadraticBezeirCurve : public NodeMixedWith<IUpdateable, IDrawable>
 {
 public:
   QuadraticBezeirCurve(Vec3 p0, Vec3 p1, Vec3 p2, uint segmentsNumber, float r, float g, float b);

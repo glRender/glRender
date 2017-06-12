@@ -5,7 +5,7 @@
 
 namespace glRender {
 
-class WoodenBox : public IDrawable
+class WoodenBox : public NodeMixedWith<IUpdateable, IDrawable>
 {
 public:
   WoodenBox();

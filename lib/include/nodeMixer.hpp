@@ -38,13 +38,31 @@ public:
     virtual void onMouseUp(RayPtr ray, CameraPtr camera) = 0;
     virtual void onMouseDown(RayPtr ray, CameraPtr camera) = 0;
     virtual void onMouseMove(Vec3 & toPosition) = 0;
-    virtual void onIntersection(NodeMixedWith<IUpdateable, IDrawable, IIntersectable> * o) = 0;
+//    virtual void onIntersection(NodeMixedWith<IUpdateable, IDrawable, IIntersectable> * o) = 0;
 };
 
 class IKeyPressable
 {
 public:
-    virtual void onKeyPress() = 0;
+    enum class KeyboardKey
+    {
+        Q,
+        W,
+        E,
+        R,
+        T,
+        A,
+        S,
+        D,
+        F,
+        G,
+        Z,
+        X,
+        C,
+        V
+    };
+
+    virtual void onKeyPress(KeyboardKey key) = 0;
 };
 
 template<typename T0>

@@ -7,7 +7,7 @@ namespace glRender {
 
 class AABBNodeVisualizator;
 
-class Mark : public IIntersectable
+class Mark : public NodeMixedWith<IUpdateable, IDrawable, IIntersectable>
 {
 public:
   Mark(Vec3 color, float size, uint i, uint j, uint k);
@@ -20,9 +20,9 @@ public:
   Model * model() const;
   IBoundingBox * bb() const override;
 
-  void onIntersection(IIntersectable * o) override
-  {
-  }
+//  void onIntersection(IIntersectable * o) override
+//  {
+//  }
 
   void onMouseUp(RayPtr ray, CameraPtr camera) override;
   void onMouseDown(RayPtr ray, CameraPtr camera) override;

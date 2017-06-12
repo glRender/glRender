@@ -30,7 +30,77 @@ Scene * scene;
 
 NodePickerPtr nodePicker;
 
-class Tran : public IUpdateable
+class CameraNode : public NodeMixedWith<IUpdateable, IKeyPressable>
+{
+public:
+    CameraNode(CameraPtr camera) :
+        m_camera(camera)
+    {
+    }
+
+    void update() override
+    {
+    }
+
+    void onKeyPress(KeyboardKey key) override
+    {
+        switch(key)
+        {
+        case IKeyPressable::KeyboardKey::W: {
+            m_camera->setPosition( m_camera->position() + m_camera->front() * cameraMoveSpeed );
+        }; break;
+
+        case IKeyPressable::KeyboardKey::S: {
+            m_camera->setPosition( m_camera->position() - m_camera->front() * cameraMoveSpeed );
+        }; break;
+
+        case IKeyPressable::KeyboardKey::A: {
+            m_camera->setPosition( m_camera->position() - m_camera->right() * cameraMoveSpeed );
+        }; break;
+
+        case IKeyPressable::KeyboardKey::D: {
+            m_camera->setPosition( m_camera->position() + m_camera->right() * cameraMoveSpeed );
+        }; break;
+
+        case IKeyPressable::KeyboardKey::Q: {
+            m_camera->setEulerAngles( m_camera->pitch(), m_camera->yaw() + cameraRotationSpeed, m_camera->roll() );
+        }; break;
+
+        case IKeyPressable::KeyboardKey::E: {
+            m_camera->setEulerAngles( m_camera->pitch(), m_camera->yaw() - cameraRotationSpeed, m_camera->roll() );
+        }; break;
+
+        case IKeyPressable::KeyboardKey::Z: {
+            m_camera->setPosition( m_camera->position() + m_camera->up() * cameraMoveSpeed );
+        }; break;
+
+        case IKeyPressable::KeyboardKey::X: {
+            m_camera->setPosition( m_camera->position() - m_camera->up() * cameraMoveSpeed );
+        }; break;
+
+        case IKeyPressable::KeyboardKey::R: {
+            m_camera->setEulerAngles( m_camera->pitch() + cameraRotationSpeed, m_camera->yaw(), m_camera->roll() );
+        }; break;
+
+        case IKeyPressable::KeyboardKey::F: {
+            m_camera->setEulerAngles( m_camera->pitch() - cameraRotationSpeed, m_camera->yaw(), camera->roll() );
+        }; break;
+
+        default: {
+
+        }
+
+        }
+    }
+
+private:
+    CameraPtr m_camera;
+    float cameraMoveSpeed = 0.3f;
+    float cameraRotationSpeed = 5.0f;
+
+};
+
+class Tran : public NodeMixedWith<IUpdateable>
 {
     void update() override
     {
@@ -75,6 +145,8 @@ void init ()
 //    m->model()->setWireframeMode(false);
 //    m->setOrigin(0.0f, 0.0f, -3.0f);
 //    scene->addNode(m);
+
+    scene->add(new CameraNode(camera));
 
     Node * t = new Tran();
 //    Node * t1 = new Tran1();
@@ -197,78 +269,64 @@ void key ( unsigned char key, int x, int y )
     if ( key == 27 )    //  quit requested
         exit ( 0 );
 
-    float cameraMoveSpeed = 0.3f;
-    float cameraRotationSpeed = 5.0f;
-
     // w
     if(key == 'w')
     {
-        camera->setPosition( camera->position() + camera->front() * cameraMoveSpeed );
-//        std::cout << "w" << std::endl;
-
+        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::W);
     }
 
     // s
     if(key == 's')
     {
-        camera->setPosition( camera->position() - camera->front() * cameraMoveSpeed );
-//        std::cout << "s" << std::endl;
+        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::S);
     }
 
     // a
     if(key == 'a')
     {
-        camera->setPosition( camera->position() - camera->right() * cameraMoveSpeed );
-//        std::cout << "a" << std::endl;
+        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::A);
     }
 
     // d
     if(key == 'd')
     {
-        camera->setPosition( camera->position() + camera->right() * cameraMoveSpeed );
-//        std::cout << "d" << std::endl;
+        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::D);
     }
 
     // q
     if(key == 'q')
     {
-        camera->setEulerAngles( camera->pitch(), camera->yaw() + cameraRotationSpeed, camera->roll() );
-//        std::cout << 'q' << std::endl;
+        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::Q);
     }
 
     // e
     if(key == 'e')
     {
-        camera->setEulerAngles( camera->pitch(), camera->yaw() - cameraRotationSpeed, camera->roll() );
-        //        std::cout << 'e' << std::endl;
+        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::E);
     }
 
     // z
     if(key == 'z')
     {
-        camera->setPosition( camera->position() + camera->up() * cameraMoveSpeed );
-//        std::cout << "w" << std::endl;
+        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::Z);
     }
 
     // x
     if(key == 'x')
     {
-        camera->setPosition( camera->position() - camera->up() * cameraMoveSpeed );
-//        std::cout << "s" << std::endl;
+        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::X);
     }
 
     // r
     if(key == 'r')
     {
-        camera->setEulerAngles( camera->pitch() + cameraRotationSpeed, camera->yaw(), camera->roll() );
-//        std::cout << 'q' << std::endl;
+        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::R);
     }
 
     // f
     if(key == 'f')
     {
-        camera->setEulerAngles( camera->pitch() - cameraRotationSpeed, camera->yaw(), camera->roll() );
-        //        std::cout << 'e' << std::endl;
+        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::F);
     }
 
 //    std::cout << "camera: " << camera->position().x << camera->position().y << camera->position().z << std::endl;

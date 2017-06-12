@@ -26,11 +26,11 @@ public:
     bool hasCamera();
     CameraPtr camera();
 
-    void traverse(std::function<void(Node * node)> handler);
-    void traverse(std::function<void(IUpdateable * o)> handler);
-    void traverse(std::function<void(IDrawable * o)> handler);
-    void traverse(std::function<void(IIntersectable * o)> handler);
-    void traverse(std::function<void(IKeyPressable * o)> handler);
+    void traverse(std::function<void(Node *)> handler);
+    void traverse(std::function<void(IUpdateable *)> handler);
+    void traverse(std::function<void(IDrawable *)> handler);
+    void traverse(std::function<void(IIntersectable *)> handler);
+    void traverse(std::function<void(IKeyPressable *)> handler);
 
     std::vector<Node *>           query(std::function<bool(const Node *)> condition);
     std::vector<IUpdateable *>    query(std::function<bool(const IUpdateable *)> condition);
@@ -40,6 +40,7 @@ public:
 
     void drawFrame();
     void update();
+    void processKeyboardsKeys(IKeyPressable::KeyboardKey key);
 
 private:
     std::vector<Node * > m_childs;

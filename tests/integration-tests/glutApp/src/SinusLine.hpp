@@ -4,7 +4,7 @@
 
 namespace glRender {
 
-class SinusLine : public IDrawable
+class SinusLine : public NodeMixedWith<IUpdateable, IDrawable>
 {
 public:
   SinusLine(Vec3 p0, Vec3 p1, uint segmentsNumber, float r, float g, float b);

@@ -4,7 +4,7 @@
 
 namespace glRender {
 
-class Line : public IDrawable
+class Line : public NodeMixedWith<IUpdateable, IDrawable>
 {
 public:
   Line(Vec3 p0, Vec3 p1, uint segmentsNumber, float r, float g, float b);

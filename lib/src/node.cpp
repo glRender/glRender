@@ -4,6 +4,7 @@
 #include "camera.hpp"
 #include "boundingBox.hpp"
 #include "model.hpp"
+#include "nodeTransformsAccumulator.hpp"
 
 namespace glRender {
 
@@ -67,14 +68,14 @@ void Node::subscribeTo(Node::Event event, std::function<void (Node *)> handler)
 Mat4 Node::parentsTransforms()
 {
     Mat4 result;
-//    TransformsAccumulator v(result);
-//    Node * p = parent();
+    NodeTransformsAccumulator v(result);
+    Node * p = parent();
 
-//    while (p != nullptr)
-//    {
-//        p->accept(v);
-//        p = p->parent();
-//    }
+    while (p != nullptr)
+    {
+        p->accept(&v);
+        p = p->parent();
+    }
     return result;
 }
 
