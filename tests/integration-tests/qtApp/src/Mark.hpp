@@ -24,8 +24,8 @@ public:
 //  {
 //  }
 
-  void onMouseUp(RayPtr ray, CameraPtr camera) override;
-  void onMouseDown(RayPtr ray, CameraPtr camera) override;
+  void onMouseUp(Vec3 & position, RayPtr ray, Camera * camera) override;
+  void onMouseDown(Vec3 & position, RayPtr ray, Camera * camera) override;
   void onMouseMove(Vec3 & toPosition) override;
 
   void changeColor();

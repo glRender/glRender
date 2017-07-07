@@ -33,8 +33,8 @@ Mark::Mark(Vec3 color, float size, uint i, uint j, uint k)
     m_model->setOrigin(Vec3(i * 3, j * 3 - 25, k * 3 - 25));
     m_aabb->setOrigin(m_model->origin());
 
-    m_aabbVisualizator = new AABBNodeVisualizator(m_aabb);
-    add(m_aabbVisualizator);
+//    m_aabbVisualizator = new AABBNodeVisualizator(m_aabb);
+//    add(m_aabbVisualizator);
 }
 
 Mark::~Mark()
@@ -44,17 +44,17 @@ Mark::~Mark()
 
 void Mark::update()
 {
-    transforms().rotate(0.1, Vec3::AXE_Y());
-    transformsChanged();
+//    transforms().rotate(0.1, Vec3::AXE_Y());
+//    transformsChanged();
 
-    Vec3 pos = parentsTransforms() * m_model->origin();
-    m_aabb->setOrigin(pos);
+//    Vec3 pos = parentsTransforms() * m_model->origin();
+//    m_aabb->setOrigin(pos);
 }
 
 void Mark::draw(Camera * camera)
 {
     m_model->shaderProgram()->setUniform<Vec3>("color", m_color);
-    m_model->setGlobalMatrix(globalTransforms());
+    m_model->setParentsMatrix(globalTransforms());
     m_model->draw(camera);
 }
 
@@ -73,7 +73,7 @@ IBoundingBox * Mark::bb() const
     return m_aabb;
 }
 
-void Mark::onMouseDown(RayPtr ray, CameraPtr camera)
+void Mark::onMouseDown(Vec3 & position, RayPtr ray, Camera * camera)
 {
     changeColor();
 
@@ -100,7 +100,7 @@ void Mark::onMouseDown(RayPtr ray, CameraPtr camera)
 
 }
 
-void Mark::onMouseUp(RayPtr ray, CameraPtr camera)
+void Mark::onMouseUp(Vec3 & position, RayPtr ray, Camera * camera)
 {
     m_isSelected = false;
 }

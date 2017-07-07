@@ -70,7 +70,7 @@ IBoundingBox * Mark::bb() const
     return m_aabb;
 }
 
-void Mark::onMouseDown(RayPtr ray, CameraPtr camera)
+void Mark::onMouseDown(Vec3 & position, RayPtr ray, Camera * camera)
 {
     changeColor();
 
@@ -97,7 +97,7 @@ void Mark::onMouseDown(RayPtr ray, CameraPtr camera)
 
 }
 
-void Mark::onMouseUp(RayPtr ray, CameraPtr camera)
+void Mark::onMouseUp(Vec3 & position, RayPtr ray, Camera * camera)
 {
     m_isSelected = false;
 }

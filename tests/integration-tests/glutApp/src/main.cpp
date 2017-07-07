@@ -17,12 +17,12 @@ using namespace glRender;
 
 Render * render;
 
-PerspectiveCamera * camera;
+Camera * camera;
 
 int counter = 0;
 clock_t start;
 
-Mark * np;
+//Mark * np;
 //Mark * fp;
 //Line * l;
 
@@ -181,7 +181,7 @@ void init ()
     scene = new Scene();
     scene->setCamera(camera);
 
-//    nodePicker = NodePickerPtr(new NodePicker(camera, scene));
+    nodePicker = std::make_shared<NodePicker>(camera, scene);
 
     srand( time(0) );
 
@@ -191,7 +191,7 @@ void init ()
 //    scene->addNode(m);
 
 
-//    Node * t = new Tran();
+    Node * t = new Tran();
 
 //    Node * t1 = new Tran1();
 
@@ -228,12 +228,12 @@ void init ()
 //        } else
 //        if ((int)(rand() % 3) == 0)
 //        {
-//            Mark * m = new Mark(Vec3(0,1,0),0.7,i,j,k);
+            Mark * m = new Mark(Vec3(0,1,0),0.7,i,j,k);
 //            Mat4 mm = camera->projectionMatrix();
 //            m->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
 
-//            m->model()->setOrigin(Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, 0));
-//            t->add(m);
+            m->model()->setOrigin(Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50)) - 25));
+            t->add(m);
 
 //        }
 //        else
@@ -270,9 +270,9 @@ void init ()
     }
     }
     }
-//    scene->add(t);
+    scene->add(t);
 
-    Mark * mmm = new Mark(Vec3(0,1,0),1,0,0,0);
+//    Mark * mmm = new Mark(Vec3(0,1,0),1,0,0,0);
     CameraNode * cn = new CameraNode(camera);
 
 //    Mark * aaa = new Mark(Vec3(1,0,0),0.05,0,0,5);
@@ -291,7 +291,7 @@ void init ()
 //        tmp = m;
 //    }
 
-    scene->add(mmm);
+//    scene->add(mmm);
 
 //    cn->add(aaa);
 
@@ -415,59 +415,21 @@ void key ( unsigned char key, int x, int y )
     glutPostRedisplay();
 }
 
-IIntersectable * pressedNode = nullptr;
-float pressedNodeDistance = 0;
-
 void mouse(int button, int state, int x, int y)
 {
     printf("%d, %d\n", x, y);
     std::cout << "" << std::endl;
 
     Vec2 normDeviceCoords(
-        2.0f * (float)x / WINDOW_WIDTH - 1.0f,
-        1.0f - 2.0f * (float)y / WINDOW_HEIGHT );
-
-    RayPtr ray = nodePicker->ray(normDeviceCoords);
-
-//    AbstractBuffer * b = l->model()->geometry()->get("vertex");
-//    Buffer<Vec3> * a = dynamic_cast<Buffer<Vec3> *>(b);
-//    a->rewrite(0, ray->origin());
-//    a->rewrite(1, ray->target());
+        (float)x / WINDOW_WIDTH,
+        (float)y / WINDOW_HEIGHT);
 
     if (state == GLUT_DOWN)
     {
-        auto nodes = scene->query([ray, normDeviceCoords](const IIntersectable * o) {
-            return o->intersects(ray);
-        });
-
-        std::cout << nodes.size() << std::endl;
-
-        IIntersectable * nearestNode = nullptr;
-        float nearestNodeDistance = camera->farPlane() + 1.0f;
-
-        for (auto & node : nodes)
-        {
-            float distance = node->bb()->origin().distance(camera->position());
-            if (distance < nearestNodeDistance)
-            {
-                nearestNode = node;
-                nearestNodeDistance = distance;
-            }
-        }
-
-        pressedNode = nearestNode;
-        pressedNodeDistance = nearestNodeDistance;
-
-        if (pressedNode != nullptr)
-        {
-//            pressedNode->onMouseDown(ray, camera);
-        }
+        nodePicker->mouseDownUnderNearest(normDeviceCoords);
     } else if (state == GLUT_UP)
     {
-        if (pressedNode != nullptr)
-        {
-//            pressedNode->onMouseUp(ray, camera);
-        }
+        nodePicker->mouseUpUnderNearest(normDeviceCoords);
     }
 
     glutPostRedisplay();
@@ -476,18 +438,12 @@ void mouse(int button, int state, int x, int y)
 
 void mouseMotion(int x, int y)
 {
-    if (pressedNode != nullptr)
-    {
-        Vec2 normDeviceCoords(
-            2.0f * (float)x / WINDOW_WIDTH - 1.0f,
-            1.0f - 2.0f * (float)y / WINDOW_HEIGHT );
+    Vec2 normDeviceCoords(
+        (float)x / WINDOW_WIDTH,
+        (float)y / WINDOW_HEIGHT);
 
-        Vec3 newPos = nodePicker->coordOnDistance(normDeviceCoords, pressedNodeDistance);
-        pressedNode->onMouseMove(newPos);
-    }
-
+    nodePicker->mouseMoveUnderNearest(normDeviceCoords);
     glutPostRedisplay();
-
 }
 
 int main ( int argc, char * argv [] )
