@@ -12,7 +12,8 @@ class PerspectiveCamera : public Camera
 {
 public:
     PerspectiveCamera(float fieldOfView, float aspectRatio, float nearPlane, float farPlane);
-    void calculateProjectionMatrix();
+    void calculateProjectionMatrix() override;
+    void init();
 
     float fieldOfView() const;
     void setFieldOfView(float angle);

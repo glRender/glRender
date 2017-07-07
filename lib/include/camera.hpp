@@ -19,7 +19,6 @@ public:
     void lookAt(const Vec3 & position, const Vec3 & target, const Vec3 & up);
 
     const Mat4 & projectionMatrix() const;
-//    const Mat4 & transformationMatrix() const;
 
     const Vec3 & position() const;
     const Vec3 & target() const;
@@ -55,7 +54,6 @@ public:
 
 protected:
     Mat4 m_projectionMatrix;
-//    Mat4 m_transformationMatrix;
 
     Mat4 m_localMatrix;
     Mat4 m_parentsMatrix;

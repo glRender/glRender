@@ -6,7 +6,7 @@ PerspectiveCamera::PerspectiveCamera(float fieldOfView, float aspectRatio, float
     m_fieldOfView(fieldOfView),
     m_aspectRatio(aspectRatio)
 {
-    calculateProjectionMatrix();
+    init();
 }
 
 void PerspectiveCamera::calculateProjectionMatrix()
@@ -37,6 +37,11 @@ void PerspectiveCamera::calculateProjectionMatrix()
 
     m_projectionMatrix = projectionMatrix;
 
+}
+
+void PerspectiveCamera::init()
+{
+    calculateProjectionMatrix();
 }
 
 float PerspectiveCamera::fieldOfView() const
