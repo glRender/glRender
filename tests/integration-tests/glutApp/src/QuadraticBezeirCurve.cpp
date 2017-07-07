@@ -44,7 +44,7 @@ void QuadraticBezeirCurve::update()
     m_model->rotate(0.1, Vec3::AXE_Y());
 }
 
-void QuadraticBezeirCurve::draw(CameraPtr camera)
+void QuadraticBezeirCurve::draw(Camera * camera)
 {
     m_model->shaderProgram()->setUniform<float>("r", m_r);
     m_model->shaderProgram()->setUniform<float>("g", m_g);

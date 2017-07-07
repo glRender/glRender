@@ -28,7 +28,7 @@ void Camera::lookAt(const Vec3 & position, const Vec3 & target, const Vec3 & up)
     view.setRow(2, Vec4(Z.x, Z.y, Z.z, -Z.dot(position)));
     view.setRow(3, Vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-    m_transformationMatrix = view;
+    setLocalMatrix(view);
 
     m_position = position;
     m_target = target;
@@ -45,10 +45,10 @@ const Mat4 & Camera::projectionMatrix() const
 	return m_projectionMatrix;
 }
 
-const Mat4 & Camera::transformationMatrix() const
-{
-    return m_transformationMatrix;
-}
+//const Mat4 & Camera::transformationMatrix() const
+//{
+//    return m_transformationMatrix;
+//}
 
 const Vec3 & Camera::position() const
 {
@@ -160,6 +160,38 @@ void Camera::setEulerAngles(float pitch, float yaw, float roll)
     m_pitch = pitch;
     m_yaw = yaw;
     m_roll = roll;
+}
+
+void Camera::setLocalMatrix(const Mat4 & m)
+{
+    m_localMatrix = m;
+    m_globalMatrix = m_localMatrix * m_parentsMatrix;
+}
+
+void Camera::setParentsMatrix(const Mat4 &m)
+{
+    m_parentsMatrix = m;
+    m_globalMatrix = m_localMatrix * m_parentsMatrix;
+}
+
+void Camera::setGlobalMatrix(const Mat4 & m)
+{
+    m_globalMatrix = m;
+}
+
+const Mat4 &Camera::localMatrix() const
+{
+    return m_localMatrix;
+}
+
+const Mat4 &Camera::parentsMatrix() const
+{
+    return m_parentsMatrix;
+}
+
+const Mat4 & Camera::globalMatrix() const
+{
+    return m_globalMatrix;
 }
 
 float Camera::pitch() const

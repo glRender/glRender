@@ -9,6 +9,11 @@ void Positionable::setOrigin(const Vec3 & pos)
     translate( delta );
 }
 
+Mat4 &Positionable::transforms()
+{
+    return m_localMatrix;
+}
+
 void Positionable::setOrigin(const float x, const float y, const float z)
 {
     setOrigin( Vec3(x, y, z) );
@@ -16,14 +21,16 @@ void Positionable::setOrigin(const float x, const float y, const float z)
 
 const Vec3 Positionable::origin() const
 {
-    Vec4 position = m_transformationMatrix * Vec4(0,0,0,1);
+//    Vec4 position = m_transformationMatrix * Vec4(0,0,0,1);
+    Vec4 position = m_localMatrix * Vec4(0,0,0,1);
     Vec3 resultPosition(position.x, position.y, position.z);
     return resultPosition;
 }
 
 void Positionable::translate(const float x, const float y, const float z)
 {
-    m_transformationMatrix = m_transformationMatrix.translate(x, y, z);
+//    m_transformationMatrix = m_transformationMatrix.translate(x, y, z);
+    setLocalMatrix( m_localMatrix.translate(x, y, z) );
 }
 
 void Positionable::translate(const Vec3 & pos)
@@ -33,7 +40,9 @@ void Positionable::translate(const Vec3 & pos)
 
 void Positionable::rotate(const float value, const float x, const float y, const float z)
 {
-    m_transformationMatrix = m_transformationMatrix.rotate( value, x, y, z );
+//    m_transformationMatrix = m_transformationMatrix.rotate( value, x, y, z );
+
+    setLocalMatrix( m_localMatrix.rotate(value, x, y, z) );
     m_modelRotationMatrix     = m_modelRotationMatrix.rotate( value, x, y, z );
 
 }
@@ -43,15 +52,15 @@ void Positionable::rotate(const float value, const Vec3 & v)
     Positionable::rotate( value, v.x, v.y, v.z );
 }
 
-void Positionable::setTransformationMatrix(const Mat4 & matrix)
-{
-    m_transformationMatrix = matrix;
-}
+//void Positionable::setTransformationMatrix(const Mat4 & matrix)
+//{
+//    m_transformationMatrix = matrix;
+//}
 
-const Mat4& Positionable::transformationMatrix() const
-{
-    return m_transformationMatrix;
-}
+//const Mat4& Positionable::transformationMatrix() const
+//{
+//    return m_transformationMatrix;
+//}
 
 const Vec3 Positionable::up() const
 {
@@ -92,6 +101,38 @@ const Vec3 Positionable::rightOrig() const
     Vec3 right(m_right.x, m_right.y, m_right.z);
     return right;
 
+}
+
+void Positionable::setLocalMatrix(const Mat4 & m)
+{
+    m_localMatrix = m;
+    m_globalMatrix = m_localMatrix * m_parentsMatrix;
+}
+
+void Positionable::setParentsMatrix(const Mat4 & m)
+{
+    m_parentsMatrix = m;
+    m_globalMatrix = m_localMatrix * m_parentsMatrix;
+}
+
+void Positionable::setGlobalMatrix(const Mat4 & m)
+{
+    m_globalMatrix = m;
+}
+
+const Mat4 & Positionable::localMatrix() const
+{
+    return m_localMatrix;
+}
+
+const Mat4 &Positionable::parentsMatrix() const
+{
+    return m_parentsMatrix;
+}
+
+const Mat4 & Positionable::globalMatrix() const
+{
+    return m_globalMatrix;
 }
 
 }

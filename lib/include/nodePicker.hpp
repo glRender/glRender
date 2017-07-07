@@ -37,7 +37,7 @@ public:
         eyeCoords.z = -1.0f;
         eyeCoords.w = 0.0f;
 
-        Mat4 t = m_camera->transformationMatrix();
+        Mat4 t = m_camera->globalMatrix();
         t.invert();
         Vec4 tmp = t * eyeCoords;
         Vec3 worldCoords(tmp.x, tmp.y, tmp.z);
@@ -60,7 +60,7 @@ public:
         eyeCoords.z = -1.0f;
         eyeCoords.w = 0.0f;
 
-        Mat4 t = m_camera->transformationMatrix();
+        Mat4 t = m_camera->globalMatrix();
         t.invert();
         Vec4 tmp = t * eyeCoords;
         Vec3 worldCoords(tmp.x, tmp.y, tmp.z);

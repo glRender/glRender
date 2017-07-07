@@ -14,7 +14,7 @@ public:
   ~Mark();
 
   void update() override;
-  void draw(CameraPtr camera) override;
+  void draw(Camera * camera) override;
   bool intersects(const RayPtr ray) const override;
 
   Model * model() const;
@@ -30,8 +30,8 @@ public:
 
   void changeColor();
 
-private:
   Model * m_model;
+private:
   AABB * m_aabb;
   AABBNodeVisualizator * m_aabbVisualizator;
 

@@ -30,7 +30,7 @@ private:
 private:
     Render * render = nullptr;
     Scene * scene = nullptr;
-    CameraPtr camera;
+    Camera * camera;
     NodePicker * nodePicker = nullptr;
 
     QTimer m_drawUpdater;

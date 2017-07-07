@@ -10,7 +10,7 @@ namespace glRender {
 
 Node::~Node()
 {
-    for (Node * n : m_childs)
+    for (auto & n : m_childs)
     {
         delete n;
     }
@@ -23,28 +23,28 @@ void Node::add(Node * node)
     notifyUp(Event::ADD, node);
 }
 
-std::vector<Node * > & Node::childs()
+std::vector<Node *> & Node::childs()
 {
-	return m_childs;
+    return m_childs;
 }
 
-Node * Node::parent()
+Node * Node::parent() const
 {
     return m_parent;
 }
 
 void Node::traverse(std::function<void(Node * node)> handler)
 {
-	handler(this);
+    handler(this);
     for (auto & o : m_childs)
-	{
+    {
         o->traverse(handler);
     }
 }
 
-std::vector<glRender::Node *> glRender::Node::query(std::function<bool (const glRender::Node *)> condition)
+std::vector<Node *> Node::query(std::function<bool (const Node *)> condition)
 {
-    std::vector<glRender::Node *> result;
+    std::vector<Node *> result;
     for (auto node : m_childs)
     {
         auto sample = node->query(condition);
@@ -65,18 +65,56 @@ void Node::subscribeTo(Node::Event event, std::function<void (Node *)> handler)
     eventHandlers[event] = handler;
 }
 
-Mat4 Node::parentsTransforms()
+const Mat4 Node::parentsTransforms()
 {
-    Mat4 result;
-    NodeTransformsAccumulator v(result);
-    Node * p = parent();
-
-    while (p != nullptr)
+    if (m_parent)
     {
-        p->accept(&v);
-        p = p->parent();
+        if (m_parent->m_transformsChanged == true)
+        {
+            return m_parent->parentsTransforms() * m_parent->m_localTransforms;
+        }
+        return m_parent->m_globalTransforms;
     }
-    return result;
+    return Mat4();
+}
+
+const Mat4 & Node::globalTransforms()
+{
+    if (m_transformsChanged)
+    {
+        updateGlobalTransforms();
+    }
+    return m_globalTransforms;
+}
+
+bool Node::isParentsTransformsChanged() const
+{
+    return m_transformsChanged;
+}
+
+//void Node::setParentsTransformsChanged(bool updated)
+//{
+//    m_parentsTransformsChanged = updated;
+//}
+
+void Node::updateGlobalTransforms()
+{
+    m_globalTransforms = parentsTransforms() * m_localTransforms;
+    m_transformsChanged = false;
+}
+
+Mat4 & Node::transforms()
+{
+    return m_localTransforms;
+}
+
+void Node::transformsChanged()
+{
+//    m_parentsTransforms = parentsTransforms() * m_localTransforms;
+    m_transformsChanged = true;
+    traverse([](Node * node) {
+        node->m_transformsChanged = true;
+    });
 }
 
 void Node::notifyUp(Node::Event event, Node *node)

@@ -1,13 +1,14 @@
-#include "WoodenBox.hpp"
+#include "BrickBox.hpp"
 
 namespace glRender {
 
-WoodenBox::WoodenBox()
+BrickBox::BrickBox()
 {
     Geometry * geometry = GeometryHelper::Box(1.0);
 
     Textures * textures = new Textures();
-    textures->setTexture( "texture0", ResourceManager::getInstance().getTexture("data/Plywood_1024x640.png") );
+    textures->setTexture( "texture0", ResourceManager::getInstance().getTexture("data/TexturesCom_BricksSmallOld0080_1_seamless_S_1024x1024.png") );
+    textures->setTexture( "texture1", ResourceManager::getInstance().getTexture("data/Plywood_1024x640.png") );
 
     ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/shader0.vertex", "data/shader0.frag");
     shaderProgram->addAttribute<Vec3>("vertex");
@@ -23,28 +24,28 @@ WoodenBox::WoodenBox()
     m_model->setOrigin(0.0, 0.0, 0.0);
 }
 
-WoodenBox::~WoodenBox()
+BrickBox::~BrickBox()
 {
     delete m_model;
     delete m_aabb;
 }
 
-void WoodenBox::update()
+void BrickBox::update()
 {
-    m_model->rotate(0.1, Vec3::AXE_Y());
+//    m_model->rotate(0.1, Vec3::AXE_Y());
 }
 
-void WoodenBox::draw(Camera * camera)
+void BrickBox::draw(CameraPtr camera)
 {
     m_model->draw(camera);
 }
 
-Model * WoodenBox::model()
+Model * BrickBox::model()
 {
     return m_model;
 }
 
-IBoundingBox * WoodenBox::bb() const
+AABB *BrickBox::bb() const
 {
     return m_aabb;
 }

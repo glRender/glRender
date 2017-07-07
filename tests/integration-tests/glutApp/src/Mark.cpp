@@ -27,7 +27,7 @@ Mark::Mark(Vec3 color, float size, uint i, uint j, uint k)
     shaderProgram->setUniform<Vec3>("color", m_color);
 
     m_model = new Model(geometry, textures, shaderProgram);
-//    m_model->setWireframeMode(true);
+    m_model->setWireframeMode(true);
     m_model->setOrigin(0.0, 0.0, 0.0);
 
     m_model->setOrigin(Vec3(i * 3, j * 3 - 25, k * 3 - 25));
@@ -44,16 +44,18 @@ Mark::~Mark()
 
 void Mark::update()
 {
-//    m_model->rotate(0.1, Vec3::AXE_Y());
+    transforms().rotate(0.1, Vec3::AXE_Y());
+    transformsChanged();
+
     Vec3 pos = parentsTransforms() * m_model->origin();
     m_aabb->setOrigin(pos);
 }
 
-void Mark::draw(CameraPtr camera)
+void Mark::draw(Camera * camera)
 {
     m_model->shaderProgram()->setUniform<Vec3>("color", m_color);
-
-    m_model->draw(camera, parentsTransforms());
+    m_model->setGlobalMatrix(globalTransforms());
+    m_model->draw(camera);
 }
 
 bool Mark::intersects(const RayPtr ray) const

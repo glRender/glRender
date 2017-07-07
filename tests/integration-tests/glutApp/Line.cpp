@@ -47,7 +47,7 @@ void Line::update()
 {
 }
 
-void Line::draw(Camera * camera)
+void Line::draw(CameraPtr camera)
 {
     m_model->shaderProgram()->setUniform<float>("r", m_r);
     m_model->shaderProgram()->setUniform<float>("g", m_g);

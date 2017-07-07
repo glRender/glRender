@@ -15,19 +15,13 @@ template<typename...> class NodeMixedWith;
 class IDrawable
 {
 public:
-    virtual void draw(CameraPtr camera) = 0;
+    virtual void draw(Camera * camera) = 0;
 };
 
 class IUpdateable
 {
 public:
     virtual void update() = 0;
-
-    Mat4 & transforms() {
-        return m_localTransforms;
-    }
-private:
-    Mat4 m_localTransforms;
 };
 
 class IIntersectable

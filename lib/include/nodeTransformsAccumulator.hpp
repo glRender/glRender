@@ -30,7 +30,7 @@ public:
     void visit(NodeMixedWith<IKeyPressable> *ref) override;
 
 private:
-    void accumulate(IUpdateable * ref);
+    void accumulate(Node * node);
 
 private:
     Mat4 & m_m;

@@ -19,7 +19,7 @@ public:
     void lookAt(const Vec3 & position, const Vec3 & target, const Vec3 & up);
 
     const Mat4 & projectionMatrix() const;
-    const Mat4 & transformationMatrix() const;
+//    const Mat4 & transformationMatrix() const;
 
     const Vec3 & position() const;
     const Vec3 & target() const;
@@ -45,9 +45,21 @@ public:
     void setDirection(const Vec3 & direction);
     void setEulerAngles(float pitch, float yaw, float roll);
 
+    void setLocalMatrix(const Mat4 & m);
+    void setParentsMatrix(const Mat4 & m);
+    void setGlobalMatrix(const Mat4 & m);
+
+    const Mat4 & localMatrix() const;
+    const Mat4 & parentsMatrix() const;
+    const Mat4 & globalMatrix() const;
+
 protected:
     Mat4 m_projectionMatrix;
-    Mat4 m_transformationMatrix;
+//    Mat4 m_transformationMatrix;
+
+    Mat4 m_localMatrix;
+    Mat4 m_parentsMatrix;
+    Mat4 m_globalMatrix;
 
     Vec3 m_position = {0.0f, 0.0f, 0.0f};
     Vec3 m_target = -Vec3::AXE_Z();

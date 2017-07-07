@@ -26,8 +26,8 @@ public:
     Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgram);
     ~Model();
 
-    void draw(CameraPtr camera);
-    void draw(CameraPtr camera, Mat4 transforms);
+    void draw(Camera * camera);
+//    void draw(CameraPtr camera, Mat4 transforms);
 
     inline Geometry* geometry()
     {
@@ -50,17 +50,28 @@ public:
     void setDrawMode(DrawMode drawMode);
     DrawMode drawMode();
 
-private:
+//    void setLocalMatrix(Mat4 & m);
+//    void setGlobalMatrix(Mat4 && m);
+
+//    const Mat4 & localMatrix() const;
+//    const Mat4 & globalMatrix() const;
+//    const Mat4 & localGlobalMatrix() const;
+
     uint32_t m_vaoId;
 
     Geometry * m_geometry;
     ShaderProgram * m_shaderProgram;
     Textures * m_textures;
+private:
 
     AbstractBuffer * m_indicesBuffer = nullptr;
 
     DrawMode m_drawMode = DrawMode::Triangles;
     bool m_wireframeMode = false;
+
+    Mat4 m_localMatrix;
+    Mat4 m_parentsMatrix;
+    Mat4 m_globalMatrix;
 };
 
 }

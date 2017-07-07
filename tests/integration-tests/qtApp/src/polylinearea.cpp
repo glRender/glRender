@@ -39,7 +39,7 @@ void PolylineArea::initializeGL()
 
     printf("%s\n\n", render->contextInformation());
 
-    camera = std::make_shared<PerspectiveCamera>(90.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f);
+    camera = new PerspectiveCamera(90.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f);
     camera->lookAt(Vec3(0,0,0), Vec3(0,0,-1000), Vec3::AXE_Y());
 
 

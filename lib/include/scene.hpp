@@ -22,9 +22,9 @@ public:
 
     void add(Node * node);
     
-    void setCamera(CameraPtr camera);
+    void setCamera(Camera * camera);
     bool hasCamera();
-    CameraPtr camera();
+    Camera * camera();
 
     void traverse(std::function<void(Node *)> handler);
     void traverse(std::function<void(IUpdateable *)> handler);
@@ -44,7 +44,7 @@ public:
 
 private:
     std::vector<Node * > m_childs;
-    CameraPtr m_camera = nullptr;
+    Camera * m_camera = nullptr;
 
     NodeCache m_cache;
 };

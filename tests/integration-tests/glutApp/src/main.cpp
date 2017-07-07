@@ -3,11 +3,11 @@
 #include "glRender.h"
 
 #include "Mark.hpp"
-#include "WoodenBox.hpp"
-#include "BrickBox.hpp"
-#include "QuadraticBezeirCurve.hpp"
-#include "SinusLine.hpp"
-#include "Line.hpp"
+//#include "WoodenBox.hpp"
+//#include "BrickBox.hpp"
+//#include "QuadraticBezeirCurve.hpp"
+//#include "SinusLine.hpp"
+//#include "Line.hpp"
 #include "aabbNodeVisualizator.hpp"
 
 static const int WINDOW_WIDTH = 1280;
@@ -17,7 +17,7 @@ using namespace glRender;
 
 Render * render;
 
-PerspectiveCameraPtr camera;
+PerspectiveCamera * camera;
 
 int counter = 0;
 clock_t start;
@@ -30,16 +30,49 @@ Scene * scene;
 
 NodePickerPtr nodePicker;
 
-class CameraNode : public NodeMixedWith<IUpdateable, IKeyPressable>
+class CameraNode : public NodeMixedWith<IUpdateable, IDrawable, IKeyPressable>
 {
 public:
-    CameraNode(CameraPtr camera) :
+    CameraNode(Camera * camera) :
         m_camera(camera)
     {
+        Geometry * geometry = GeometryHelper::Arrows();
+        Textures * textures = new Textures();
+
+        ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
+        shaderProgram->addAttribute<Vec3>("vertex");
+
+        shaderProgram->addUniform<Mat4>("projection");
+        shaderProgram->addUniform<Mat4>("view");
+        shaderProgram->addUniform<Mat4>("model");
+        shaderProgram->addUniform<Vec3>("color");
+
+//        shaderProgram->setUniform<Vec3>("color", Vec3(0,1,0));
+
+        m_model = new Model(geometry, textures, shaderProgram);
+        m_model->setWireframeMode(true);
+        Mat4 l = m_model->localMatrix();
+        m_model->setLocalMatrix(l.scale(0.005f));
+        m_model->setOrigin(0.5f, 0.25f, -2.0f);
+
+//        transforms().translate(Vec3(0.5f, 0.25f, -2.0f));
+    //    transforms().scale(0.2f);
+
+//        transformsChanged();
+
     }
 
     void update() override
     {
+//        transforms().rotateY(0.01f);
+//        transformsChanged();
+//        m_camera->setGlobalMatrix(globalTransforms());
+    }
+
+    void draw(Camera * camera) override
+    {
+//        m_model->shaderProgram()->setUniform<Vec3>("color", Vec3(0,1,0));
+        m_model->draw(camera/*, parentsTransforms()*/);
     }
 
     void onKeyPress(KeyboardKey key) override
@@ -47,19 +80,23 @@ public:
         switch(key)
         {
         case IKeyPressable::KeyboardKey::W: {
-            m_camera->setPosition( m_camera->position() + m_camera->front() * cameraMoveSpeed );
+            m_camera->setPosition(m_camera->position() + m_camera->front() * cameraMoveSpeed );
+            m_model->setOrigin(m_model->origin() + m_camera->front() * cameraMoveSpeed);
         }; break;
 
         case IKeyPressable::KeyboardKey::S: {
-            m_camera->setPosition( m_camera->position() - m_camera->front() * cameraMoveSpeed );
+            m_camera->setPosition(m_camera->position() - m_camera->front() * cameraMoveSpeed);
+            m_model->setOrigin(m_model->origin() - m_camera->front() * cameraMoveSpeed);
         }; break;
 
         case IKeyPressable::KeyboardKey::A: {
-            m_camera->setPosition( m_camera->position() - m_camera->right() * cameraMoveSpeed );
+            m_camera->setPosition(m_camera->position() - m_camera->right() * cameraMoveSpeed );
+            m_model->setOrigin(m_model->origin() - m_camera->right() * cameraMoveSpeed);
         }; break;
 
         case IKeyPressable::KeyboardKey::D: {
-            m_camera->setPosition( m_camera->position() + m_camera->right() * cameraMoveSpeed );
+            m_camera->setPosition(m_camera->position() + m_camera->right() * cameraMoveSpeed );
+            m_model->setOrigin(m_model->origin() + m_camera->right() * cameraMoveSpeed);
         }; break;
 
         case IKeyPressable::KeyboardKey::Q: {
@@ -71,11 +108,13 @@ public:
         }; break;
 
         case IKeyPressable::KeyboardKey::Z: {
-            m_camera->setPosition( m_camera->position() + m_camera->up() * cameraMoveSpeed );
+            m_camera->setPosition(m_camera->position() + m_camera->up() * cameraMoveSpeed );
+            m_model->setOrigin(m_model->origin() + m_camera->up() * cameraMoveSpeed);
         }; break;
 
         case IKeyPressable::KeyboardKey::X: {
-            m_camera->setPosition( m_camera->position() - m_camera->up() * cameraMoveSpeed );
+            m_camera->setPosition(m_camera->position() - m_camera->up() * cameraMoveSpeed );
+            m_model->setOrigin(m_model->origin() - m_camera->up() * cameraMoveSpeed);
         }; break;
 
         case IKeyPressable::KeyboardKey::R: {
@@ -94,9 +133,11 @@ public:
     }
 
 private:
-    CameraPtr m_camera;
+    Camera * m_camera;
     float cameraMoveSpeed = 0.3f;
     float cameraRotationSpeed = 5.0f;
+
+    Model * m_model;
 
 };
 
@@ -105,24 +146,27 @@ class Tran : public NodeMixedWith<IUpdateable>
     void update() override
     {
 //        transforms().rotateZ(0.1f);
+//        transformsChanged();
     }
 
 };
 
-class Tran1 : public IUpdateable
+class Tran1 : public NodeMixedWith<IUpdateable>
 {
     void update() override
     {
         transforms().rotateX(0.1f);
+        transformsChanged();
     }
 
 };
 
-class Tran2 : public IUpdateable
+class Tran2 : public NodeMixedWith<IUpdateable>
 {
     void update() override
     {
-//        transforms().rotateY(1.0f);
+        transforms().rotateY(0.1f);
+        transformsChanged();
     }
 
 };
@@ -130,14 +174,14 @@ class Tran2 : public IUpdateable
 
 void init ()
 {
-    camera = PerspectiveCameraPtr(new PerspectiveCamera( 35.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f ));
+    camera = /*PerspectiveCameraPtr(*/new PerspectiveCamera( 35.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f )/*)*/;
     camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
 //    camera->lookAt(Vec3(-10,0,-10), Vec3(10,0,-10), Vec3::AXE_Y());
 
     scene = new Scene();
     scene->setCamera(camera);
 
-    nodePicker = NodePickerPtr(new NodePicker(camera, scene));
+//    nodePicker = NodePickerPtr(new NodePicker(camera, scene));
 
     srand( time(0) );
 
@@ -146,15 +190,21 @@ void init ()
 //    m->setOrigin(0.0f, 0.0f, -3.0f);
 //    scene->addNode(m);
 
-    scene->add(new CameraNode(camera));
 
-    Node * t = new Tran();
+//    Node * t = new Tran();
+
+//    Node * t1 = new Tran1();
+
+//    Node * t2 = new Tran2();
+
+//    scene->add(t1);
+
 //    Node * t1 = new Tran1();
 //    Node * t2 = new Tran2();
 //    t1->add(t);
 //    t2->add(t1);
 
-    for (int i=0; i<1; i++)
+    for (int i=0; i<25; i++)
     {
 
     for (int j=0; j<25; j++)
@@ -178,9 +228,12 @@ void init ()
 //        } else
 //        if ((int)(rand() % 3) == 0)
 //        {
-            Node * m = new Mark(Vec3(0,1,0),1,i,j,k);
+//            Mark * m = new Mark(Vec3(0,1,0),0.7,i,j,k);
+//            Mat4 mm = camera->projectionMatrix();
+//            m->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
+
 //            m->model()->setOrigin(Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, 0));
-            t->add(m);
+//            t->add(m);
 
 //        }
 //        else
@@ -217,7 +270,39 @@ void init ()
     }
     }
     }
-    scene->add(t);
+//    scene->add(t);
+
+    Mat4 mm = camera->projectionMatrix();
+
+    Mark * mmm = new Mark(Vec3(0,1,0),1,0,0,0);
+    mmm->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
+
+
+//    Mark * aaa = new Mark(Vec3(1,0,0),0.05,0,0,5);
+//    aaa->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
+
+//    Node * tmp = mmm;
+
+//    for (int i=0; i<1000; i++)
+//    {
+//        Mark * m = new Mark(Vec3(0,0,1),0.7,i,0,0);
+//        Mat4 mm = camera->projectionMatrix();
+//        m->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
+
+////            m->model()->setOrigin(Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, 0));
+//        tmp->add(m);
+//        tmp = m;
+//    }
+
+    scene->add(mmm);
+
+    CameraNode * cn = new CameraNode(camera);
+//    cn->add(aaa);
+
+    scene->add(cn);
+//    t1->add(t);
+//    t2->add(t1);
+//    scene->add(t2);
 
 //    scene->updateCache();
 
@@ -379,13 +464,13 @@ void mouse(int button, int state, int x, int y)
 
         if (pressedNode != nullptr)
         {
-            pressedNode->onMouseDown(ray, camera);
+//            pressedNode->onMouseDown(ray, camera);
         }
     } else if (state == GLUT_UP)
     {
         if (pressedNode != nullptr)
         {
-            pressedNode->onMouseUp(ray, camera);
+//            pressedNode->onMouseUp(ray, camera);
         }
     }
 

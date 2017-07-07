@@ -47,7 +47,7 @@ void Scene::add(Node * node)
     addToCache(node);
 }
 
-void Scene::setCamera(CameraPtr camera)
+void Scene::setCamera(Camera * camera)
 {
     m_camera = camera;
 }
@@ -57,7 +57,7 @@ bool Scene::hasCamera()
     return m_camera != nullptr;
 }
 
-CameraPtr Scene::camera()
+Camera * Scene::camera()
 {
     return m_camera;
 }
@@ -171,7 +171,7 @@ void Scene::drawFrame()
 {
     for (const auto & node : m_cache.drawables)
     {
-        node->draw(camera());
+        node->draw(m_camera);
     }
 }
 

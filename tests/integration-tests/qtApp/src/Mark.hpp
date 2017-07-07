@@ -14,7 +14,7 @@ public:
   ~Mark();
 
   void update() override;
-  void draw(CameraPtr camera) override;
+  void draw(Camera * camera) override;
   bool intersects(const RayPtr ray) const override;
 
   Model * model() const;
@@ -48,7 +48,7 @@ private:
 class CameraNode : public NodeMixedWith<IUpdateable, IKeyPressable>
 {
 public:
-    CameraNode(CameraPtr camera) :
+    CameraNode(Camera * camera) :
         m_camera(camera)
     {
     }
@@ -62,6 +62,7 @@ public:
         switch(key)
         {
         case IKeyPressable::KeyboardKey::W: {
+
             m_camera->setPosition( m_camera->position() + m_camera->front() * cameraMoveSpeed );
         }; break;
 

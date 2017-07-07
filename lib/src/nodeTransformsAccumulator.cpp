@@ -82,9 +82,9 @@ void NodeTransformsAccumulator::visit(NodeMixedWith<IKeyPressable> *ref)
 
 }
 
-void NodeTransformsAccumulator::accumulate(IUpdateable * ref)
+void NodeTransformsAccumulator::accumulate(Node * node)
 {
-    m_m *= ref->transforms();
+    m_m *= node->transforms();
 }
 
 }

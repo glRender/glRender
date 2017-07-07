@@ -48,11 +48,11 @@ void Mark::update()
     m_aabb->setOrigin(pos);
 }
 
-void Mark::draw(CameraPtr camera)
+void Mark::draw(Camera * camera)
 {
     m_model->shaderProgram()->setUniform<Vec3>("color", m_color);
 
-    m_model->draw(camera, parentsTransforms());
+    m_model->draw(camera/*, parentsTransforms()*/);
 }
 
 bool Mark::intersects(const RayPtr ray) const

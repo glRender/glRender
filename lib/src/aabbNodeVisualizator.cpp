@@ -64,40 +64,40 @@ void AABBNodeVisualizator::update()
 //    m_corner->rotate(1.0f, Vec3(1.0f,0.0f,0.0f));
 }
 
-void AABBNodeVisualizator::draw(CameraPtr camera)
+void AABBNodeVisualizator::draw(Camera * camera)
 {
-    Mat4 transforms/* = parentsTransforms()*/;
+//    Mat4 transforms/* = parentsTransforms()*/;
     Vec3 leftTop0 = m_aabb->origin() + Vec3(-m_aabb->halfSide(), m_aabb->halfSide(), -m_aabb->halfSide());
     m_corner->setOrigin(leftTop0);
-    m_corner->draw(camera, transforms);
+    m_corner->draw(camera/*, transforms*/);
 
     Vec3 rightTop0 = m_aabb->origin() + Vec3(m_aabb->halfSide(), m_aabb->halfSide(), -m_aabb->halfSide());
     m_corner->setOrigin(rightTop0);
-    m_corner->draw(camera, transforms);
+    m_corner->draw(camera/*, transforms*/);
 
     Vec3 leftBottom0 = m_aabb->origin() + Vec3(-m_aabb->halfSide(), -m_aabb->halfSide(), -m_aabb->halfSide());
     m_corner->setOrigin(leftBottom0);
-    m_corner->draw(camera, transforms);
+    m_corner->draw(camera/*, transforms*/);
 
     Vec3 rightBottom0 = m_aabb->origin() + Vec3(m_aabb->halfSide(), -m_aabb->halfSide(), -m_aabb->halfSide());
     m_corner->setOrigin(rightBottom0);
-    m_corner->draw(camera, transforms);
+    m_corner->draw(camera/*, transforms*/);
 
     Vec3 leftTop1 = m_aabb->origin() + Vec3(-m_aabb->halfSide(), m_aabb->halfSide(), -m_aabb->halfSide());
     m_corner->setOrigin(leftTop1);
-    m_corner->draw(camera, transforms);
+    m_corner->draw(camera/*, transforms*/);
 
     Vec3 rightTop1 = m_aabb->origin() + Vec3(m_aabb->halfSide(), m_aabb->halfSide(), -m_aabb->halfSide());
     m_corner->setOrigin(rightTop1);
-    m_corner->draw(camera, transforms);
+    m_corner->draw(camera/*, transforms*/);
 
     Vec3 leftBottom1 = m_aabb->origin() + Vec3(-m_aabb->halfSide(), -m_aabb->halfSide(), -m_aabb->halfSide());
     m_corner->setOrigin(leftBottom1);
-    m_corner->draw(camera, transforms);
+    m_corner->draw(camera/*, transforms*/);
 
     Vec3 rightBottom1 = m_aabb->origin() + Vec3(m_aabb->halfSide(), -m_aabb->halfSide(), -m_aabb->halfSide());
     m_corner->setOrigin(rightBottom1);
-    m_corner->draw(camera, transforms);
+    m_corner->draw(camera/*, transforms*/);
 }
 
 }
