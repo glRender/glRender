@@ -34,9 +34,9 @@ public:
 
     void subscribeTo(Event event, std::function<void(Node * node)> handler);
 
-    void transformsChanged();
-
     const Mat4 parentsTransforms();
+
+    void transformsChanged();
     Mat4 & transforms();
     const Mat4 & globalTransforms();
 

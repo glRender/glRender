@@ -57,12 +57,12 @@ public:
 //    const Mat4 & globalMatrix() const;
 //    const Mat4 & localGlobalMatrix() const;
 
+private:
     uint32_t m_vaoId;
 
     Geometry * m_geometry;
     ShaderProgram * m_shaderProgram;
     Textures * m_textures;
-private:
 
     AbstractBuffer * m_indicesBuffer = nullptr;
 

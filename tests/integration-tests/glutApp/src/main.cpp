@@ -272,11 +272,8 @@ void init ()
     }
 //    scene->add(t);
 
-    Mat4 mm = camera->projectionMatrix();
-
     Mark * mmm = new Mark(Vec3(0,1,0),1,0,0,0);
-    mmm->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
-
+    CameraNode * cn = new CameraNode(camera);
 
 //    Mark * aaa = new Mark(Vec3(1,0,0),0.05,0,0,5);
 //    aaa->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
@@ -296,7 +293,6 @@ void init ()
 
     scene->add(mmm);
 
-    CameraNode * cn = new CameraNode(camera);
 //    cn->add(aaa);
 
     scene->add(cn);
