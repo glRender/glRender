@@ -2,6 +2,7 @@
 
 #include "base.h"
 #include "nodeCache.hpp"
+#include "eventManager.hpp"
 
 namespace glRender
 {
@@ -12,10 +13,9 @@ class Node;
 
 class Scene
 {
-    
 public:
     Scene();
-    ~Scene();
+    virtual ~Scene();
 
     void addToCache(Node * node);
     void removeFromCache(Node * node);
@@ -42,11 +42,20 @@ public:
     void update();
     void processKeyboardsKeys(IKeyPressable::KeyboardKey key);
 
+protected:
+    enum class Event
+    {
+        PrevDraw,
+        AfterDraw
+    };
+
+    EventManager<Scene::Event> & eventManager();
 private:
     std::vector<Node * > m_childs;
     Camera * m_camera = nullptr;
 
     NodeCache m_cache;
+    EventManager<Scene::Event> m_eventManager;
 };
 
 }

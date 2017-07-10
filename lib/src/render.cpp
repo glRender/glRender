@@ -56,16 +56,28 @@ Render::Render()
 
 }
 
-void Render::draw(Scene * scene)
+void Render::drawFrame()
 {
     glClearColor ( m_background.x, m_background.y, m_background.z, m_background.w );
-    glEnable     ( GL_DEPTH_TEST );
+//    glEnable     ( GL_DEPTH_TEST );
     glEnable     ( GL_BLEND);
     glDepthFunc  ( GL_LEQUAL );
     glBlendFunc  ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClear      ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    scene->drawFrame();
+    for (auto i : m_scenes.scenes())
+    {
+        i->drawFrame();
+    }
+
+}
+
+void Render::update()
+{
+    for (auto i : m_scenes.scenes())
+    {
+        i->update();
+    }
 }
 
 void Render::setViewportSize(const uint32_t & w, const uint32_t & h)
@@ -76,6 +88,11 @@ void Render::setViewportSize(const uint32_t & w, const uint32_t & h)
 void Render::setBackgroundColor(const Vec4 &background)
 {
     m_background = background;
+}
+
+OrderedScenes & Render::scenes()
+{
+    return m_scenes;
 }
 
 Render * Render::instance()

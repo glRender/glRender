@@ -3,17 +3,16 @@
 #include "node.hpp"
 #include "nodeCacheAdder.hpp"
 #include "nodeCacheRemover.hpp"
+#include "opengl.h"
 
 namespace glRender {
 
 Scene::Scene()
 {
-
 }
 
 Scene::~Scene()
 {
-
 }
 
 void Scene::addToCache(Node * node)
@@ -60,6 +59,11 @@ bool Scene::hasCamera()
 Camera * Scene::camera()
 {
     return m_camera;
+}
+
+EventManager<Scene::Event> &Scene::eventManager()
+{
+    return m_eventManager;
 }
 
 void Scene::traverse(std::function<void(Node * node)> handler)
@@ -169,10 +173,12 @@ std::vector<IKeyPressable *> Scene::query(std::function<bool (const IKeyPressabl
 
 void Scene::drawFrame()
 {
+    m_eventManager.emitEvent(Scene::Event::PrevDraw);
     for (const auto & node : m_cache.drawables)
     {
         node->draw(m_camera);
     }
+    m_eventManager.emitEvent(Scene::Event::AfterDraw);
 }
 
 void Scene::update()

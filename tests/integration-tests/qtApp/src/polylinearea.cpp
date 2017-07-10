@@ -68,7 +68,7 @@ void PolylineArea::resizeGL(int w, int h)
 
 void PolylineArea::paintGL()
 {
-    render->draw(scene);
+    render->drawFrame();
 }
 
 void PolylineArea::mouseReleaseEvent(QMouseEvent *event)

@@ -4,7 +4,7 @@ namespace glRender {
 
 WoodenBox::WoodenBox()
 {
-    Geometry * geometry = GeometryHelper::Box(1.0);
+    Geometry * geometry = GeometryHelper::Box(0.1);
 
     Textures * textures = new Textures();
     textures->setTexture( "texture0", ResourceManager::getInstance().getTexture("data/Plywood_1024x640.png") );
@@ -31,7 +31,7 @@ WoodenBox::~WoodenBox()
 
 void WoodenBox::update()
 {
-    m_model->rotate(0.1, Vec3::AXE_Y());
+//    m_model->rotate(0.1, Vec3::AXE_Y());
 }
 
 void WoodenBox::draw(Camera * camera)

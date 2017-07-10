@@ -3,7 +3,7 @@
 #include "glRender.h"
 
 #include "Mark.hpp"
-//#include "WoodenBox.hpp"
+#include "WoodenBox.hpp"
 //#include "BrickBox.hpp"
 //#include "QuadraticBezeirCurve.hpp"
 //#include "SinusLine.hpp"
@@ -18,6 +18,7 @@ using namespace glRender;
 Render * render;
 
 Camera * camera;
+Camera * overlayCamera;
 
 int counter = 0;
 clock_t start;
@@ -27,6 +28,7 @@ clock_t start;
 //Line * l;
 
 Scene * scene;
+OverlayScene * overlayScene;
 
 NodePickerPtr nodePicker;
 
@@ -180,6 +182,13 @@ void init ()
 
     scene = new Scene();
     scene->setCamera(camera);
+    Render::instance()->scenes().add(scene);
+
+    overlayScene = new OverlayScene();
+    overlayCamera = new PerspectiveCamera( 35.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f );
+    overlayCamera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
+    overlayScene->setCamera(overlayCamera);
+    Render::instance()->scenes().add(overlayScene);
 
     nodePicker = std::make_shared<NodePicker>(camera, scene);
 
@@ -204,6 +213,11 @@ void init ()
 //    t1->add(t);
 //    t2->add(t1);
 
+    WoodenBox *n = new WoodenBox();
+    n->model()->setOrigin(0,0,-1);
+    n->model()->setWireframeMode(false);
+    overlayScene->add(n);
+
     for (int i=0; i<25; i++)
     {
 
@@ -214,10 +228,6 @@ void init ()
     {
 //        if ((int)(rand() % 5) == 0)
 //        {
-////             WoodenBox *n = new WoodenBox();
-////             n->model()->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
-////             n->model()->setWireframeMode(false);
-////             scene->addNode(n);
 //        } else
 //        if ((int)(rand() % 3) == 1)
 //        {
@@ -318,13 +328,16 @@ void init ()
 
 void idle()
 {
-    scene->update();
+    render->update();
     glutPostRedisplay();
 }
 
 void display()
 {
-    render->draw(scene);
+    render->drawFrame();
+//    overlayScene->drawFrame();
+//    render->draw(overlayScene);
+
     glutSwapBuffers ();
     counter++;
 

@@ -20,6 +20,7 @@
 #include "nodeCache.hpp"
 #include "nodeCacheAdder.hpp"
 #include "scene.hpp"
+#include "overlayScene.hpp"
 #include "resourceManager.hpp"
 #include "ray.hpp"
 #include "boundingBox.hpp"
