@@ -59,7 +59,7 @@ Render::Render()
 void Render::drawFrame()
 {
     glClearColor ( m_background.x, m_background.y, m_background.z, m_background.w );
-//    glEnable     ( GL_DEPTH_TEST );
+    glEnable     ( GL_DEPTH_TEST );
     glEnable     ( GL_BLEND);
     glDepthFunc  ( GL_LEQUAL );
     glBlendFunc  ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

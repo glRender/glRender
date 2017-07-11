@@ -4,7 +4,7 @@
 
 #include "Mark.hpp"
 #include "WoodenBox.hpp"
-//#include "BrickBox.hpp"
+#include "BrickBox.hpp"
 //#include "QuadraticBezeirCurve.hpp"
 //#include "SinusLine.hpp"
 //#include "Line.hpp"
@@ -27,7 +27,7 @@ clock_t start;
 //Mark * fp;
 //Line * l;
 
-Scene * scene;
+UnderOverlayScene * scene;
 OverlayScene * overlayScene;
 
 NodePickerPtr nodePicker;
@@ -176,21 +176,16 @@ class Tran2 : public NodeMixedWith<IUpdateable>
 
 void init ()
 {
-    camera = /*PerspectiveCameraPtr(*/new PerspectiveCamera( 35.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f )/*)*/;
+    camera = new PerspectiveCamera( 35.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f );
     camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
 //    camera->lookAt(Vec3(-10,0,-10), Vec3(10,0,-10), Vec3::AXE_Y());
 
-    scene = new Scene();
+    scene = new UnderOverlayScene();
     scene->setCamera(camera);
-    Render::instance()->scenes().add(scene);
-
-    overlayScene = new OverlayScene();
-    overlayCamera = new PerspectiveCamera( 35.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f );
-    overlayCamera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
-    overlayScene->setCamera(overlayCamera);
-    Render::instance()->scenes().add(overlayScene);
 
     nodePicker = std::make_shared<NodePicker>(camera, scene);
+
+    Render::instance()->scenes().add(scene);
 
     srand( time(0) );
 
@@ -198,7 +193,6 @@ void init ()
 //    m->model()->setWireframeMode(false);
 //    m->setOrigin(0.0f, 0.0f, -3.0f);
 //    scene->addNode(m);
-
 
     Node * t = new Tran();
 
@@ -212,11 +206,6 @@ void init ()
 //    Node * t2 = new Tran2();
 //    t1->add(t);
 //    t2->add(t1);
-
-    WoodenBox *n = new WoodenBox();
-    n->model()->setOrigin(0,0,-1);
-    n->model()->setWireframeMode(false);
-    overlayScene->add(n);
 
     for (int i=0; i<25; i++)
     {
@@ -310,19 +299,20 @@ void init ()
 //    t2->add(t1);
 //    scene->add(t2);
 
-//    scene->updateCache();
+    overlayScene = new OverlayScene();
+    overlayCamera = new PerspectiveCamera( 35.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f );
+    overlayCamera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
+    overlayScene->setCamera(overlayCamera);
 
-//    Vec3 p0 = Vec3(0.0f, 0.0f, 0.0f);
-//    Vec3 p1 = Vec3(10.0f, 0.0f, -1.0f);
+    WoodenBox *n = new WoodenBox();
+    n->model()->setOrigin(0,0.0,-1);
+    overlayScene->add(n);
 
-//    float r = 0.0f;
-//    float g = 0.0f;
-//    float b = 1.0f;
+    BrickBox *n1 = new BrickBox();
+    n1->model()->setOrigin(0.1,0.1,-1.4);
+    overlayScene->add(n1);
 
-//    l = new Line(p0, p1, 1, r, g, b);
-//    l->setOrigin(Vec3(0.0f, 0.0f, 0.0f));
-
-//    scene->addNode(l);
+    Render::instance()->scenes().add(overlayScene);
 
 }
 
@@ -335,8 +325,6 @@ void idle()
 void display()
 {
     render->drawFrame();
-//    overlayScene->drawFrame();
-//    render->draw(overlayScene);
 
     glutSwapBuffers ();
     counter++;

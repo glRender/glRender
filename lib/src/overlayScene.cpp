@@ -7,7 +7,7 @@ using namespace glRender;
 OverlayScene::OverlayScene()
 {
     eventManager().setHandler(Scene::Event::PrevDraw, []() {
-        glDisable    (GL_DEPTH_TEST);
+        glDepthRange(0.0, 0.1);
     });
 }
 
