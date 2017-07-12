@@ -125,10 +125,65 @@ const char * getGLString(uint32_t key)
 
 const char * Render::contextInformation()
 {
+    int maxTextureUnits = 0;
+    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
+
+    int maxTextureSize = 0;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+
+    int maxElementsVertices = 0;
+    glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &maxElementsVertices);
+
+    int maxElementsIndices = 0;
+    glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &maxElementsIndices);
+
+    int maxPointSize = 0;
+    glGetIntegerv(GL_POINT_SIZE_MAX, &maxPointSize);
+
+    int minPointSize = 0;
+    glGetIntegerv(GL_POINT_SIZE_MIN, &minPointSize);
+
+    int maxDrawBuffers = 0;
+    glGetIntegerv(GL_MAX_DRAW_BUFFERS, &maxDrawBuffers);
+
+    int maxVertexAttribs = 0;
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttribs);
+
+    int maxVertexUniformsComponents = 0;
+    glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS, &maxVertexUniformsComponents);
+
+    int maxFragmentUniformsComponents = 0;
+    glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS, &maxFragmentUniformsComponents);
+
+    int maxGeometryUniformsComponents = 0;
+    glGetIntegerv(GL_MAX_GEOMETRY_UNIFORM_COMPONENTS, &maxGeometryUniformsComponents);
+
+    int maxRenderBufferSize = 0;
+    glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &maxRenderBufferSize);
+
+    int maxFramebufferWidth = 0;
+    glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &maxFramebufferWidth);
+
+    int maxFramebufferHeight = 0;
+    glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &maxFramebufferHeight);
+
     std::string contextInformation;
-    contextInformation += std::string("Vendor:   ") + getGLString(GL_VENDOR) + '\n';
-    contextInformation += std::string("Renderer: ") + getGLString(GL_RENDERER) + '\n';
-    contextInformation += std::string("Version:  ") + getGLString(GL_VERSION) + '\n';
-    contextInformation += std::string("GLSL:     ") + getGLString(GL_SHADING_LANGUAGE_VERSION);
+    contextInformation += std::string("Vendor                           : ") + getGLString(GL_VENDOR) + '\n';
+    contextInformation += std::string("GPU                              : ") + getGLString(GL_RENDERER) + '\n';
+    contextInformation += std::string("OpenGL version                   : ") + getGLString(GL_VERSION) + '\n';
+    contextInformation += std::string("GLSL version                     : ") + getGLString(GL_SHADING_LANGUAGE_VERSION) + '\n';
+    contextInformation += std::string("Max texture units number         : ") + patch::to_string(maxTextureUnits) + '\n';
+    contextInformation += std::string("Max texture size                 : ") + patch::to_string(maxTextureSize) + '\n';
+    contextInformation += std::string("Max elements vertices            : ") + patch::to_string(maxElementsVertices) + '\n';
+    contextInformation += std::string("Max elements indices             : ") + patch::to_string(maxElementsIndices) + '\n';
+    contextInformation += std::string("Max point size                   : ") + patch::to_string(maxPointSize) + '\n';
+    contextInformation += std::string("Min point size                   : ") + patch::to_string(minPointSize) + '\n';
+    contextInformation += std::string("Max vertex attribs               : ") + patch::to_string(maxVertexAttribs) + '\n';
+    contextInformation += std::string("Max vertex uniforms components   : ") + patch::to_string(maxVertexUniformsComponents) + '\n';
+    contextInformation += std::string("Max fragment uniforms components : ") + patch::to_string(maxFragmentUniformsComponents) + '\n';
+    contextInformation += std::string("Max geometry uniforms components : ") + patch::to_string(maxGeometryUniformsComponents) + '\n';
+    contextInformation += std::string("Max framebuffer width            : ") + patch::to_string(maxFramebufferWidth) + '\n';
+    contextInformation += std::string("Max framebuffer height           : ") + patch::to_string(maxFramebufferHeight) + '\n';
+
     return contextInformation.c_str();
 }
