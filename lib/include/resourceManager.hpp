@@ -90,7 +90,6 @@ public:
         if (!program->link())
         {
             throw std::invalid_argument("Failed shaders linkage!");
-            return false;
         }
 
         m_resources[hashId] = program;
