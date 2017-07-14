@@ -29,7 +29,7 @@ public:
     ShaderProgram();
     ~ShaderProgram();
     uint32_t id();
-    void attach(ShaderType type, Shader * shader);
+    void attach(ShaderType type, std::shared_ptr<Shader> shader);
     void detach(ShaderType type);
     void detach();
     bool link();
@@ -77,7 +77,7 @@ private:
        }
     };
 
-    std::map<ShaderType, Shader *> m_shaders;
+    std::map<ShaderType, std::shared_ptr<Shader>> m_shaders;
 
     // Map of attributes and their binding locations
     std::map<const char *, Attribute, cmp_str > attributesList;

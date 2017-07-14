@@ -44,7 +44,10 @@ public:
 
     const Mat4 & localMatrix() const;
     const Mat4 & parentsMatrix() const;
-    const Mat4 & globalMatrix() const;
+    inline const Mat4 & globalMatrix() const
+    {
+        return m_globalMatrix;
+    }
 
 protected:
 //    Mat4 m_transformationMatrix;

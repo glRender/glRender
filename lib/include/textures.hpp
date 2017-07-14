@@ -12,9 +12,10 @@ class Textures
 {
 public:
     Textures();
+    Texture & operator = (const Texture &) = delete;
     ~Textures();
 
-    void setTexture(const char * uniformName, Texture * texture);
+    void setTexture(const char * uniformName, std::shared_ptr<Texture> texture);
 
     Texture * texture(const uint32_t index) const;
     Texture * texture(const char * uniformName) const;
@@ -29,11 +30,13 @@ public:
 
     inline bool isEmpty() const
     {
-        return m_textures.size() == 0;
+        return m_isEmpty;
     }
 
 protected:
     std::map<const std::string, Texture *> m_textures;
+    std::list<std::shared_ptr<Texture>> m_sharedPtrs;
+    bool m_isEmpty = true;
 
 };
 

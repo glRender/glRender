@@ -24,7 +24,7 @@ uint32_t ShaderProgram::id()
     return m_programId;
 }
 
-void ShaderProgram::attach(ShaderType type, Shader * shader)
+void ShaderProgram::attach(ShaderType type, std::shared_ptr<Shader> shader)
 {
     glAttachShader( m_programId, shader->id() );
     m_shaders[type] = shader;
@@ -35,7 +35,7 @@ void ShaderProgram::detach(ShaderType type)
 {
     if (m_shaders.find(type) != m_shaders.end())
     {
-        Shader * shader = m_shaders[type];
+        std::shared_ptr<Shader> shader = m_shaders[type];
         glDetachShader(m_programId, shader->id());
     }
 }
@@ -320,6 +320,7 @@ template int  ShaderProgram::uniform<     Mat4>(const char * uniformName);
 template bool ShaderProgram::addUniform<  Vec3>(const char * uniformName);
 template bool ShaderProgram::addUniform<  float>(const char * uniformName);
 template bool ShaderProgram::addUniform<  Mat4>(const char * uniformName);
+template bool ShaderProgram::addUniform<  Texture>(const char * uniformName);
 
 template void ShaderProgram::setUniform<  Vec3>(const char * uniformName, Vec3 & value);
 template void ShaderProgram::setUniform<  float>(const char * uniformName, float & value);

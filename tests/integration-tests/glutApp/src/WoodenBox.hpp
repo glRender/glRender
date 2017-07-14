@@ -13,6 +13,7 @@ public:
 
   void update() override;
   void draw(Camera * camera) override;
+std::shared_ptr<ShaderProgram> shaderProgram;
 
   Model * model()/* override*/;
   IBoundingBox * bb() const/* override*/;

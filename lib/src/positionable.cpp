@@ -130,9 +130,6 @@ const Mat4 &Positionable::parentsMatrix() const
     return m_parentsMatrix;
 }
 
-const Mat4 & Positionable::globalMatrix() const
-{
-    return m_globalMatrix;
-}
+
 
 }

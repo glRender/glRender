@@ -23,7 +23,7 @@ public:
         Lines = 0x0003 /*GL_LINE_STRIP*/
     };
 
-    Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgram);
+    Model(Geometry* geometry, Textures* textures, std::shared_ptr<ShaderProgram> shaderProgram);
     ~Model();
 
     void draw(Camera * camera);
@@ -61,6 +61,7 @@ private:
     uint32_t m_vaoId;
 
     Geometry * m_geometry;
+    std::shared_ptr<ShaderProgram> m_shaderProgramSrtPtr;
     ShaderProgram * m_shaderProgram;
     Textures * m_textures;
 

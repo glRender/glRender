@@ -17,7 +17,9 @@ QuadraticBezeirCurve::QuadraticBezeirCurve(Vec3 p0, Vec3 p1, Vec3 p2, uint segme
 \
     Textures * textures = new Textures();
 
-    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
+//    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
+    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", "data/colored.vertex", "data/colored.frag");
+
     shaderProgram->addAttribute<Vec3>("vertex");
 
     shaderProgram->addUniform<Mat4>("projection");

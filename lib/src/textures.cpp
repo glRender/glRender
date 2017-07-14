@@ -7,9 +7,11 @@ Textures::Textures()
 
 }
 
-void Textures::setTexture(const char * uniformName, Texture * texture)
+void Textures::setTexture(const char * uniformName, std::shared_ptr<Texture> texture)
 {
-    m_textures[uniformName] = texture;
+    m_isEmpty = false;
+    m_sharedPtrs.push_back(texture);
+    m_textures[uniformName] = texture.get();
     
 }
 
@@ -97,10 +99,11 @@ const char * Textures::textureUniformName(const uint32_t index) const
 
 Textures::~Textures()
 {
-    for (auto item : m_textures)
-    {
-        delete item.second;
-    }
+    m_sharedPtrs.clear();
+//    for (auto item : m_textures)
+//    {
+//        delete item.second;
+//    }
 }
 
 }

@@ -41,7 +41,9 @@ public:
         Geometry * geometry = GeometryHelper::Arrows();
         Textures * textures = new Textures();
 
-        ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
+//        ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
+        std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", "data/colored.vertex", "data/colored.frag");
+
         shaderProgram->addAttribute<Vec3>("vertex");
 
         shaderProgram->addUniform<Mat4>("projection");
@@ -207,13 +209,13 @@ void init ()
 //    t1->add(t);
 //    t2->add(t1);
 
-    for (int i=0; i<25; i++)
+    for (int i=0; i<30; i++)
     {
 
-    for (int j=0; j<25; j++)
+    for (int j=0; j<30; j++)
     {
 
-    for (int k=0; k<25; k++)
+    for (int k=0; k<30; k++)
     {
 //        if ((int)(rand() % 5) == 0)
 //        {
@@ -227,11 +229,12 @@ void init ()
 //        } else
 //        if ((int)(rand() % 3) == 0)
 //        {
-            Mark * m = new Mark(Vec3(0,1,0),0.7,i,j,k);
+//            Mark * m = new Mark(Vec3(0,1,0),0.7,i,j,k);
+            WoodenBox * m = new WoodenBox();
 //            Mat4 mm = camera->projectionMatrix();
 //            m->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
 
-            m->model()->setOrigin(Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50)) - 25));
+            m->model()->setOrigin(Vec3(((rand() % 200)) - 25, ((rand() % 200)) - 25, ((rand() % 200)) - 25));
             t->add(m);
 
 //        }
@@ -304,9 +307,9 @@ void init ()
     overlayCamera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
     overlayScene->setCamera(overlayCamera);
 
-    WoodenBox *n = new WoodenBox();
-    n->model()->setOrigin(0,0.0,-1);
-    overlayScene->add(n);
+//    WoodenBox *n = new WoodenBox();
+//    n->model()->setOrigin(0,0.0,-1);
+//    overlayScene->add(n);
 
     BrickBox *n1 = new BrickBox();
     n1->model()->setOrigin(0.1,0.1,-1.4);

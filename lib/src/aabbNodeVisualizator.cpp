@@ -42,7 +42,9 @@ AABBNodeVisualizator::AABBNodeVisualizator(AABB * aabb) :
         } \n\
     ";
 
-    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram(vertexShaderCode.c_str(), fragmentShaderCode.c_str(), false);
+//    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram(vertexShaderCode.c_str(), fragmentShaderCode.c_str(), false);
+    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", vertexShaderCode.c_str(), fragmentShaderCode.c_str());
+
     if (shaderProgram)
     {
         shaderProgram->addAttribute<Vec3>("vertex");

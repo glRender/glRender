@@ -7,9 +7,12 @@ WoodenBox::WoodenBox()
     Geometry * geometry = GeometryHelper::Box(0.1);
 
     Textures * textures = new Textures();
-    textures->setTexture( "texture0", ResourceManager::getInstance().getTexture("data/Plywood_1024x640.png") );
+//    textures->setTexture( "texture0", ResourceManager::getInstance().getTexture("data/Plywood_1024x640.png") );
+    textures->setTexture( "texture0", ResourceManager::getInstance().textures().get("Plywood0", "data/Plywood_1024x640.png"));
 
-    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/shader0.vertex", "data/shader0.frag");
+//    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/shader0.vertex", "data/shader0.frag");
+    shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", "data/shader0.vertex", "data/shader0.frag");
+
     shaderProgram->addAttribute<Vec3>("vertex");
     shaderProgram->addAttribute<Vec2>("uv");
 

@@ -11,12 +11,17 @@ class Texture
 {
 public:
     Texture(const char * pathToFile);
+    Texture()/* = delete*/;
+    Texture & operator = (const Texture & texture) = delete;
     ~Texture();
 
-        uint32_t id();
+    inline uint32_t id()
+    {
+        return m_id;
+    }
 
 protected:
-        uint32_t m_id;
+    uint32_t m_id;
 
 };
 

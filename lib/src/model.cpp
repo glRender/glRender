@@ -3,9 +3,10 @@
 
 namespace glRender {
 
-Model::Model(Geometry* geometry, Textures* textures, ShaderProgram* shaderProgram) :
+Model::Model(Geometry* geometry, Textures* textures, std::shared_ptr<ShaderProgram> shaderProgram) :
     m_geometry(geometry),
-    m_shaderProgram(shaderProgram),
+    m_shaderProgramSrtPtr(shaderProgram),
+    m_shaderProgram(shaderProgram.get()),
     m_textures(textures)
 {
     glGenVertexArrays ( 1, &m_vaoId );
@@ -147,7 +148,6 @@ void Model::draw(Camera * camera)
 Model::~Model()
 {
     delete m_geometry;
-    delete m_shaderProgram;
     delete m_textures;
     glDeleteVertexArrays(1, &m_vaoId);
 }

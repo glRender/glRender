@@ -40,10 +40,7 @@ void Camera::lookAt(const Vec3 & position, const Vec3 & target, const Vec3 & up)
 
 }
 
-const Mat4 & Camera::projectionMatrix() const
-{
-	return m_projectionMatrix;
-}
+
 
 //const Mat4 & Camera::transformationMatrix() const
 //{
@@ -187,11 +184,6 @@ const Mat4 &Camera::localMatrix() const
 const Mat4 &Camera::parentsMatrix() const
 {
     return m_parentsMatrix;
-}
-
-const Mat4 & Camera::globalMatrix() const
-{
-    return m_globalMatrix;
 }
 
 float Camera::pitch() const

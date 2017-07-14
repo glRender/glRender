@@ -7,8 +7,8 @@ Texture::Texture(const char * p_pathToFile)
 {
 	Image* image = new Image( p_pathToFile );
 	
-    // if( image->isLoaded() )
-	// {
+     if( image->isLoaded() )
+     {
 		glGenTextures(1, &m_id);
 
 		glBindTexture(GL_TEXTURE_2D, m_id);
@@ -19,32 +19,39 @@ Texture::Texture(const char * p_pathToFile)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		if( image->components() == 3)
-		    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->width(), image->height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->data() );
-		else if( image->components() == 4)
-		    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->width(), image->height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image->data() );
+        GLint pixelFormat = GL_RGB;
+        if( image->components() == 4)
+        {
+            pixelFormat = GL_RGBA;
+        }
+        glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, image->width(), image->height(), 0, pixelFormat, GL_UNSIGNED_BYTE, image->data() );
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		image->clear();
 		delete image;
-	// }
-	// else
-	// {
-	//     printf (" %d ***************** Failed to load image ***********************\n", i);
-	// 	// throw( std::string("Failed to load image") );
+     }
+     else
+     {
+         printf("***************** Failed to load image ***********************\n");
+        // throw( std::string("Failed to load image") );
 
-	// }
+     }
 
+}
+
+Texture::Texture()
+{
 }
 
 Texture::~Texture()
 {
+    glDeleteTextures(1, &m_id);
 }
 
-uint32_t Texture::id()
-{
-	return m_id;
-}
+//uint32_t Texture::id()
+//{
+//	return m_id;
+//}
 
 }

@@ -18,7 +18,10 @@ public:
 
     void lookAt(const Vec3 & position, const Vec3 & target, const Vec3 & up);
 
-    const Mat4 & projectionMatrix() const;
+    inline const Mat4 & projectionMatrix() const
+    {
+        return m_projectionMatrix;
+    }
 
     const Vec3 & position() const;
     const Vec3 & target() const;
@@ -50,7 +53,10 @@ public:
 
     const Mat4 & localMatrix() const;
     const Mat4 & parentsMatrix() const;
-    const Mat4 & globalMatrix() const;
+    inline const Mat4 & globalMatrix() const
+    {
+        return m_globalMatrix;
+    }
 
 protected:
     Mat4 m_projectionMatrix;

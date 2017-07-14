@@ -19,7 +19,8 @@ Line::Line(Vec3 p0, Vec3 p1, uint segmentsNumber, float r, float g, float b)
 
     Textures * textures = new Textures();
 
-    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
+//    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
+    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", "data/colored.vertex", "data/colored.frag");
 
     shaderProgram->addAttribute<Vec3>("vertex");
     shaderProgram->addAttribute<float>("index");
