@@ -14,6 +14,7 @@
 #include "textures.hpp"
 #include "camera.hpp"
 #include "perspectiveCamera.hpp"
+#include "orthographicCamera.hpp"
 #include "node.hpp"
 #include "visitor.hpp"
 #include "nodeMixer.hpp"

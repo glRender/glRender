@@ -8,6 +8,12 @@
 namespace glRender
 {
 
+/**
+ * @param fieldOfView Field of view in degrees
+ * @param aspectRatio The ratio of width and height of viewport
+ * @param nearPlane The distance to near plane in normalized units
+ * @param farPlane The distance to far plane in normalized units
+ */
 class PerspectiveCamera : public Camera
 {
 public:

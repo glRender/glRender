@@ -3,7 +3,7 @@
 namespace glRender {
 PerspectiveCamera::PerspectiveCamera(float fieldOfView, float aspectRatio, float nearPlane, float farPlane) :
     Camera(nearPlane, farPlane),
-    m_fieldOfView(fieldOfView),
+    m_fieldOfView(fieldOfView / 180.0 * MATH_PI),
     m_aspectRatio(aspectRatio)
 {
     init();
@@ -36,7 +36,6 @@ void PerspectiveCamera::calculateProjectionMatrix()
     projectionMatrix[15] = 0.0f;
 
     m_projectionMatrix = projectionMatrix;
-
 }
 
 void PerspectiveCamera::init()

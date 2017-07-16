@@ -4,7 +4,7 @@ namespace glRender {
 
 WoodenBox::WoodenBox()
 {
-    Geometry * geometry = GeometryHelper::Box(0.1);
+    Geometry * geometry = GeometryHelper::Box(1.0);
 
     Textures * textures = new Textures();
 //    textures->setTexture( "texture0", ResourceManager::getInstance().getTexture("data/Plywood_1024x640.png") );

@@ -178,9 +178,10 @@ class Tran2 : public NodeMixedWith<IUpdateable>
 
 void init ()
 {
-    camera = new PerspectiveCamera( 35.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f );
+    camera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 200.0f );
+//    camera = new OrthographicCamera(3.0f, 16.0f / 9.0f, 1.0f, 200.0f );
     camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
-//    camera->lookAt(Vec3(-10,0,-10), Vec3(10,0,-10), Vec3::AXE_Y());
+//    camera->lookAt(Vec3(3,0,4), Vec3(-5,0,-15), Vec3::AXE_Y());
 
     scene = new UnderOverlayScene();
     scene->setCamera(camera);
@@ -235,6 +236,7 @@ void init ()
 //            m->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
 
             m->model()->setOrigin(Vec3(((rand() % 200)) - 25, ((rand() % 200)) - 25, ((rand() % 200)) - 25));
+
             t->add(m);
 
 //        }
@@ -302,9 +304,12 @@ void init ()
 //    t2->add(t1);
 //    scene->add(t2);
 
+
+//    overlayCamera = new OrthographicCamera(3.0f, 16.0f / 9.0f, 1.0f, 200.0f );
+    overlayCamera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 200.0f );
+    overlayCamera->lookAt(Vec3(0,0,10), Vec3(0,0,-10), Vec3::AXE_Y());
+
     overlayScene = new OverlayScene();
-    overlayCamera = new PerspectiveCamera( 35.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f );
-    overlayCamera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
     overlayScene->setCamera(overlayCamera);
 
 //    WoodenBox *n = new WoodenBox();
