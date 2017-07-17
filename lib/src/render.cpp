@@ -80,6 +80,14 @@ void Render::update()
     }
 }
 
+void Render::processKeyboardsKeys(IKeyPressable::KeyboardKey key)
+{
+    for (auto i : m_scenes.scenes())
+    {
+        i->processKeyboardsKeys(key);
+    }
+}
+
 void Render::setViewportSize(const uint32_t & w, const uint32_t & h)
 {
     glViewport(0, 0, w, h);
