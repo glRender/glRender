@@ -154,8 +154,7 @@ std::shared_ptr<Shader> createShaderFromFile(const char * pathToFile, ShaderType
 
     if (!file.good())
     {
-        std::cout << "Failed to open file: " << pathToFile << std::endl;
-        throw std::system_error();
+        throw std::invalid_argument("Failed to open file: " + std::string(pathToFile));
     }
 
     std::stringstream stream;
