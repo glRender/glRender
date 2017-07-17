@@ -66,7 +66,7 @@ EventManager<Scene::Event> &Scene::eventManager()
     return m_eventManager;
 }
 
-void Scene::traverse(std::function<void(Node * node)> handler)
+void Scene::traverseNodes(std::function<void(Node * node)> handler)
 {
     for (auto & o : m_cache.nodes)
     {
@@ -74,7 +74,7 @@ void Scene::traverse(std::function<void(Node * node)> handler)
     }
 }
 
-void Scene::traverse(std::function<void (IUpdateable *)> handler)
+void Scene::traverseUpdateables(std::function<void (IUpdateable *)> handler)
 {
     for (auto & o : m_cache.updateables)
     {
@@ -82,7 +82,7 @@ void Scene::traverse(std::function<void (IUpdateable *)> handler)
     }
 }
 
-void Scene::traverse(std::function<void (IDrawable *)> handler)
+void Scene::traverseDrawables(std::function<void (IDrawable *)> handler)
 {
     for (auto & o : m_cache.drawables)
     {
@@ -90,7 +90,7 @@ void Scene::traverse(std::function<void (IDrawable *)> handler)
     }
 }
 
-void Scene::traverse(std::function<void (IIntersectable *)> handler)
+void Scene::traverseIntersectables(std::function<void (IIntersectable *)> handler)
 {
     for (auto & o : m_cache.intersectables)
     {
@@ -98,7 +98,7 @@ void Scene::traverse(std::function<void (IIntersectable *)> handler)
     }
 }
 
-void Scene::traverse(std::function<void (IKeyPressable *)> handler)
+void Scene::traverseKeyPressables(std::function<void (IKeyPressable *)> handler)
 {
     for (auto & o : m_cache.keyPressable)
     {
@@ -106,7 +106,7 @@ void Scene::traverse(std::function<void (IKeyPressable *)> handler)
     }
 }
 
-std::vector<Node *> Scene::query(std::function<bool (const Node *)> condition)
+std::vector<Node *> Scene::queryNodes(std::function<bool (const Node *)> condition)
 {
     std::vector<Node *> result;
     for (auto & o : m_cache.nodes)
@@ -119,7 +119,7 @@ std::vector<Node *> Scene::query(std::function<bool (const Node *)> condition)
     return result;
 }
 
-std::vector<IUpdateable *> Scene::query(std::function<bool (const IUpdateable *)> condition)
+std::vector<IUpdateable *> Scene::queryUpdateables(std::function<bool (const IUpdateable *)> condition)
 {
     std::vector<IUpdateable *> result;
     for (auto & o : m_cache.updateables)
@@ -132,7 +132,7 @@ std::vector<IUpdateable *> Scene::query(std::function<bool (const IUpdateable *)
     return result;
 }
 
-std::vector<IDrawable *> Scene::query(std::function<bool (const IDrawable *)> condition)
+std::vector<IDrawable *> Scene::queryDrawables(std::function<bool (const IDrawable *)> condition)
 {
     std::vector<IDrawable *> result;
     for (auto & o : m_cache.drawables)
@@ -145,7 +145,7 @@ std::vector<IDrawable *> Scene::query(std::function<bool (const IDrawable *)> co
     return result;
 }
 
-std::vector<IIntersectable *> Scene::query(std::function<bool (const IIntersectable *)> condition)
+std::vector<IIntersectable *> Scene::queryIntersectables(std::function<bool (const IIntersectable *)> condition)
 {
     std::vector<IIntersectable *> result;
     for (auto & o : m_cache.intersectables)
@@ -158,7 +158,7 @@ std::vector<IIntersectable *> Scene::query(std::function<bool (const IIntersecta
     return result;
 }
 
-std::vector<IKeyPressable *> Scene::query(std::function<bool (const IKeyPressable *)> condition)
+std::vector<IKeyPressable *> Scene::queryKeyPressables(std::function<bool (const IKeyPressable *)> condition)
 {
     std::vector<IKeyPressable *> result;
     for (auto & o : m_cache.keyPressable)
@@ -191,7 +191,7 @@ void Scene::update()
 
 void Scene::processKeyboardsKeys(IKeyPressable::KeyboardKey key)
 {
-    traverse([&key](IKeyPressable * mixin) {
+    traverseKeyPressables([&key](IKeyPressable * mixin) {
         mixin->onKeyPress(key);
     });
 }

@@ -141,7 +141,7 @@ std::vector<IIntersectable *> NodePicker::findAll(Vec2 normDeviceCoords)
 {
     auto ray = this->ray(normDeviceCoords);
 
-    std::vector<IIntersectable *> result = m_scene->query([ray](const IIntersectable * o) {
+    std::vector<IIntersectable *> result = m_scene->queryIntersectables([ray](const IIntersectable * o) {
         return o->intersects(ray);
     });
 
