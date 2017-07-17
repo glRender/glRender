@@ -88,9 +88,9 @@ void Render::processKeyboardsKeys(IKeyPressable::KeyboardKey key)
     }
 }
 
-void Render::setViewportSize(const uint32_t & w, const uint32_t & h)
+void Render::setViewportSize(uint width, uint height)
 {
-    glViewport(0, 0, w, h);
+    glViewport(0, 0, width, height);
 }
 
 void Render::setBackgroundColor(const Vec4 &background)

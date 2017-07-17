@@ -23,7 +23,7 @@ public:
     void update();
     void processKeyboardsKeys(IKeyPressable::KeyboardKey key);
 
-    void setViewportSize(uint32_t & w, const uint32_t & h);
+    void setViewportSize(uint width, uint heigth);
     void setBackgroundColor(const Vec4 & background);
     OrderedScenes & scenes();
 
