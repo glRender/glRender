@@ -362,61 +362,61 @@ void key ( unsigned char key, int x, int y )
     // w
     if(key == 'w')
     {
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::W);
+        Render::instance()->processKeyboardsKeys(IKeyPressable::KeyboardKey::W);
     }
 
     // s
     if(key == 's')
     {
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::S);
+        Render::instance()->processKeyboardsKeys(IKeyPressable::KeyboardKey::S);
     }
 
     // a
     if(key == 'a')
     {
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::A);
+        Render::instance()->processKeyboardsKeys(IKeyPressable::KeyboardKey::A);
     }
 
     // d
     if(key == 'd')
     {
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::D);
+        Render::instance()->processKeyboardsKeys(IKeyPressable::KeyboardKey::D);
     }
 
     // q
     if(key == 'q')
     {
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::Q);
+        Render::instance()->processKeyboardsKeys(IKeyPressable::KeyboardKey::Q);
     }
 
     // e
     if(key == 'e')
     {
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::E);
+        Render::instance()->processKeyboardsKeys(IKeyPressable::KeyboardKey::E);
     }
 
     // z
     if(key == 'z')
     {
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::Z);
+        Render::instance()->processKeyboardsKeys(IKeyPressable::KeyboardKey::Z);
     }
 
     // x
     if(key == 'x')
     {
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::X);
+        Render::instance()->processKeyboardsKeys(IKeyPressable::KeyboardKey::X);
     }
 
     // r
     if(key == 'r')
     {
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::R);
+        Render::instance()->processKeyboardsKeys(IKeyPressable::KeyboardKey::R);
     }
 
     // f
     if(key == 'f')
     {
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::F);
+        Render::instance()->processKeyboardsKeys(IKeyPressable::KeyboardKey::F);
     }
 
 //    std::cout << "camera: " << camera->position().x << camera->position().y << camera->position().z << std::endl;
