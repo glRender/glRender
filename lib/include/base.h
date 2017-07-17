@@ -28,6 +28,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <exception>
+#include <stdexcept>
 #include <cstring>
 #include <stdint.h>
 
