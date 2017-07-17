@@ -1,6 +1,6 @@
 [install_deps]
 run("apt-get update")
-run("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev qt5-default")
+run("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev")
 
 [init_git]
 run("git submodule update --init --recursive")

@@ -10,5 +10,5 @@ set (glRender_VERSION ${glRender_MAJOR_VERSION}.${glRender_MINOR_VERSION}.${glRe
 add_subdirectory (lib)
 add_subdirectory (tests/unit-tests)
 add_subdirectory (tests/integration-tests/glutApp)
-add_subdirectory (tests/integration-tests/qtApp)
+#add_subdirectory (tests/integration-tests/qtApp)
 add_subdirectory (package)

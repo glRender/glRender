@@ -305,16 +305,15 @@ void init ()
 //    scene->add(t2);
 
 
-//    overlayCamera = new OrthographicCamera(3.0f, 16.0f / 9.0f, 1.0f, 200.0f );
-    overlayCamera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 200.0f );
+    overlayCamera = new OrthographicCamera(10.0f, 16.0f / 9.0f, 1.0f, 200.0f );
     overlayCamera->lookAt(Vec3(0,0,10), Vec3(0,0,-10), Vec3::AXE_Y());
 
     overlayScene = new OverlayScene();
     overlayScene->setCamera(overlayCamera);
 
-//    WoodenBox *n = new WoodenBox();
-//    n->model()->setOrigin(0,0.0,-1);
-//    overlayScene->add(n);
+    WoodenBox *n = new WoodenBox();
+    n->model()->setOrigin(0,0.0,-1);
+    overlayScene->add(n);
 
     BrickBox *n1 = new BrickBox();
     n1->model()->setOrigin(0.1,0.1,-1.4);
