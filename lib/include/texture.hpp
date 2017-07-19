@@ -10,10 +10,18 @@ namespace glRender
 class Texture
 {
 public:
-    Texture(const char * pathToFile);
-    Texture()/* = delete*/;
+    enum class PixelFormat
+    {
+        RGB,
+        RGBA
+    };
+
+//    Texture(const char * pathToFile);
+    Texture();
     Texture & operator = (const Texture & texture) = delete;
     ~Texture();
+
+    void fillBy(uint width, uint height, PixelFormat format, void * data);
 
     inline uint32_t id()
     {
@@ -24,6 +32,8 @@ protected:
     uint32_t m_id;
 
 };
+
+std::shared_ptr<Texture> createTextureFromFile(const char * pathToFile);
 
 }
 

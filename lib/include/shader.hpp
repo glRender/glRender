@@ -33,4 +33,6 @@ private:
     uint32_t m_program;
 };
 
+std::shared_ptr<Shader> createShaderFromFile(const char * pathToFile, ShaderType type);
+
 }

@@ -151,4 +151,31 @@ bool Shader::compile()
     }
 }
     
+std::shared_ptr<Shader> createShaderFromFile(const char * pathToFile, ShaderType type)
+{
+    std::ifstream file;
+
+    file.open(pathToFile);
+
+    if (!file.good())
+    {
+        throw std::invalid_argument("Failed to open file: " + std::string(pathToFile));
+    }
+
+    std::stringstream stream;
+    stream << file.rdbuf();
+    file.close();
+
+    std::string text;
+    text = stream.str();
+
+    std::shared_ptr<Shader> shader = std::make_shared<Shader>(text.c_str(), type);
+    if (!shader->compile())
+    {
+        std::cout << "Can't compile shader!" << std::endl;
+        throw std::invalid_argument("Can't compile shader: " + std::string(pathToFile));
+    }
+    return std::move(shader);
+}
+
 }

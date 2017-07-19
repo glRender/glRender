@@ -7,7 +7,7 @@ set (CPACK_PACKAGE_VERSION_MINOR "${glRender_MINOR_VERSION}")
 set (CPACK_PACKAGE_VERSION_PATCH "${glRender_PATCH_VERSION}")
 set (CPACK_PACKAGE_VERSION "${glRender_VERSION}")
 set (CPACK_PACKAGE_VENDOR "Aleksandr Lizin <sogimu@nxt.ru>")
-set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "It’s small library writen under C++ for 3d visualization with help of OpenGL 3.x. and a few repos with examples of using library. The main target it’s geting experience with 3d computer graphics.")
+set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "It’s small library writen under C++ for 3d visualization with help of OpenGL 3.x. and a application-example of using library. The main target it’s geting experience with 3d computer graphics.")
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
     set(CPACK_GENERATOR "DEB")
