@@ -42,7 +42,8 @@ public:
         Textures * textures = new Textures();
 
 //        ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
-        std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", "data/colored.vertex", "data/colored.frag");
+//        std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", "data/colored.vertex", "data/colored.frag");
+        std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("coloredShP");
 
         shaderProgram->addAttribute<Vec3>("vertex");
 
@@ -178,6 +179,35 @@ class Tran2 : public NodeMixedWith<IUpdateable>
 
 void init ()
 {
+    ResourceManager * resMng = &ResourceManager::getInstance();
+
+    std::pair<const char *, const char *> texturesPathes[] = {
+        {"Plywood_1024x640.png", "data/Plywood_1024x640.png"},
+        {"TexturesCom_BricksSmallOld0080_1_seamless_S_1024x1024.png", "data/TexturesCom_BricksSmallOld0080_1_seamless_S_1024x1024.png"}
+    };
+
+    std::pair<const char *, std::map<ShaderType, const char *>> shadersPathes[] = {
+        {"coloredShP",           {{ShaderType::VertexShader, "data/colored.vertex"},           {ShaderType::FragmentShader, "data/colored.frag"}}},
+        {"shader0ShP",           {{ShaderType::VertexShader, "data/shader0.vertex"},           {ShaderType::FragmentShader, "data/shader0.frag"}}},
+        {"transparentPointsShP", {{ShaderType::VertexShader, "data/transparentPoints.vertex"}, {ShaderType::FragmentShader, "data/transparentPoints.frag"}}}
+    };
+
+    for (auto & i : texturesPathes)
+    {
+        resMng->textures().create(i.first, [&i]() {
+            return createTextureFromFile(i.second);
+        });
+    }
+
+    for (auto & i : shadersPathes)
+    {
+        resMng->shaderPrograms().create(i.first, [&i]() {
+            return createShaderProgramFromFiles(i.second);
+        });
+    }
+
+
+
     camera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 200.0f );
 //    camera = new OrthographicCamera(3.0f, 16.0f / 9.0f, 1.0f, 200.0f );
     camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());

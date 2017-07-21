@@ -89,6 +89,9 @@ private:
     uint32_t m_programId;   // The unique ID / handle for the shader program
 };
 
+using ShaderProgramPtr = std::shared_ptr<ShaderProgram>;
+
 std::shared_ptr<ShaderProgram> createShaderProgramFromFiles(std::map<ShaderType, const char *> pathesToShaders);
+std::shared_ptr<ShaderProgram> createShaderProgramFromText(std::map<ShaderType, const char *> textOfShaders);
 
 }

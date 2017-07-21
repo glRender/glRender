@@ -34,5 +34,6 @@ private:
 };
 
 std::shared_ptr<Shader> createShaderFromFile(const char * pathToFile, ShaderType type);
+std::shared_ptr<Shader> createShaderFromText(const char * textOfShader, ShaderType type);
 
 }

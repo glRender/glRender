@@ -33,6 +33,8 @@ protected:
 
 };
 
+using TexturePtr = std::shared_ptr<Texture>;
+
 std::shared_ptr<Texture> createTextureFromFile(const char * pathToFile);
 
 }

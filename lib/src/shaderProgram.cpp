@@ -346,4 +346,24 @@ std::shared_ptr<ShaderProgram> createShaderProgramFromFiles(std::map<ShaderType,
     return std::move(program);
 }
 
+std::shared_ptr<ShaderProgram> createShaderProgramFromText(std::map<ShaderType, const char *> textOfShaders)
+{
+    std::shared_ptr<ShaderProgram> program = std::make_shared<ShaderProgram>();
+
+    for (auto & i : textOfShaders)
+    {
+        // i.second - path to file with code of shader
+        // i.first  - type of shader
+        std::shared_ptr<Shader> shader = createShaderFromText(i.second, i.first);
+        program->attach(i.first, shader);
+    }
+
+    if (!program->link())
+    {
+        throw std::invalid_argument("Failed shader program linkage!");
+    }
+
+    return std::move(program);
+}
+
 }

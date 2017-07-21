@@ -169,11 +169,15 @@ std::shared_ptr<Shader> createShaderFromFile(const char * pathToFile, ShaderType
     std::string text;
     text = stream.str();
 
-    std::shared_ptr<Shader> shader = std::make_shared<Shader>(text.c_str(), type);
+    return std::move(createShaderFromText(text.c_str(), type));
+}
+
+std::shared_ptr<Shader> createShaderFromText(const char *textOfShader, ShaderType type)
+{
+    std::shared_ptr<Shader> shader = std::make_shared<Shader>(textOfShader, type);
     if (!shader->compile())
     {
-        std::cout << "Can't compile shader!" << std::endl;
-        throw std::invalid_argument("Can't compile shader: " + std::string(pathToFile));
+        throw std::invalid_argument("Can't compile shader: " + std::string(textOfShader));
     }
     return std::move(shader);
 }

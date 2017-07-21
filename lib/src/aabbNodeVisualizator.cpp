@@ -42,8 +42,15 @@ AABBNodeVisualizator::AABBNodeVisualizator(AABB * aabb) :
         } \n\
     ";
 
-//    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram(vertexShaderCode.c_str(), fragmentShaderCode.c_str(), false);
-    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", vertexShaderCode.c_str(), fragmentShaderCode.c_str());
+
+    ResourceManager::getInstance().shaderPrograms().create("anglesShaderProgram", [&vertexShaderCode, &fragmentShaderCode]() {
+        std::map<ShaderType, const char *> shadersTexts = {
+            {ShaderType::VertexShader, vertexShaderCode.c_str()},
+            {ShaderType::FragmentShader, fragmentShaderCode.c_str()}
+        };
+        return createShaderProgramFromText(shadersTexts);
+    });
+    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("anglesShaderProgram");
 
     if (shaderProgram)
     {

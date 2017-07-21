@@ -7,14 +7,10 @@ BrickBox::BrickBox()
     Geometry * geometry = GeometryHelper::Box(1.0);
 
     Textures * textures = new Textures();
-    textures->setTexture( "texture0", ResourceManager::getInstance().textures().get("BricksWall0", "data/TexturesCom_BricksSmallOld0080_1_seamless_S_1024x1024.png"));
-    textures->setTexture( "texture1", ResourceManager::getInstance().textures().get("Plywood0", "data/Plywood_1024x640.png"));
+    textures->setTexture( "texture0", ResourceManager::getInstance().textures().get("TexturesCom_BricksSmallOld0080_1_seamless_S_1024x1024.png"));
+    textures->setTexture( "texture1", ResourceManager::getInstance().textures().get("Plywood_1024x640.png"));
 
-//    textures->setTexture( "texture0", ResourceManager::getInstance().getTexture("data/TexturesCom_BricksSmallOld0080_1_seamless_S_1024x1024.png") );
-//    textures->setTexture( "texture1", ResourceManager::getInstance().getTexture("data/Plywood_1024x640.png") );
-
-//    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/shader0.vertex", "data/shader0.frag");
-    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", "data/shader0.vertex", "data/shader0.frag");
+    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("shader0ShP");
 
     shaderProgram->addAttribute<Vec3>("vertex");
     shaderProgram->addAttribute<Vec2>("uv");
