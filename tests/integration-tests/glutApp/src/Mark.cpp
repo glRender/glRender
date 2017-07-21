@@ -16,7 +16,7 @@ Mark::Mark(Vec3 color, float size, uint i, uint j, uint k)
     Textures * textures = new Textures();
 
 //    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
-    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("coloredShP");
+    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::instance().shaderPrograms().get("coloredShP");
 
     shaderProgram->addAttribute<Vec3>("vertex");
 

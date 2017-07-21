@@ -48,7 +48,7 @@ protected:
 class ResourceManager
 {    
 public:
-    static ResourceManager & getInstance();
+    static ResourceManager & instance();
     ResourceManager(ResourceManager const &) = delete;
     void operator=(ResourceManager const &)  = delete;
 

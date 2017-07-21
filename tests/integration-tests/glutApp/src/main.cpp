@@ -43,7 +43,7 @@ public:
 
 //        ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
 //        std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", "data/colored.vertex", "data/colored.frag");
-        std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("coloredShP");
+        std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::instance().shaderPrograms().get("coloredShP");
 
         shaderProgram->addAttribute<Vec3>("vertex");
 
@@ -179,7 +179,7 @@ class Tran2 : public NodeMixedWith<IUpdateable>
 
 void init ()
 {
-    ResourceManager * resMng = &ResourceManager::getInstance();
+    ResourceManager * resMng = &ResourceManager::instance();
 
     std::pair<const char *, const char *> texturesPathes[] = {
         {"Plywood_1024x640.png", "data/Plywood_1024x640.png"},

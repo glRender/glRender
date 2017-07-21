@@ -12,7 +12,7 @@ ResourceManager::ResourceManager()
 {
 }
 
-ResourceManager &ResourceManager::getInstance()
+ResourceManager &ResourceManager::instance()
 {
     static ResourceManager instance;
     return instance;

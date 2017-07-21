@@ -19,7 +19,7 @@ Line::Line(Vec3 p0, Vec3 p1, uint segmentsNumber, float r, float g, float b)
 
     Textures * textures = new Textures();
 
-    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("coloredShP");
+    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::instance().shaderPrograms().get("coloredShP");
 
     shaderProgram->addAttribute<Vec3>("vertex");
     shaderProgram->addAttribute<float>("index");
