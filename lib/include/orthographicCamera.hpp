@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base.h"
-
+#include "vec2.hpp"
 #include "camera.hpp"
 
 namespace glRender

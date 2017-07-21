@@ -1,6 +1,9 @@
 #include "nodeCacheRemover.hpp"
 
-namespace glRender {
+#include "nodeCache.hpp"
+#include "nodeMixer.hpp"
+
+using namespace glRender;
 
 NodeCacheRemover::NodeCacheRemover(NodeCache &cache) :
     cache(cache)
@@ -98,6 +101,4 @@ void NodeCacheRemover::visit(NodeMixedWith<IIntersectable> *ref) {
 void NodeCacheRemover::visit(NodeMixedWith<IKeyPressable> *ref) {
     cache.keyPressable.remove(ref);
     cache.nodes.remove(ref);
-}
-
 }

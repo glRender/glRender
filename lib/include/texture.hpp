@@ -1,8 +1,6 @@
-#ifndef __TEXTURE_HPP__		
-#define __TEXTURE_HPP__
+#pragma once
 
 #include "base.h"
-#include "image.hpp"
 
 namespace glRender
 {
@@ -16,19 +14,15 @@ public:
         RGBA
     };
 
-//    Texture(const char * pathToFile);
     Texture();
     Texture & operator = (const Texture & texture) = delete;
     ~Texture();
 
     void fillBy(uint width, uint height, PixelFormat format, void * data);
 
-    inline uint32_t id()
-    {
-        return m_id;
-    }
+    uint32_t id();
 
-protected:
+private:
     uint32_t m_id;
 
 };
@@ -38,5 +32,3 @@ using TexturePtr = std::shared_ptr<Texture>;
 std::shared_ptr<Texture> createTextureFromFile(const char * pathToFile);
 
 }
-
-#endif /* __TEXTURE_HPP__ */

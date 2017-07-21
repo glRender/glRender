@@ -1,5 +1,4 @@
-#ifndef __GLRENDER_H__		
-#define __GLRENDER_H__
+#pragma once
 
 #include "base.h"
 
@@ -15,6 +14,7 @@
 #include "camera.hpp"
 #include "perspectiveCamera.hpp"
 #include "orthographicCamera.hpp"
+#include "cameraControlNode.hpp"
 #include "node.hpp"
 #include "visitor.hpp"
 #include "nodeMixer.hpp"
@@ -29,5 +29,3 @@
 #include "aabb.hpp"
 #include "nodePicker.hpp"
 #include "render.hpp"
-
-#endif /* __GLRENDER_H__ */

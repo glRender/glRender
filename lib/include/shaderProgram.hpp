@@ -1,17 +1,17 @@
 #pragma once
 
 #include "base.h"
-
-#include "vec3.hpp"
-#include "vec4.hpp"
-#include "mat4.hpp"
 #include "shader.hpp"
-#include "attribute.h"
-#include "geometry.hpp"
-#include "textures.hpp"
 
 namespace glRender
 {
+
+class Geometry;
+class Textures;
+class Texture;
+class Mat4;
+class Vec4;
+class Vec3;
 
 struct Attribute
 {

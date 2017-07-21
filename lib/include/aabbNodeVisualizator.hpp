@@ -1,8 +1,14 @@
 #pragma once
 
-#include "glRender.h"
+#include "base.h"
+
+#include "nodeMixer.hpp"
 
 namespace glRender {
+
+class AABB;
+class Camera;
+class Model;
 
 class AABBNodeVisualizator : public NodeMixedWith<IUpdateable, IDrawable>
 {

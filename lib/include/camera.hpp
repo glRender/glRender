@@ -1,5 +1,4 @@
-#ifndef __CAMERA_HPP__		
-#define __CAMERA_HPP__
+#pragma once
 
 #include "base.h"
 #include "mat4.hpp"
@@ -85,5 +84,3 @@ protected:
 using CameraPtr = std::shared_ptr<Camera>;
 
 }
-
-#endif /* __CAMERA_HPP__ */

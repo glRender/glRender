@@ -1,6 +1,8 @@
 #include "positionable.hpp"
 
-namespace glRender {
+#include "vec3.hpp"
+
+using namespace glRender;
 
 void Positionable::setOrigin(const Vec3 & pos)
 {
@@ -128,8 +130,4 @@ const Mat4 & Positionable::localMatrix() const
 const Mat4 &Positionable::parentsMatrix() const
 {
     return m_parentsMatrix;
-}
-
-
-
 }

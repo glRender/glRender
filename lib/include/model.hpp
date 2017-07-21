@@ -1,17 +1,17 @@
-#ifndef __MODEL_HPP__		
-#define __MODEL_HPP__
+#pragma once
 
 #include "base.h"
 
 #include "positionable.hpp"
-#include "geometry.hpp"
-#include "shaderProgram.hpp"
-#include "camera.hpp"
-#include "textures.hpp"
-#include "geometryBuffer.hpp"
 
 namespace glRender
 {
+
+class Geometry;
+class ShaderProgram;
+class Camera;
+class Textures;
+class AbstractBuffer;
 
 class Model : public Positionable
 {
@@ -27,14 +27,13 @@ public:
     ~Model();
 
     void draw(Camera * camera);
-//    void draw(CameraPtr camera, Mat4 transforms);
 
-    inline Geometry* geometry()
+    inline Geometry * geometry()
     {
         return m_geometry;
     }
 
-    inline ShaderProgram* shaderProgram()
+    inline ShaderProgram * shaderProgram()
     {
         return m_shaderProgram;
     }
@@ -49,13 +48,6 @@ public:
 
     void setDrawMode(DrawMode drawMode);
     DrawMode drawMode();
-
-//    void setLocalMatrix(Mat4 & m);
-//    void setGlobalMatrix(Mat4 && m);
-
-//    const Mat4 & localMatrix() const;
-//    const Mat4 & globalMatrix() const;
-//    const Mat4 & localGlobalMatrix() const;
 
 private:
     uint32_t m_vaoId;
@@ -76,5 +68,3 @@ private:
 };
 
 }
-
-#endif /* __MODEL_HPP__ */

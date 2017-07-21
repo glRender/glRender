@@ -3,6 +3,12 @@
 #include "resourceManager.hpp"
 #include "geometryBuffer.hpp"
 #include "opengl.h"
+#include "geometry.hpp"
+#include "textures.hpp"
+#include "texture.hpp"
+#include "mat4.hpp"
+#include "vec4.hpp"
+#include "vec3.hpp"
 
 namespace glRender {
 

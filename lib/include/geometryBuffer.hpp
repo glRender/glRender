@@ -3,12 +3,10 @@
 
 #include "base.h"
 
-#include "vec3.hpp"
-#include "vec4.hpp"
-#include "mat4.hpp"
-
 namespace glRender
 {
+
+class Vec2;
 
 class AbstractBuffer
 {

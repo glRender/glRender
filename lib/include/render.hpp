@@ -1,8 +1,8 @@
 #pragma once
 
 #include "vec4.hpp"
-
 #include "orderedScenes.hpp"
+#include "nodeMixer.hpp"
 
 namespace glRender
 {

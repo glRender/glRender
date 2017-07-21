@@ -2,8 +2,6 @@
 #define __GEOMETRY_H__
 
 #include "base.h"
-
-#include "attribute.h"
 #include "geometryBuffer.hpp"
 
 namespace glRender
