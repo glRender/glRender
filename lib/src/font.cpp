@@ -4,6 +4,8 @@
 #include "shaderProgram.hpp"
 #include "texture.hpp"
 #include "resourceManager.hpp"
+#include "geometryHelper.hpp"
+#include "model.hpp"
 
 using namespace glRender;
 
@@ -11,12 +13,18 @@ Font::Font(std::shared_ptr<Texture> texture, const TextureFontInformation &infor
     : m_texture(texture)
     , m_information(information)
 {
-//    m_shaderProgram = ResourceManager::getInstance().shaderPrograms().get(uuid, )
-}
+    Geometry * geometry = GeometryHelper::Plane(Vec3(-0.5, 0.5, -0.5), Vec3(0.5, 0.5, -0.5), Vec3(-0.5, -0.5, -0.5), Vec3(0.5, -0.5, -0.5));
 
-Font::Font(const char * pathToTexture, const char * pathToTextureFontInfo)
-{
-//    m_texture = ResourceManager::getInstance().textures().get("*", pathToTexture);
+    Textures * textures = new Textures();
+    textures->setTexture("texture", m_texture);
 
-//    m_shaderProgram = ResourceManager::getInstance().shaderPrograms().get(uuid, m_vertexShaderText, m_fragmentShaderText, false);
+    ResourceManager::instance().shaderPrograms().create("fontShaderProgram", [this]() {
+        std::map<ShaderType, const char *> shadersTexts = {
+            {ShaderType::VertexShader, m_vertexShaderCode.c_str()},
+            {ShaderType::FragmentShader, m_fragmentShaderCode.c_str()}
+        };
+        return createShaderProgramFromText(shadersTexts);
+    });
+    m_shaderProgram = ResourceManager::instance().shaderPrograms().get("fontShaderProgram");
+    m_model = new Model(geometry, textures, m_shaderProgram);
 }
