@@ -28,7 +28,7 @@ class IIntersectable
 {
 public:
     virtual bool intersects(const RayPtr ray) const = 0;
-    virtual IBoundingBox * bb() const = 0;
+    virtual const IBoundingBox * bb() const = 0;
     virtual void onMouseUp(Vec3 & position, RayPtr ray, Camera * camera) = 0;
     virtual void onMouseDown(Vec3 & position, RayPtr ray, Camera * camera) = 0;
     virtual void onMouseMove(Vec3 & toPosition) = 0;

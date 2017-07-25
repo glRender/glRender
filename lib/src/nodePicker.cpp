@@ -58,7 +58,7 @@ RayPtr NodePicker::ray(const Vec2 & normDeviceCoords)
     Vec3 origin = coordOnDistance(normDeviceCoords, m_camera->nearPlane());
     Vec3 target = coordOnDistance(normDeviceCoords, m_camera->farPlane());
 
-    return RayPtr(new Ray(origin, target));
+    return std::move(std::make_shared<Ray>(origin, target));
 }
 
 IIntersectable * NodePicker::findNearest(float nx, float ny)

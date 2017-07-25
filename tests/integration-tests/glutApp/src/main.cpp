@@ -91,7 +91,7 @@ void init ()
 
 
     camera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 200.0f );
-//    camera = new OrthographicCamera(3.0f, 16.0f / 9.0f, 1.0f, 200.0f );
+//    camera = new OrthographicCamera(100.0f, 16.0f / 9.0f, 1.0f, 200.0f );
     camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
 //    camera->lookAt(Vec3(3,0,4), Vec3(-5,0,-15), Vec3::AXE_Y());
 
@@ -117,21 +117,19 @@ void init ()
 //    t1->add(t);
 //    t2->add(t1);
 
-    for (int i=0; i<30; i++)
+    for (int i=0; i<1; i++)
     {
-        for (int j=0; j<30; j++)
+        for (int j=0; j<1; j++)
         {
-            for (int k=0; k<30; k++)
+            for (int k=0; k<1000; k++)
             {
-        //        BrickBox *bb = new BrickBox();
-        //        bb->model()->setWireframeMode(false);
-        //        bb->model()->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
-        //        scene->addNode(bb);
-                WoodenBox * m = new WoodenBox();
-        //        Mat4 mm = camera->projectionMatrix();
-        //        m->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
+//                BrickBox *bb = new BrickBox();
+//                bb->model()->setWireframeMode(false);
+//                bb->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
+//                t->add(bb);
 
-                m->model()->setOrigin(Vec3(((rand() % 200)) - 25, ((rand() % 200)) - 25, ((rand() % 200)) - 25));
+                Mark * m = new Mark(Vec3(0,1,0), 1.0, i, j, k);
+                m->setOrigin(Vec3(((rand() % 200)) - 25, ((rand() % 200)) - 25, ((rand() % 200)) - 25));
                 t->add(m);
             }
         }
@@ -151,13 +149,13 @@ void init ()
     overlayScene = new OverlayScene();
     overlayScene->setCamera(overlayCamera);
 
-    WoodenBox *n = new WoodenBox();
-    n->model()->setOrigin(0,0.0,-1);
-    overlayScene->add(n);
+//    WoodenBox *n = new WoodenBox();
+//    n->model()->setOrigin(3.5,1.5,-1);
+//    overlayScene->add(n);
 
-    BrickBox *n1 = new BrickBox();
-    n1->model()->setOrigin(0.1,0.1,-1.4);
-    overlayScene->add(n1);
+//    BrickBox *n1 = new BrickBox();
+//    n1->model()->setOrigin(3.7,1.3,-1.4);
+//    overlayScene->add(n1);
 
     Render::instance()->scenes().add(overlayScene);
 
@@ -176,7 +174,7 @@ void display()
     glutSwapBuffers ();
     counter++;
 
-    if (counter % 50 == 0)
+    if (counter % 100 == 0)
     {
         float frameTime = ((float)(clock() - start) / counter) / CLOCKS_PER_SEC * 1000.0;
         float fps = 1000.0 / frameTime;
@@ -265,7 +263,7 @@ void key ( unsigned char key, int x, int y )
 
 void mouse(int button, int state, int x, int y)
 {
-    printf("%d, %d\n", x, y);
+    printf("Pick on: %d, %d\n", x, y);
     std::cout << "" << std::endl;
 
     Vec2 normDeviceCoords(
