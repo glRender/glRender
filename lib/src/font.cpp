@@ -6,10 +6,15 @@
 #include "resourceManager.hpp"
 #include "geometryHelper.hpp"
 #include "model.hpp"
+#include "fontGlupthInformation.hpp"
 
-using namespace glRender;
+namespace glRender
+{
 
-Font::Font(std::shared_ptr<Texture> texture, const TextureFontInformation &information)
+namespace Font
+{
+
+Font::Font(std::shared_ptr<Texture> texture, std::shared_ptr<Glyphs::Information> information)
     : m_texture(texture)
     , m_information(information)
 {
@@ -27,4 +32,7 @@ Font::Font(std::shared_ptr<Texture> texture, const TextureFontInformation &infor
     });
     m_shaderProgram = ResourceManager::instance().shaderPrograms().get("fontShaderProgram");
     m_model = new Model(geometry, textures, m_shaderProgram);
+}
+
+}
 }
