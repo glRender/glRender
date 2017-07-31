@@ -32,6 +32,8 @@ OverlayScene * overlayScene;
 
 NodePickerPtr nodePicker;
 
+#define LabelCount 10
+
 class CameraNode : public NodeMixedWith<IUpdateable, IDrawable, IKeyPressable>
 {
 public:
@@ -62,9 +64,9 @@ public:
 
         std::shared_ptr<Font::Font> font = Font::createFromFile("data/myfont.fnt");
 
-        for (int i=0; i<10; i++)
+        for (int i=0; i<LabelCount; i++)
         {
-            m_label[i] = std::make_shared<Label>("abc@", font);
+            m_label[i] = std::make_shared<Label>("hello world@", font);
             m_label[i]->setOrigin(0, 20-i*5.5, -5);
         }
 
@@ -75,11 +77,17 @@ public:
 //        transforms().rotateY(0.01f);
 //        transformsChanged();
 //        m_camera->setGlobalMatrix(globalTransforms());
-        for (int i=0; i<10; i++)
+        static int counter = 0;
+//        if (counter % 50 == 0)
         {
-            std::string t = patch::to_string(i) + patch::to_string(((rand() % 999999999999999999)) - 25) + "@";
-            m_label[i]->setText(t.c_str());
+            for (int i=0; i<LabelCount; i++)
+            {
+//                std::string t = patch::to_string(i) + patch::to_string(((rand() % 999999999999999999)) - 25) + "@";
+                std::string t = patch::to_string(counter) + "@";
+                m_label[i]->setText(t.c_str());
+            }
         }
+        counter++;
     }
 
     void draw(Camera * camera) override
@@ -156,7 +164,7 @@ private:
     float cameraRotationSpeed = 5.0f;
 
     Model * m_model;
-    std::shared_ptr<Label> m_label[10];
+    std::shared_ptr<Label> m_label[LabelCount];
 
 };
 
@@ -254,13 +262,13 @@ void init ()
 //    t1->add(t);
 //    t2->add(t1);
 
-    for (int i=0; i<20; i++)
+    for (int i=0; i<2; i++)
     {
 
-    for (int j=0; j<20; j++)
+    for (int j=0; j<2; j++)
     {
 
-    for (int k=0; k<20; k++)
+    for (int k=0; k<2; k++)
     {
 //        if ((int)(rand() % 5) == 0)
 //        {

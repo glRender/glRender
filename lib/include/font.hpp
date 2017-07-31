@@ -68,21 +68,22 @@ namespace Font
             return texture(texture0, dict[c].pos + fragCoord); \n\
         } \n\
         vec4 drawText(vec2 pos, int text[$maxTextLength], vec2 fragCoord) {\n\
-            vec4 fragColor = vec4(fragCoord, 1.0, 1.0); \n\
+            vec4 fragColor = vec4(fragCoord, 1.0, 0.0); \n\
             float l = 0.0;\n\
             for (int i=0; i<$maxTextLength; i++) {\n\
                 if (text[i] == 64) {\n\
                     break; \n\
                 } \n\
                 vec2 size = dict[text[i]].size; \n\
-                float left = pos.x + (size.x * float(i)); \n\
-                float right = pos.x + (size.x * (float(i) + 1.0)); \n\
-                //float left = l + pos.x; \n\
-                //float right = left + size.x; \n\
+                //float left = pos.x + (size.x * float(i)); \n\
+                //float right = pos.x + (size.x * (float(i) + 1.0)); \n\
+                float left = l + pos.x; \n\
+                float right = left + size.x; \n\
                 if (fragCoord.x >= left && fragCoord.x < right) {\n\
                     if (fragCoord.y >= pos.y && fragCoord.y < pos.y + size.y) {\n\
                         vec2 charCoord; \n\
-                        charCoord.x = (fragCoord.x - pos.x) - size.x * float(i); \n\
+                        //charCoord.x = (fragCoord.x - pos.x) - size.x * float(i); \n\
+                        charCoord.x = (fragCoord.x - left); \n\
                         charCoord.y = (fragCoord.y - pos.y); \n\
                         fragColor = charFrag(text[i], charCoord); \n\
                     } \n\
@@ -93,7 +94,7 @@ namespace Font
         } \n\
          \n\
         void main(void) { \n\
-            color = vec4(keyring_uv, 1.0, 1.0); \n\
+            color = vec4(keyring_uv, 1.0, 0.0); \n\
             color = drawText(vec2(0.1, 0.5), text, keyring_uv); \n\
         } \n\
         ";
