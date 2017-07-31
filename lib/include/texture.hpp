@@ -9,11 +9,12 @@ namespace glRender
 
 class Texture
 {
-public:
+public:    
     enum class PixelFormat
-    {
+    {        
         RGB,
-        RGBA
+        RGBA,
+        No
     };
 
 //    Texture(const char * pathToFile);
@@ -23,14 +24,21 @@ public:
 
     void fillBy(uint width, uint height, PixelFormat format, void * data);
 
+    uint width() const;
+    uint heigth() const;
+
+    PixelFormat format() const;
+
     inline uint32_t id()
     {
         return m_id;
     }
 
-protected:
-    uint32_t m_id;
-
+private:
+    uint m_id = -1;
+    uint m_width = -1;
+    uint m_heigth = -1;
+    PixelFormat m_pixelFormat = PixelFormat::No;
 };
 
 using TexturePtr = std::shared_ptr<Texture>;

@@ -38,7 +38,7 @@ public:
     CameraNode(Camera * camera) :
         m_camera(camera)
     {
-        Geometry * geometry = GeometryHelper::Arrows();
+        std::shared_ptr<Geometry> geometry = GeometryHelper::Arrows();
         Textures * textures = new Textures();
 
 //        ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
@@ -60,10 +60,13 @@ public:
         m_model->setLocalMatrix(l.scale(0.005f));
         m_model->setOrigin(0.5f, 0.25f, -2.0f);
 
-//        transforms().translate(Vec3(0.5f, 0.25f, -2.0f));
-    //    transforms().scale(0.2f);
+        std::shared_ptr<Font::Font> font = Font::createFromFile("data/myfont.fnt");
 
-//        transformsChanged();
+        for (int i=0; i<10; i++)
+        {
+            m_label[i] = std::make_shared<Label>("abc@", font);
+            m_label[i]->setOrigin(0, 20-i*5.5, -5);
+        }
 
     }
 
@@ -72,12 +75,22 @@ public:
 //        transforms().rotateY(0.01f);
 //        transformsChanged();
 //        m_camera->setGlobalMatrix(globalTransforms());
+        for (int i=0; i<10; i++)
+        {
+            std::string t = patch::to_string(i) + patch::to_string(((rand() % 999999999999999999)) - 25) + "@";
+            m_label[i]->setText(t.c_str());
+        }
     }
 
     void draw(Camera * camera) override
     {
 //        m_model->shaderProgram()->setUniform<Vec3>("color", Vec3(0,1,0));
+        m_model->setParentsMatrix(globalTransforms());
         m_model->draw(camera/*, parentsTransforms()*/);
+        for (auto & i : m_label)
+        {
+            i->draw(camera);
+        }
     }
 
     void onKeyPress(KeyboardKey key) override
@@ -143,6 +156,7 @@ private:
     float cameraRotationSpeed = 5.0f;
 
     Model * m_model;
+    std::shared_ptr<Label> m_label[10];
 
 };
 
@@ -240,13 +254,13 @@ void init ()
 //    t1->add(t);
 //    t2->add(t1);
 
-    for (int i=0; i<30; i++)
+    for (int i=0; i<20; i++)
     {
 
-    for (int j=0; j<30; j++)
+    for (int j=0; j<20; j++)
     {
 
-    for (int k=0; k<30; k++)
+    for (int k=0; k<20; k++)
     {
 //        if ((int)(rand() % 5) == 0)
 //        {
@@ -341,16 +355,15 @@ void init ()
     overlayScene = new OverlayScene();
     overlayScene->setCamera(overlayCamera);
 
-    WoodenBox *n = new WoodenBox();
-    n->model()->setOrigin(0,0.0,-1);
-    overlayScene->add(n);
+//    WoodenBox *n = new WoodenBox();
+//    n->model()->setOrigin(0,0.0,-1);
+//    overlayScene->add(n);
 
-    BrickBox *n1 = new BrickBox();
-    n1->model()->setOrigin(0.1,0.1,-1.4);
-    overlayScene->add(n1);
+//    BrickBox *n1 = new BrickBox();
+//    n1->model()->setOrigin(0.1,0.1,-1.4);
+//    overlayScene->add(n1);
 
     Render::instance()->scenes().add(overlayScene);
-
 }
 
 void idle()

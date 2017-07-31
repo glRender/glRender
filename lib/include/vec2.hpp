@@ -38,6 +38,7 @@ struct Vec2
     Vec2&    operator*=(const Vec2& rhs);         // multiply each element and update this object
     Vec2     operator/(const float scale) const;     // inverse scale
     Vec2&    operator/=(const float scale);          // scale and update this object
+    Vec2&    operator/=(const Vec2& rhs);
     bool        operator==(const Vec2& rhs) const;   // exact compare, no epsilon
     bool        operator!=(const Vec2& rhs) const;   // exact compare, no epsilon
     bool        operator<(const Vec2& rhs) const;    // comparison for sort
@@ -90,6 +91,10 @@ inline Vec2& Vec2::operator*=(const Vec2& rhs) {
 
 inline Vec2 Vec2::operator/(const float a) const {
     return Vec2(x/a, y/a);
+}
+
+inline Vec2& Vec2::operator/=(const Vec2& rhs) {
+    x /= rhs.x; y /= rhs.y; return *this;
 }
 
 inline Vec2& Vec2::operator/=(const float a) {

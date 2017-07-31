@@ -3,7 +3,13 @@
 
 namespace glRender {
 
-Model::Model(Geometry* geometry, Textures* textures, std::shared_ptr<ShaderProgram> shaderProgram) :
+Model::Model()
+{
+    glGenVertexArrays ( 1, &m_vaoId );
+
+}
+
+Model::Model(std::shared_ptr<Geometry> geometry, Textures* textures, std::shared_ptr<ShaderProgram> shaderProgram) :
     m_geometry(geometry),
     m_shaderProgramSrtPtr(shaderProgram),
     m_shaderProgram(shaderProgram.get()),
@@ -19,9 +25,6 @@ Model::Model(Geometry* geometry, Textures* textures, std::shared_ptr<ShaderProgr
 
     m_shaderProgram->fillAttributes(m_geometry);
     glBindVertexArray ( 0 );
-
-    glBindVertexArray ( m_vaoId );
-
 }
 
 void Model::setWireframeMode(bool status)
@@ -105,49 +108,45 @@ void Model::draw(Camera * camera)
 
 //    shaderProgram()->disable();
 
-//    glBindVertexArray ( 0 );
+    //    glBindVertexArray ( 0 );
 }
 
-//void Model::draw(CameraPtr camera, Mat4 transforms)
-//{
-//    glBindVertexArray ( m_vaoId );
+void Model::setGeometry(std::shared_ptr<Geometry> geometry)
+{
+    m_geometry = geometry;
+    glBindVertexArray ( m_vaoId );
 
-//    m_shaderProgram->use();
+    if (geometry->hasIndices())
+    {
+        m_indicesBuffer = new Buffer<uint32_t>(m_geometry->getIndices(), BufferType::ElementArrayBuffer);
+    }
 
-//    if (!m_textures->isEmpty())
-//    {
-//        m_shaderProgram->bindTextures(m_textures);
-//    }
+    if (m_shaderProgram)
+    {
+        m_shaderProgram->fillAttributes(m_geometry);
+    }
+    glBindVertexArray ( 0 );
 
-//    glUniformMatrix4fv( m_shaderProgram->uniform<Mat4>( "projection" ), 1, GL_FALSE, camera->projectionMatrix().get() );
-//    glUniformMatrix4fv( m_shaderProgram->uniform<Mat4>( "view" ),       1, GL_FALSE, camera->localGlobalMatrix().get() );
-//    glUniformMatrix4fv( m_shaderProgram->uniform<Mat4>( "model" ),      1, GL_FALSE, ( /*transforms * transformationMatrix*/localGlobalMatrix()).get() );
+}
 
-//    if (m_wireframeMode) { glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); }
+void Model::setTextures(Textures *textures)
+{
+    m_textures = textures;
+}
 
-//    if (m_indicesBuffer != nullptr)
-//    {
-//        glDrawElements(m_drawMode, m_indicesBuffer->size(), GL_UNSIGNED_INT, (void*)(0));
-//    } else if (m_geometry->has("vertex"))
-//    {
-//        glDrawArrays(m_drawMode, 0, m_geometry->get("vertex")->size());
-//    }
-
-//    if (m_wireframeMode) { glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ); }
-
-//    if (!m_textures->isEmpty())
-//    {
-//        shaderProgram()->unbindTextures();
-//    }
-
-//    shaderProgram()->disable();
-
-//    glBindVertexArray ( 0 );
-//}
+void Model::setShaderProgram(std::shared_ptr<ShaderProgram> program)
+{
+    if (m_geometry)
+    {
+        program->fillAttributes(m_geometry);
+    }
+    m_shaderProgram = program.get();
+    m_shaderProgramSrtPtr = program;
+}
 
 Model::~Model()
 {
-    delete m_geometry;
+//    delete m_geometry;
     delete m_textures;
     glDeleteVertexArrays(1, &m_vaoId);
 }

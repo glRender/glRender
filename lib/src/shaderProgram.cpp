@@ -69,7 +69,9 @@ bool ShaderProgram::link()
         //We don't need the program anymore.
         glDeleteProgram(m_programId);
 
-        std::cout << "Shader program linking failed." << std::endl;
+//        std::cout << "Shader program linking failed." << std::endl;
+        throw std::invalid_argument("Shader program linking failed.");
+
     }
     else
     {
@@ -92,7 +94,7 @@ void ShaderProgram::disable()
     glUseProgram(0);
 }
 
-void ShaderProgram::fillAttributes(Geometry *geometry)
+void ShaderProgram::fillAttributes(std::shared_ptr<Geometry> geometry)
 {
     // Set up the Vertex attribute pointer for the Vertex attribute
     for( auto item : attributesList )
@@ -157,6 +159,11 @@ void ShaderProgram::setUniformValueByAddress(uint32_t index, int value)
     glUniform1i( index, value );
 }
 
+void ShaderProgram::setUniformValueByAddress(uint32_t index, const int* value, uint count)
+{
+    glUniform1iv( index, count, value);
+}
+
 void ShaderProgram::setUniformValueByAddress(uint32_t index, uint32_t value)
 {
     setUniformValueByAddress(index, static_cast<int>(value));
@@ -165,6 +172,11 @@ void ShaderProgram::setUniformValueByAddress(uint32_t index, uint32_t value)
 void ShaderProgram::setUniformValueByAddress(uint32_t index, Vec3 & value)
 {
     glUniform3f( index, value.x, value.y, value.z );
+}
+
+void ShaderProgram::setUniformValueByAddress(uint32_t index, Vec2 & value)
+{
+    glUniform2f( index, value.x, value.y );
 }
 
 void ShaderProgram::setUniformValueByAddress(uint32_t index, Vec4 & value)
@@ -205,7 +217,9 @@ int ShaderProgram::attribute(const char * attributeName)
     {
         if (addAttribute<T>(attributeName) == false)
         {
-            std::cout << "Could not find attribute in shader program: " << attributeName << std::endl;
+//            std::cout << "Could not find attribute in shader program: " << attributeName << std::endl;
+            throw std::invalid_argument("Could not find attribute: " + std::string(attributeName) + " <- Location returned -1!");
+
             return -1;
         }
     }
@@ -231,7 +245,9 @@ bool ShaderProgram::addAttribute(const char * attributeName)
     }
     else
     {
-        std::cout << "Could not add attribute: " << attributeName << " - location returned -1!" << std::endl;
+//        std::cout << "Could not add attribute: " << attributeName << " - location returned -1!" << std::endl;
+        throw std::invalid_argument("Could not add arrribute: " + std::string(attributeName) + " <- Location returned -1!");
+
     }
 
     return index != -1;
@@ -257,7 +273,9 @@ int ShaderProgram::uniform(const char * uniformName)
     {
         if (addUniform<T>(uniformName) == false)
         {
-            std::cout << "Could not find uniform in shader program: " << uniformName << std::endl;
+//            std::cout << "Could not find uniform in shader program: " << uniformName << std::endl;
+            throw std::invalid_argument("Could not find uniform: " + std::string(uniformName) + " <- Location returned -1!");
+
             return -1;
         }
     }
@@ -275,7 +293,9 @@ bool ShaderProgram::addUniform(const char * uniformName)
     }
     else
     {
-        std::cout << "Could not add uniform: " << uniformName << " <- location returned -1!" << std::endl;
+//        std::cout << "Could not add uniform: " << uniformName << " <- location returned -1!" << std::endl;
+        throw std::invalid_argument("Could not add uniform: " + std::string(uniformName) + " <- Location returned -1!");
+
     }
 
     return index != -1;
@@ -292,7 +312,25 @@ void ShaderProgram::setUniform(const char * uniformName, T & value)
     }
     else
     {
-        std::cout << "Could not get address of uniform: " + std::string(uniformName) + " <- Location returned -1!" <<std::endl;
+//        std::cout << "Could not get address of uniform: " + std::string(uniformName) + " <- Location returned -1!" <<std::endl;
+        throw std::invalid_argument("Could not get address of uniform: " + std::string(uniformName) + " <- Location returned -1!");
+
+    }
+}
+
+template<typename T>
+void ShaderProgram::fillUniformByArray(const char *uniformName, const T* value, uint count)
+{
+    int uniformAddress = uniform<T>(uniformName);
+    if (uniformAddress != -1)
+    {
+        glUseProgram(m_programId);
+        setUniformValueByAddress(uniformAddress, value, count);
+    }
+    else
+    {
+        throw std::invalid_argument("Could not get address of uniform: " + std::string(uniformName) + " <- Location returned -1!");
+//        std::cout << "Could not get address of uniform: " + std::string(uniformName) + " <- Location returned -1!" <<std::endl;
     }
 }
 
@@ -317,14 +355,20 @@ template int  ShaderProgram::uniform<     Vec3>(const char * uniformName);
 template int  ShaderProgram::uniform<     float>(const char * uniformName);
 template int  ShaderProgram::uniform<     Mat4>(const char * uniformName);
 
-template bool ShaderProgram::addUniform<  Vec3>(const char * uniformName);
+template bool ShaderProgram::addUniform<  int>(const char * uniformName);
 template bool ShaderProgram::addUniform<  float>(const char * uniformName);
+template bool ShaderProgram::addUniform<  Vec3>(const char * uniformName);
 template bool ShaderProgram::addUniform<  Mat4>(const char * uniformName);
 template bool ShaderProgram::addUniform<  Texture>(const char * uniformName);
+template bool ShaderProgram::addUniform<  void>(const char * uniformName);
 
-template void ShaderProgram::setUniform<  Vec3>(const char * uniformName, Vec3 & value);
+template void ShaderProgram::setUniform<  int>(const char * uniformName, int & value);
 template void ShaderProgram::setUniform<  float>(const char * uniformName, float & value);
+template void ShaderProgram::setUniform<  Vec3>(const char * uniformName, Vec3 & value);
+template void ShaderProgram::setUniform<  Vec2>(const char * uniformName, Vec2 & value);
 template void ShaderProgram::setUniform<  Mat4>(const char * uniformName, Mat4 & value);
+
+template void ShaderProgram::fillUniformByArray<int>(const char * uniformName, const int * value, uint count);
 
 std::shared_ptr<ShaderProgram> createShaderProgramFromFiles(std::map<ShaderType, const char *> pathesToShaders)
 {

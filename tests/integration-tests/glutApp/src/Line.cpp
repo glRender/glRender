@@ -15,7 +15,7 @@ Line::Line(Vec3 p0, Vec3 p1, uint segmentsNumber, float r, float g, float b)
 {
 //    setSelectable(false);
 
-    Geometry* geometry = GeometryHelper::Line(p0, p1, segmentsNumber);
+    std::shared_ptr<Geometry> geometry = GeometryHelper::Line(p0, p1, segmentsNumber);
 
     Textures * textures = new Textures();
 

@@ -13,7 +13,7 @@ QuadraticBezeirCurve::QuadraticBezeirCurve(Vec3 p0, Vec3 p1, Vec3 p2, uint segme
     , m_b(b)
 {
 //    setSelectable(false);
-    Geometry * geometry = GeometryHelper::QuadraticBezierCurve(p0, p1, p2, segmentsNumber);
+    std::shared_ptr<Geometry> geometry = GeometryHelper::QuadraticBezierCurve(p0, p1, p2, segmentsNumber);
 \
     Textures * textures = new Textures();
 

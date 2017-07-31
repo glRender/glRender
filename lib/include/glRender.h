@@ -29,5 +29,8 @@
 #include "aabb.hpp"
 #include "nodePicker.hpp"
 #include "render.hpp"
+#include "font.hpp"
+#include "label.hpp"
+#include "glyphsInformation.hpp"
 
 #endif /* __GLRENDER_H__ */

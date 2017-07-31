@@ -35,7 +35,7 @@ public:
     bool link();
     void use();
     void disable();
-    void fillAttributes(Geometry * geometry);
+    void fillAttributes(std::shared_ptr<Geometry> geometry);
     void bindTextures(Textures * textures);
     void unbindTextures();
 
@@ -60,11 +60,16 @@ public:
     template<typename T>
     void setUniform(const char * uniformName, T & value);
 
+    template<typename T>
+    void fillUniformByArray(const char * uniformName, const T * value, uint count);
+
 private:
     void setUniformValueByAddress(uint32_t index, float value);
     void setUniformValueByAddress(uint32_t index, int value);
+    void setUniformValueByAddress(uint32_t index, const int * value, uint count = 1);
     void setUniformValueByAddress(uint32_t index, uint32_t value);
     void setUniformValueByAddress(uint32_t index, Vec3 & value);
+    void setUniformValueByAddress(uint32_t index, Vec2 & value);
     void setUniformValueByAddress(uint32_t index, Vec4 & value);
     void setUniformValueByAddress(uint32_t index, Mat4 & value);
     void setUniformValueByAddress(uint32_t index, Texture & value);
