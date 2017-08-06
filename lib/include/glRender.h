@@ -2,6 +2,8 @@
 
 #include "base.h"
 
+#include "buildInfo.hpp"
+
 #include "shader.hpp"
 #include "shaderProgram.hpp"
 #include "model.hpp"

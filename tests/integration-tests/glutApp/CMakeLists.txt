@@ -11,7 +11,7 @@ find_package(GLUT REQUIRED)
 
 include_directories(
     ${GLUT_INCLUDE_DIR}
-    ${PROJECT_SOURCE_DIR}/lib/include/
+    ${PROJECT_BINARY_DIR}/lib/include
 )
 
 target_link_libraries(glutApp

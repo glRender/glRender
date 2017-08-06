@@ -3,6 +3,7 @@
 #include "shader.hpp"
 #include "shaderProgram.hpp"
 #include "texture.hpp"
+#include "textures.hpp"
 #include "resourceManager.hpp"
 #include "geometryHelper.hpp"
 #include "model.hpp"

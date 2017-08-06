@@ -9,7 +9,12 @@ run("git submodule update --init --recursive")
 if not exists("./build"):
     makedirs("./build")
 with cd("./build"):
-    run("cmake ..")
+    buildId = os.getenv("BUILD_ID")
+    if buildId != None and buildId != "":
+        run("cmake .. -DBUILD_ID=%s" % buildId)
+    else:
+        run("cmake ..")
+
     run("make -j 2")
 
 [unit-tests]

@@ -313,7 +313,8 @@ int main ( int argc, char * argv [] )
         exit(3);
     }
 
-    printf("%s\n\n", render->contextInformation());
+    printf("%s\n", render->contextInformation());
+    printf("%s\n", render->versionInformation());
 
     // register handlers
     glutDisplayFunc    ( display );
