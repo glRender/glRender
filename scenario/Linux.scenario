@@ -1,9 +1,18 @@
+[default]
+runTarget("init_git")
+runTarget("install_deps")
+runTarget("build")
+runTarget("unit_tests")
+runTarget("make_package")
+runTarget("deploy_package")
+runTarget("deploy_docs")
+
 [install_deps]
-run("apt-get update")
-run("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev")
+runShell("apt-get update")
+runShell("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev doxygen rsync dpkg-dev")
 
 [init_git]
-run("git submodule update --init --recursive")
+runShell("git submodule update --init --recursive")
 
 [build]
 if not exists("./build"):
@@ -11,23 +20,23 @@ if not exists("./build"):
 with cd("./build"):
     buildId = os.getenv("BUILD_ID")
     if buildId != None and buildId != "":
-        run("cmake .. -DBUILD_ID=%s" % buildId)
+        runShell("cmake .. -DBUILD_ID=%s" % buildId)
     else:
-        run("cmake ..")
+        runShell("cmake ..")
 
-    run("make -j 2")
+    runShell("make -j 2")
 
-[unit-tests]
+[unit_tests]
 with cd("./build/tests/"):
-    run("./unit-tests/tests")
+    runShell("./unit-tests/tests")
 
 [make_package]
 with cd("./build"):
-    run("make package")
+    runShell("make package")
 
 [deploy_package]
 with cd("./build"):
-    run(
+    runShell(
     """
     bash -ec
     '
@@ -52,21 +61,27 @@ with cd("./build"):
 
 [make_docs]
 if not exists("./build"):
-    run("scenarist.py run build")
+    runShell("scenarist.py run build")
 with cd("./build/lib/"):
-    run("doxygen Doxyfile") 
+    runShell("doxygen Doxyfile") 
 
 [deploy_docs]
 with cd("./build/lib/"):
-    run(
+    runShell(
     """
     bash -ec
     '
-        HEAD_SHA=$(git rev-parse --short HEAD)
-        DIR=./public/glRender/docs/${HEAD_SHA}/
-        LATEST_DIR=./public/glRender/docs/latest/
-        echo "Path to docs: "${REPO}
-        rsync -r ./docs/html/* jenkins@sogimu.fvds.ru:${DIR}
-        rsync -r ./docs/html/* jenkins@sogimu.fvds.ru:${LATEST_DIR}
+        currentTag=$(git tag -l --points-at HEAD)
+        if [ -z ${currentTag} ]; then
+            echo "No tag. I will not publish that commit!";
+        else
+            echo "Tag: "${currentTag}
+            HEAD_SHA=$(git rev-parse --short HEAD)
+            DIR=./public/glRender/docs/${HEAD_SHA}/
+            LATEST_DIR=./public/glRender/docs/latest/
+            echo "Path to docs: "${REPO}
+            rsync -r ./docs/html/* jenkins@sogimu.fvds.ru:${DIR}
+            rsync -r ./docs/html/* jenkins@sogimu.fvds.ru:${LATEST_DIR}
+        fi
     '
-    """) 
+    """)
