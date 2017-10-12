@@ -113,6 +113,20 @@ inline std::string wstring_to_utf8(const std::wstring& str)
     return myconv.to_bytes(str);
 }
 
+// number of alphabets in UTF-8 string
+inline std::size_t strlen_utf8(const std::string & str)
+{
+    std::size_t length = 0;
+    for (char c : str)
+    {
+        if ((c & 0xC0) != 0x80)
+        {
+            ++length;
+        }
+    }
+    return length;
+}
+
 #ifdef _WIN32
     typedef unsigned int uint;
 #endif

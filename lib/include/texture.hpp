@@ -3,6 +3,7 @@
 
 #include "base.h"
 #include "image.hpp"
+#include "vec2.hpp"
 
 namespace glRender
 {
@@ -27,6 +28,8 @@ public:
     uint width() const;
     uint heigth() const;
 
+    const Vec2 & size() const;
+
     PixelFormat format() const;
 
     inline uint32_t id()
@@ -36,8 +39,7 @@ public:
 
 private:
     uint m_id = -1;
-    uint m_width = -1;
-    uint m_heigth = -1;
+    Vec2 m_size;
     PixelFormat m_pixelFormat = PixelFormat::No;
 };
 

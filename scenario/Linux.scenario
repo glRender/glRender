@@ -1,28 +1,41 @@
+[default]
+# runTarget("install_deps")
+runTarget("init_git")
+runTarget("build")
+runTarget("unit-tests")
+runTarget("make_package")
+runTarget("deploy_package")
+
 [install_deps]
-run("apt-get update")
-run("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev")
+runShell("apt-get update")
+runShell("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev")
 
 [init_git]
-run("git submodule update --init --recursive")
+runShell("git submodule update --init --recursive")
 
 [build]
 if not exists("./build"):
     makedirs("./build")
 with cd("./build"):
-    run("cmake ..")
-    run("make -j 2")
+    buildId = os.getenv("BUILD_ID")
+    if buildId != None and buildId != "":
+        runShell("cmake .. -DBUILD_ID=%s" % buildId)
+    else:
+        runShell("cmake ..")
+
+    runShell("make -j 2")
 
 [unit-tests]
 with cd("./build/tests/"):
-    run("./unit-tests/tests")
+    runShell("./unit-tests/tests")
 
 [make_package]
 with cd("./build"):
-    run("make package")
+    runShell("make package")
 
 [deploy_package]
 with cd("./build"):
-    run(
+    runShell(
     """
     bash -ec
     '
@@ -47,13 +60,13 @@ with cd("./build"):
 
 [make_docs]
 if not exists("./build"):
-    run("scenarist.py run build")
+    runShell("scenarist.py run build")
 with cd("./build/lib/"):
-    run("doxygen Doxyfile") 
+    runShell("doxygen Doxyfile") 
 
 [deploy_docs]
 with cd("./build/lib/"):
-    run(
+    runShell(
     """
     bash -ec
     '

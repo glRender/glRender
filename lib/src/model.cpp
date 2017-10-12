@@ -101,14 +101,14 @@ void Model::draw(Camera * camera)
 
     if (m_wireframeMode) { glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ); }
 
-//    if (!m_textures->isEmpty())
-//    {
-//        shaderProgram()->unbindTextures();
-//    }
+    if (!m_textures->isEmpty())
+    {
+        shaderProgram()->unbindTextures();
+    }
 
-//    shaderProgram()->disable();
+    shaderProgram()->disable();
 
-    //    glBindVertexArray ( 0 );
+    glBindVertexArray ( 0 );
 }
 
 void Model::setGeometry(std::shared_ptr<Geometry> geometry)

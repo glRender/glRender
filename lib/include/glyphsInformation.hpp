@@ -26,12 +26,20 @@ namespace glRender
             std::string fontSize;
             std::string textureFileName;
             std::map<uint, GlyphInformation> map;
+            std::map<uint, uint> utf8CodeToFontCode;
+            std::map<uint, uint> fontCodeToUtf8Code;
+
+            std::map<uint, GlyphInformation> fontCodes;
+
+            std::vector<Vec2> glyphPos;
+            std::vector<Vec2> glyphSize;
+            std::vector<Vec2> glyphOffset;
 
             std::string uuid() const;
 
             void normalizeBySize(const Vec2& size);
+
             static std::shared_ptr<GlyphsInformation> createFromFile(const char * pathToFile);
         };
-
     }
 }

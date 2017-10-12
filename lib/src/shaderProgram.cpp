@@ -159,14 +159,9 @@ void ShaderProgram::setUniformValueByAddress(uint32_t index, int value)
     glUniform1i( index, value );
 }
 
-void ShaderProgram::setUniformValueByAddress(uint32_t index, const int* value, uint count)
+void ShaderProgram::setUniformValueByAddress(uint32_t index, int * value, uint count)
 {
     glUniform1iv( index, count, value);
-}
-
-void ShaderProgram::setUniformValueByAddress(uint32_t index, uint32_t value)
-{
-    setUniformValueByAddress(index, static_cast<int>(value));
 }
 
 void ShaderProgram::setUniformValueByAddress(uint32_t index, Vec3 & value)
@@ -174,7 +169,12 @@ void ShaderProgram::setUniformValueByAddress(uint32_t index, Vec3 & value)
     glUniform3f( index, value.x, value.y, value.z );
 }
 
-void ShaderProgram::setUniformValueByAddress(uint32_t index, Vec2 & value)
+void ShaderProgram::setUniformValueByAddress(uint32_t index, Vec2 * value, uint count)
+{
+    glUniform2fv( index, count, (float*)value);
+}
+
+void ShaderProgram::setUniformValueByAddress(uint32_t index, Vec2 &value)
 {
     glUniform2f( index, value.x, value.y );
 }
@@ -319,7 +319,7 @@ void ShaderProgram::setUniform(const char * uniformName, T & value)
 }
 
 template<typename T>
-void ShaderProgram::fillUniformByArray(const char *uniformName, const T* value, uint count)
+void ShaderProgram::fillUniformByArray(const char *uniformName, T* value, uint count)
 {
     int uniformAddress = uniform<T>(uniformName);
     if (uniformAddress != -1)
@@ -368,7 +368,8 @@ template void ShaderProgram::setUniform<  Vec3>(const char * uniformName, Vec3 &
 template void ShaderProgram::setUniform<  Vec2>(const char * uniformName, Vec2 & value);
 template void ShaderProgram::setUniform<  Mat4>(const char * uniformName, Mat4 & value);
 
-template void ShaderProgram::fillUniformByArray<int>(const char * uniformName, const int * value, uint count);
+template void ShaderProgram::fillUniformByArray<int>(const char * uniformName, int * value, uint count);
+template void ShaderProgram::fillUniformByArray<Vec2>(const char * uniformName, Vec2* value, uint count);
 
 std::shared_ptr<ShaderProgram> createShaderProgramFromFiles(std::map<ShaderType, const char *> pathesToShaders)
 {

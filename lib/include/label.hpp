@@ -7,23 +7,22 @@ namespace glRender
 {
     namespace Font {
         class Font;
-
     }
+
     class Label : public Model
     {
     public:
-        Label(const char * text, std::shared_ptr<Font::Font> font, uint maxTextLength = 255);
+        Label(std::wstring& text, std::shared_ptr<Font::Font> font);
         virtual ~Label();
         void draw(Camera * camera) override;
-        void setText(const char * text);
-        const char * text() const;
+        void setText(std::wstring& text);
     private:
         void createGeometry(std::shared_ptr<Font::Font> font);
         void extractTextures(std::shared_ptr<Font::Font> font);
         void extractShaderProgram(std::shared_ptr<Font::Font> font);
     private:
-        std::wstring m_text;
         std::shared_ptr<Font::Font> m_font;
+        std::wstring m_text;
     };
 
 }

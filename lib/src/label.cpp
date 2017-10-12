@@ -4,18 +4,14 @@
 
 using namespace glRender;
 
-Label::Label(const char * text, std::shared_ptr<Font::Font> font, uint maxTextLength)
+Label::Label(std::wstring& text, std::shared_ptr<Font::Font> font)
     : m_font(font)
 {
-    m_font->setMaxTextLength(maxTextLength);
-
     extractTextures(font);
     extractShaderProgram(font);
     createGeometry(font);
 
     setText(text);
-
-    setOrigin(0.0, 0.0, 0.0);
 //    setWireframeMode(true);
 }
 
@@ -26,18 +22,14 @@ Label::~Label()
 
 void Label::draw(Camera *camera)
 {
-    shaderProgram()->fillUniformByArray<int>("text", (int*)m_text.c_str(), m_font->maxTextLength());
+    m_font->setText(m_text);
     Model::draw(camera);
 }
 
-void Label::setText(const char* text)
+void Label::setText(std::wstring& text)
 {
-    m_text = utf8_to_wstring(text);
-}
-
-const char* Label::text() const
-{
-    return wstring_to_utf8(m_text).c_str();
+    m_text = text;
+//    std::wcout << text << std::endl;
 }
 
 void Label::extractTextures(std::shared_ptr<Font::Font> font)

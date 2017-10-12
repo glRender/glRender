@@ -11,10 +11,24 @@ namespace glRender
 
         void GlyphsInformation::normalizeBySize(const Vec2& size)
         {
+
             for(auto & i : map)
             {
                 i.second.normalizeBySize(size);
             }
+
+            for(auto & i : fontCodes)
+            {
+                i.second.normalizeBySize(size);
+            }
+
+            for (uint i=0; i<glyphPos.size();i++)
+            {
+                glyphPos[i] /= size;
+                glyphSize[i] /= size;
+                glyphOffset[i] /= size;
+            }
+
         }
 
         std::shared_ptr<GlyphsInformation> GlyphsInformation::createFromFile(const char *pathToFile)
@@ -60,6 +74,7 @@ namespace glRender
 
             std::vector<std::string> charsLines(lines.begin() + 2, kerningPairsIt);
 
+            uint glyphtIndex = 0;
 
             for (auto line : charsLines)
             {
@@ -74,7 +89,15 @@ namespace glRender
                     c.offset =   Vec2(std::stoi(params[5]), std::stoi(params[6]));
                     c.origSize = Vec2(std::stoi(params[7]), std::stoi(params[8]));
                     information->map[code] = c;
+                    information->utf8CodeToFontCode[code] = glyphtIndex;
+                    information->fontCodeToUtf8Code[glyphtIndex] = code;
+                    information->fontCodes[glyphtIndex] = c;
+
+                    information->glyphPos.push_back(c.pos);
+                    information->glyphSize.push_back(c.size);
+                    information->glyphOffset.push_back(c.offset);
                 }
+                glyphtIndex++;
             }
 
             std::vector<std::string> kerningPairsLines(kerningPairsIt, lines.end());
@@ -89,5 +112,6 @@ namespace glRender
             this->offset /= size;
             this->origSize /= size;
         }
+
     }
 }

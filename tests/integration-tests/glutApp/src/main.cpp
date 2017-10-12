@@ -32,7 +32,7 @@ OverlayScene * overlayScene;
 
 NodePickerPtr nodePicker;
 
-#define LabelCount 10
+#define LabelCount 1521
 
 class CameraNode : public NodeMixedWith<IUpdateable, IDrawable, IKeyPressable>
 {
@@ -64,12 +64,15 @@ public:
 
         std::shared_ptr<Font::Font> font = Font::createFromFile("data/myfont.fnt");
 
-        for (int i=0; i<LabelCount; i++)
+        for (int i=0; i<39; i++)
         {
-            m_label[i] = std::make_shared<Label>("hello world@", font);
-            m_label[i]->setOrigin(0, 20-i*5.5, -5);
+            for (int j=0; j<39; j++)
+            {
+                std::wstring wt = utf8_to_wstring("@");
+                m_label[i*39 + j] = std::make_shared<Label>(wt, font);
+                m_label[i*39 + j]->setOrigin(20 - i*15.5, 20 - j*5.5, -5);
+            }
         }
-
     }
 
     void update() override
@@ -82,9 +85,11 @@ public:
         {
             for (int i=0; i<LabelCount; i++)
             {
-//                std::string t = patch::to_string(i) + patch::to_string(((rand() % 999999999999999999)) - 25) + "@";
+//                std::string t = patch::to_string(i) + "_" + patch::to_string(((rand() % 999999999999999999)) - 25) + "@";
                 std::string t = patch::to_string(counter) + "@";
-                m_label[i]->setText(t.c_str());
+//                std::string t = "привет@";
+                std::wstring wt = utf8_to_wstring(t);
+                m_label[i]->setText(wt);
             }
         }
         counter++;
@@ -228,9 +233,7 @@ void init ()
         });
     }
 
-
-
-    camera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 200.0f );
+    camera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 400.0f );
 //    camera = new OrthographicCamera(3.0f, 16.0f / 9.0f, 1.0f, 200.0f );
     camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
 //    camera->lookAt(Vec3(3,0,4), Vec3(-5,0,-15), Vec3::AXE_Y());
@@ -262,23 +265,23 @@ void init ()
 //    t1->add(t);
 //    t2->add(t1);
 
-    for (int i=0; i<2; i++)
+    for (int i=0; i<30; i++)
     {
 
-    for (int j=0; j<2; j++)
+    for (int j=0; j<30; j++)
     {
 
-    for (int k=0; k<2; k++)
+    for (int k=0; k<1; k++)
     {
 //        if ((int)(rand() % 5) == 0)
 //        {
 //        } else
 //        if ((int)(rand() % 3) == 1)
 //        {
-////             BrickBox *bb = new BrickBox();
-////             bb->model()->setWireframeMode(false);
-////             bb->model()->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
-////             scene->addNode(bb);
+//             BrickBox *bb = new BrickBox();
+//             bb->model()->setWireframeMode(false);
+//             bb->model()->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
+//             scene->addNode(bb);
 //        } else
 //        if ((int)(rand() % 3) == 0)
 //        {

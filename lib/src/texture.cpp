@@ -71,19 +71,23 @@ void Texture::fillBy(uint width, uint height, Texture::PixelFormat format, void 
     glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, width, height, 0, pixelFormat, GL_UNSIGNED_BYTE, data);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    m_width = width;
-    m_heigth = height;
+    m_size.set(width, height);
     m_pixelFormat = format;
 }
 
 uint Texture::width() const
 {
-    return m_width;
+    return m_size.x;
 }
 
 uint Texture::heigth() const
 {
-    return m_heigth;
+    return m_size.y;
+}
+
+const Vec2& Texture::size() const
+{
+    return m_size;
 }
 
 Texture::PixelFormat Texture::format() const
