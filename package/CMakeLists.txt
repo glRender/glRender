@@ -12,8 +12,8 @@ set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "It’s small library writen under C++ fo
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
     set(CPACK_GENERATOR "DEB")
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Aleksandr Lizin <sogimu@nxt.ru>")
-    #set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.3.1-6)")
-    set (CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.3.1-6)")
+    #set (CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")

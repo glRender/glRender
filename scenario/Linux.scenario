@@ -7,6 +7,27 @@ runTarget("make_package")
 runTarget("deploy_package")
 runTarget("deploy_docs")
 
+[default]
+try:
+    if len(imageName) == 0: raise
+except: imageName="sogimu/astralinux"
+
+try:
+    if len(imageTag) == 0: raise
+except: imageTag="1.11"
+
+runTarget("in_container:container=\"%s:%s\", targets=[\"init_git\", \"install_deps\", \"build\", \"unit_tests\", \"make_package\"]" % (imageName, imageTag))
+
+def extractImageName(imageName):
+    parts = imageName.split("/")
+    if len(parts) == 2:
+        return parts[1]
+    else:
+        return parts[0]
+
+runTarget("deploy_package:host=\"10.11.2.132\",folder=\"%s-%s\"" % (extractImageName(imageName), imageTag))
+
+
 [install_deps]
 runShell("apt-get update")
 runShell("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev doxygen rsync dpkg-dev")
@@ -35,29 +56,29 @@ with cd("./build"):
     runShell("make package")
 
 [deploy_package]
-with cd("./build"):
-    runShell(
-    """
-    bash -ec
-    '
-        currentTag=$(git tag -l --points-at HEAD)
-        if [ -z ${currentTag} ]; then
-            echo "No tag. I will not publish that commit!";
-        else
-            if [ -z ${OS} ]; then
-                echo "Varibale OS not exist! I do not where to publish debs!"
-            else
-                echo "Tag: "${currentTag}
-                IMAGE_NAME=(${OS//\//_})
-                echo "Image name: "${IMAGE_NAME}
-                REPO=./public/glRender/${IMAGE_NAME}
-                echo "Path to repo: "${REPO}
-                rsync -a --rsync-path="mkdir -p ${REPO} && rsync" glRender-*.deb jenkins@sogimu.fvds.ru:${REPO}
-                ssh jenkins@sogimu.fvds.ru "cd ${REPO}; ls; dpkg-scanpackages -m . | gzip --fast > Packages.gz"
-            fi
-        fi
-    '
-    """)
+try: host
+except:
+    raise Exception("Необходимо ввести имя хоста!")
+try: folder
+except:
+    raise Exception("Необходимо ввести путь к папке!")
+
+runShell("""
+bash -ec
+'
+    currentTag=$(git tag -l --points-at HEAD)
+    if [ -z ${currentTag} ]; then
+       echo "Нет git-тега. Я не буду выкладывать пакет в открытый доступ!";
+    else
+        echo "Git-тэг: "${currentTag}
+        BUILDS=/var/lib/jenkins/public/%s
+        echo "Путь к публичной папке: "${BUILDS}
+        ssh jenkins@%s mkdir -p ${BUILDS}
+        rsync build/*.deb jenkins@%s:${BUILDS}
+        ssh jenkins@10.11.2.132 "cd ${BUILDS}; ls; dpkg-scanpackages -m . | gzip --fast > Packages.gz"
+    fi
+'
+""" % (folder, host, host))
 
 [make_docs]
 if not exists("./build"):
@@ -85,3 +106,21 @@ with cd("./build/lib/"):
         fi
     '
     """)
+
+[in_container]
+try: container
+except:
+    raise Exception("Необходимо ввести имя docker-контейнера!")
+
+try: targets
+except:
+    raise Exception("Необходимо ввести список целей!")
+
+runShell("""
+    sudo docker run -v %s:/repo %s bash -cex '
+        cd /repo
+        pip install -U build_scenarist
+        scenarist.py info
+        scenarist.py run %s
+    '
+    """ % (os.getcwd(), container, "  ".join(targets)))
