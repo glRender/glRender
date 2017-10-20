@@ -5,3 +5,5 @@
 [![Build Status](http://sogimu.fvds.ru:8080/buildStatus/icon?job=glRender/Release/Linux/Astralinux_1.11)](http://sogimu.fvds.ru:8080/job/glRender/job/Release/job/Linux/job/Astralinux_1.11/) Astralinux 1.11
 
 [![Build Status](http://sogimu.fvds.ru:8080/buildStatus/icon?job=glRender/Release/Linux/Astralinux_1.10)](http://sogimu.fvds.ru:8080/job/glRender/job/Release/job/Linux/job/Astralinux_1.10/) Astralinux 1.10
+
+[![Build Status](http://sogimu.fvds.ru:8080/buildStatus/icon?job=glRender/Master/Windows/Windows_10_MinGW64)](http://sogimu.fvds.ru:8080/job/glRender/job/Master/job/Windows/job/Windows_10_MinGW64/) Windows_10_MinGW64
