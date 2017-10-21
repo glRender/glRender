@@ -1,6 +1,18 @@
 # glRender
+To run build you must have python2.7, pip2 and scenarist.py.
+
+To install scenarist.py run:
+```bash
+# pip2 install build_scenarsit
+```
+To build run:
+```bash
+$ scenarist.py run install_deps build
+```
+
 ### Last release status
-[![Build Status](http://sogimu.fvds.ru:8080/buildStatus/icon?job=glRender/Release/Linux/Ubuntu_16.04)](http://sogimu.fvds.ru:8080/job/glRender/job/Release/job/Linux/job/Ubuntu_16.04/) Ubuntu 16.04 
+
+[![Build Status](http://sogimu.fvds.ru:8080/buildStatus/icon?job=glRender/Release/Linux/Ubuntu_16.04)](http://sogimu.fvds.ru:8080/job/glRender/job/Release/job/Linux/job/Ubuntu_16.04/) Ubuntu 16.04
 
 [![Build Status](http://sogimu.fvds.ru:8080/buildStatus/icon?job=glRender/Release/Linux/Astralinux_1.11)](http://sogimu.fvds.ru:8080/job/glRender/job/Release/job/Linux/job/Astralinux_1.11/) Astralinux 1.11
 
