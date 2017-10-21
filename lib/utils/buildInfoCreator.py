@@ -311,7 +311,7 @@ if __name__ == '__main__':
 			concat(commitStatus["untrackedFiles"], "\", \"")
 		)
 
-		fullPathToFile = os.path.join(namespace.path_to_repo, namespace.file_name_to_fill)
+		fullPathToFile = namespace.file_name_to_fill
 
 		if namespace.dry_run == True:
 			sys.stdout.write("\n" + bcolors.HEADER + "The file %s will be updated with following text after normal run:" % (os.path.abspath(fullPathToFile)) + bcolors.ENDC)
