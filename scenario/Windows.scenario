@@ -5,7 +5,7 @@ runShell("git submodule update --init --recursive")
 if not exists("./build"):
     makedirs("./build")
 with cd("./build"):
-    runShell("cmake ..")
+    runShell("cmake -G \"MSYS Makefiles\" ..")
     runShell("cmake --build . --config Release")
 
 [unit-tests]
