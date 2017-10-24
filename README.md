@@ -3,7 +3,7 @@ To run build you must have python2.7, pip2 and scenarist.py.
 
 To install scenarist.py run:
 ```bash
-# pip2 install build_scenarsit
+# pip2 install build_scenarist
 ```
 To build run:
 ```bash
