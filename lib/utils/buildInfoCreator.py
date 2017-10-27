@@ -9,7 +9,7 @@ import time
 import platform
 import shlex
 
-version = "0.0.1"
+version = "0.0.2"
 
 def path_creatable(pathname):
 	'''
@@ -153,16 +153,27 @@ def getCurrentCommitStatus():
 	except:
 		return {"changedFiles": changedFiles, "untrackedFiles": untrackedFiles}
 
-def getCurrentCommitTag():
-	tag = "";
+def getCurrentCommitversion():
+	version = "";
 	try:
-		output = run("git tag -l --points-at HEAD".format())        
+		output = run("git version -l --points-at HEAD".format())        
 
 		if len(output) > 0:
-			tag = output
-		return tag
+			version = output
+		return version
 	except:
-		return tag
+		return version
+
+def getVersion():
+	version = "-";
+	try:
+		output = os.check_output(["git", "describe", "--abbrev=8", "--versions", "--always", "--dirty"])
+		output = output.replace('\n', '')
+		if len(output) > 0:
+			version = output
+		return version
+	except:
+		return version
 
 class PlatformInfo:
 	def osName(self):
@@ -193,7 +204,7 @@ struct BuildInfo
 	{
 		shortHash = "%s";
 		branch = "%s";
-		tag = "%s";
+		version = "%s";
 		buildId = "%s"; 
 		os = "%s"; 
 		compiler = "%s"; 
@@ -203,7 +214,7 @@ struct BuildInfo
 	}
 	const char * shortHash;
 	const char * branch;
-	const char * tag;
+	const char * version;
 	const char * buildId;
 	const char * os;
 	const char * compiler;
@@ -216,7 +227,7 @@ struct BuildInfo
 		std::string versionInfo = "";
 		versionInfo += withRightPad(u8"Short hash:", 24, ' ') + shortHash + '\\n';
 		versionInfo += withRightPad(u8"Branch:", 24, ' ')        + branch + '\\n';
-		versionInfo += withRightPad(u8"Tag:", 24, ' ')        + tag + '\\n';
+		versionInfo += withRightPad(u8"Version:", 24, ' ')        + version + '\\n';
 		versionInfo += withRightPad(u8"Build ID:", 24, ' ') + buildId + '\\n';
 		versionInfo += withRightPad(u8"OS:", 24, ' ') + os + '\\n';
 		versionInfo += withRightPad(u8"Compiler:", 24, ' ') + compiler + '\\n';
@@ -293,7 +304,7 @@ if __name__ == '__main__':
 	with cd(abcPathToRepo):
 		commitInfo = getCurrentCommitInfo()
 		commitStatus = getCurrentCommitStatus()
-		commitTag = getCurrentCommitTag()
+		commitVersion = getVersion()
 		buildId = namespace.build_id if namespace.build_id != None else ""
 		osInfo = namespace.os if namespace.os != None else PlatformInfo().fullPlatformName()
 		compiler = namespace.compiler if namespace.compiler != None else ""
@@ -302,7 +313,7 @@ if __name__ == '__main__':
 		result = template % (
 			formatIfEmpty(commitInfo["shortHash"], "-"), 
 			formatIfEmpty(commitInfo["branch"], "-"), 
-			formatIfEmpty(commitTag, "-"),
+			formatIfEmpty(commitVersion, "-"),
 			formatIfEmpty(buildId, "-"),
 			formatIfEmpty(osInfo, "-"),
 			formatIfEmpty(compiler, "-"),

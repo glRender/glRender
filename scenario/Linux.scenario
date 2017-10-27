@@ -1,5 +1,4 @@
 [default]
-runTarget("init_git")
 runTarget("install_deps")
 runTarget("build")
 runTarget("unit_tests")
@@ -36,6 +35,7 @@ runShell("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 l
 runShell("git submodule update --init --recursive")
 
 [build]
+runTarget("init_git")
 if not exists("./build"):
     makedirs("./build")
 with cd("./build"):

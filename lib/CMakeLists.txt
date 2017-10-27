@@ -14,7 +14,7 @@ endif()
 add_custom_command(
   OUTPUT "buildInfo.hpp"
   DEPENDS ${CMAKE_SOURCE_DIR}/lib/utils/buildInfoCreator.py
-  COMMAND ${CMAKE_SOURCE_DIR}/lib/utils/buildInfoCreator.py -d ${CMAKE_SOURCE_DIR} -f ${CMAKE_SOURCE_DIR}/lib/include/buildInfo.hpp -b ${BUILD_ID}
+  COMMAND ${CMAKE_SOURCE_DIR}/lib/utils/buildInfoCreator.py -d ${CMAKE_BINARY_DIR} -f ${CMAKE_BINARY_DIR}/lib/include/buildInfo.hpp
 )
 
 set (SRC_PATH src)
@@ -27,9 +27,16 @@ include_directories(
     libs/glad/include/
     libs/
     include/
+    ${CMAKE_BINARY_DIR}/lib/include/
 )
 
 add_library (glRender SHARED ${SRC_FILES})
+
+set_target_properties (glRender
+    PROPERTIES 
+    VERSION       ${glRender_VERSION}
+    SOVERSION     ${glRender_MAJOR_VERSION}
+)
 
 add_custom_target(buildInfo DEPENDS "buildInfo.hpp")
 add_dependencies(glRender buildInfo)
