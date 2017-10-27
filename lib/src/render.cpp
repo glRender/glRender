@@ -1,6 +1,7 @@
 #include "render.hpp"
 #include "scene.hpp"
 #include "opengl.h"
+#include "buildInfo.hpp"
 
 using namespace glRender;
 
@@ -126,12 +127,18 @@ Render * Render::instance()
     return instance;
 }
 
+const char* Render::versionInformation()
+{
+    BuildInfo info;
+    return info.info().c_str();
+}
+
 const char * getGLString(uint32_t key)
 {
     return reinterpret_cast<const char*>(glGetString(key));
 }
 
-const char * Render::contextInformation()
+const char * Render::contextInformation() const
 {
     int maxTextureUnits = 0;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);

@@ -1,6 +1,7 @@
 #include "perspectiveCamera.hpp"
 
-namespace glRender {
+using namespace glRender;
+
 PerspectiveCamera::PerspectiveCamera(float fieldOfView, float aspectRatio, float nearPlane, float farPlane) :
     Camera(nearPlane, farPlane),
     m_fieldOfView(fieldOfView / 180.0 * MATH_PI),
@@ -63,6 +64,4 @@ void PerspectiveCamera::setAspectRatio(float aspectRatio)
 {
     m_aspectRatio = aspectRatio;
     calculateProjectionMatrix();
-}
-
 }

@@ -6,6 +6,8 @@
 
 namespace glRender {
 
+class Ray;
+
 class AABB : public IBoundingBox
 {
 public:
@@ -18,10 +20,10 @@ public:
     void setOrigin(const Vec3 & origin) override;
     void setHalfSide(float halfSide);
 
-    bool intersects(const RayPtr ray) const override;
+    bool intersects(const std::shared_ptr<Ray> ray) const override;
 
 private:
-    void _updateMinMax();
+    void updateMinMax();
 
 private:
     Vec3 m_center;

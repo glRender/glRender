@@ -1,15 +1,12 @@
-#ifndef __GEOMETRYHELPER_H__
-#define __GEOMETRYHELPER_H__
+#pragma once
 
 #include "base.h"
 
-#include "vec3.hpp"
-#include "attribute.h"
-#include "geometryBuffer.hpp"
-#include "geometry.hpp"
-
 namespace glRender
 {
+    class Vec3;
+    class Geometry;
+
     class GeometryHelper
     {
     public:
@@ -22,5 +19,3 @@ namespace glRender
     };
 
 }
-
-#endif /* __GEOMETRYHELPER_H__ */

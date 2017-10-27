@@ -1,7 +1,8 @@
 #include "orthographicCamera.hpp"
 
-using namespace glRender;
+#include "camera.hpp"
 
+using namespace glRender;
 
 OrthographicCamera::OrthographicCamera(float width, float ratio, float nearPlane, float farPlane)
     : Camera(nearPlane, farPlane)

@@ -1,12 +1,14 @@
 #pragma once
 
 #include "base.h"
-#include "mat4.hpp"
-#include "nodeMixer.hpp"
 #include "visitor.hpp"
 
 namespace glRender
 {
+
+template<typename...> class NodeMixedWith;
+class NodeCache;
+class Node;
 
 class NodeTransformsAccumulator : public NodeVisitor
 {

@@ -59,6 +59,20 @@ namespace patch
         stm << n ;
         return stm.str() ;
     }
+
+    // std::hash wrapper for variadic parameters
+    template<typename T>
+    std::size_t hash(T p)
+    {
+        return std::hash<std::string>{}(p);
+    }
+
+    template<typename T0, typename ... Args>
+    std::size_t hash(T0 p0, Args ... args)
+    {
+        return hash(p0) + hash(args...);
+    }
+
 }
 
 inline std::vector<std::string> split(const std::string &s, char delim) {

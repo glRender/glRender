@@ -17,8 +17,9 @@ public:
   void draw(Camera * camera) override;
   bool intersects(const RayPtr ray) const override;
 
-  Model * model() const;
-  IBoundingBox * bb() const override;
+  const Model * model() const;
+  const IBoundingBox * bb() const override;
+  void setOrigin(const Vec3 & origin);
 
 //  void onIntersection(IIntersectable * o) override
 //  {

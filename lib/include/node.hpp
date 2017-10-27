@@ -5,6 +5,7 @@
 
 namespace glRender
 {
+
 class NodeVisitor;
 class IBoundingBox;
 class Model;

@@ -1,14 +1,14 @@
-#ifndef POSITIONABLE_HPP
-#define POSITIONABLE_HPP
+#pragma once
 
 #include "base.h"
 
 #include "mat4.hpp"
-#include "vec3.hpp"
 #include "vec4.hpp"
 
 namespace glRender
 {
+
+class Vec3;
 
 class Positionable
 {
@@ -64,5 +64,3 @@ protected:
 };
 
 }
-
-#endif // POSITIONABLE_HPP

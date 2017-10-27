@@ -1,7 +1,9 @@
 #include "nodeCacheAdder.hpp"
 
-namespace glRender
-{
+#include "nodeCache.hpp"
+#include "nodeMixer.hpp"
+
+using namespace glRender;
 
 NodeCacheAdder::NodeCacheAdder(NodeCache &cache) :
     cache(cache)
@@ -98,6 +100,4 @@ void NodeCacheAdder::visit(NodeMixedWith<IIntersectable> *ref) {
 void NodeCacheAdder::visit(NodeMixedWith<IKeyPressable> *ref) {
     cache.keyPressable.push_back(ref);
     cache.nodes.push_back(ref);
-}
-
 }
