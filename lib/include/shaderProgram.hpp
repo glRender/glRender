@@ -1,17 +1,17 @@
 #pragma once
 
 #include "base.h"
-
-#include "vec3.hpp"
-#include "vec4.hpp"
-#include "mat4.hpp"
 #include "shader.hpp"
-#include "attribute.h"
-#include "geometry.hpp"
-#include "textures.hpp"
 
 namespace glRender
 {
+
+class Geometry;
+class Textures;
+class Texture;
+class Mat4;
+class Vec4;
+class Vec3;
 
 struct Attribute
 {
@@ -88,5 +88,10 @@ private:
     uint32_t m_lastFreeTextureUnit = 0;
     uint32_t m_programId;   // The unique ID / handle for the shader program
 };
+
+using ShaderProgramPtr = std::shared_ptr<ShaderProgram>;
+
+std::shared_ptr<ShaderProgram> createShaderProgramFromFiles(std::map<ShaderType, const char *> pathesToShaders);
+std::shared_ptr<ShaderProgram> createShaderProgramFromText(std::map<ShaderType, const char *> textOfShaders);
 
 }

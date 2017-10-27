@@ -1,12 +1,11 @@
-#ifndef __TEXTURES_HPP__		
-#define __TEXTURES_HPP__
+#pragma once
 
 #include "base.h"
 
-#include "texture.hpp"
-
 namespace glRender
 {
+
+class Texture;
 
 class Textures
 {
@@ -41,5 +40,3 @@ protected:
 };
 
 }
-
-#endif /* __TEXTURES_HPP__ */

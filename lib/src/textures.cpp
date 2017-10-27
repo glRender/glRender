@@ -1,6 +1,8 @@
 #include "textures.hpp"
 
-namespace glRender {
+#include "texture.hpp"
+
+using namespace glRender;
 
 Textures::Textures()
 {
@@ -104,6 +106,4 @@ Textures::~Textures()
 //    {
 //        delete item.second;
 //    }
-}
-
 }

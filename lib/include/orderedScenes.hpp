@@ -1,11 +1,11 @@
 #pragma once
 
-#include <map>
-
-#include "scene.hpp"
+#include "base.h"
 
 namespace glRender
 {
+
+class Scene;
 
 class OrderedScenes
 {

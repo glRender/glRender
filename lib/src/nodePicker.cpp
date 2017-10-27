@@ -1,9 +1,14 @@
 #include "nodePicker.hpp"
+
 #include "boundingBox.hpp"
+#include "scene.hpp"
+#include "camera.hpp"
+#include "node.hpp"
+#include "ray.hpp"
 
 using namespace glRender;
 
-Vec3 NodePicker::coordOnDistance(Vec2 normDeviceCoords, float distance)
+Vec3 NodePicker::coordOnDistance(const Vec2 & normDeviceCoords, float distance)
 {
     Vec2 coords = changeCoordSystemOfNormolizedDeviceCoords(normDeviceCoords.x, normDeviceCoords.y);
 
@@ -28,7 +33,7 @@ Vec3 NodePicker::coordOnDistance(Vec2 normDeviceCoords, float distance)
     return m_camera->position() + worldCoords * distance;
 }
 
-RayPtr NodePicker::ray(Vec2 normDeviceCoords)
+RayPtr NodePicker::ray(const Vec2 & normDeviceCoords)
 {
     Vec2 coords = changeCoordSystemOfNormolizedDeviceCoords(normDeviceCoords.x, normDeviceCoords.y);
 
@@ -53,7 +58,7 @@ RayPtr NodePicker::ray(Vec2 normDeviceCoords)
     Vec3 origin = coordOnDistance(normDeviceCoords, m_camera->nearPlane());
     Vec3 target = coordOnDistance(normDeviceCoords, m_camera->farPlane());
 
-    return RayPtr(new Ray(origin, target));
+    return std::move(std::make_shared<Ray>(origin, target));
 }
 
 IIntersectable * NodePicker::findNearest(float nx, float ny)
@@ -61,7 +66,7 @@ IIntersectable * NodePicker::findNearest(float nx, float ny)
     return findNearest(Vec2(nx, ny));
 }
 
-IIntersectable * NodePicker::findNearest(Vec2 normDeviceCoords)
+IIntersectable * NodePicker::findNearest(const Vec2 & normDeviceCoords)
 {
     auto nodes = findAll(normDeviceCoords);
 
@@ -88,7 +93,7 @@ void NodePicker::mouseDownUnderNearest(float nx, float ny)
     mouseDownUnderNearest(Vec2(nx, ny));
 }
 
-void NodePicker::mouseDownUnderNearest(Vec2 normDeviceCoords)
+void NodePicker::mouseDownUnderNearest(const Vec2 & normDeviceCoords)
 {
     m_pressedNearestNode = findNearest(normDeviceCoords);
     if (m_pressedNearestNode)
@@ -105,7 +110,7 @@ void NodePicker::mouseUpUnderNearest(float nx, float ny)
     mouseUpUnderNearest(Vec2(nx, ny));
 }
 
-void NodePicker::mouseUpUnderNearest(Vec2 normDeviceCoords)
+void NodePicker::mouseUpUnderNearest(const Vec2 & normDeviceCoords)
 {
     if (m_pressedNearestNode)
     {
@@ -121,7 +126,7 @@ void NodePicker::mouseMoveUnderNearest(float nx, float ny)
     mouseMoveUnderNearest(Vec2(nx, ny));
 }
 
-void NodePicker::mouseMoveUnderNearest(Vec2 normDeviceCoords)
+void NodePicker::mouseMoveUnderNearest(const Vec2 & normDeviceCoords)
 {
     if (m_pressedNearestNode)
     {
@@ -137,7 +142,7 @@ std::vector<IIntersectable *> NodePicker::findAll(float nx, float ny)
     return findAll(Vec2(nx, ny));
 }
 
-std::vector<IIntersectable *> NodePicker::findAll(Vec2 normDeviceCoords)
+std::vector<IIntersectable *> NodePicker::findAll(const Vec2 & normDeviceCoords)
 {
     auto ray = this->ray(normDeviceCoords);
 

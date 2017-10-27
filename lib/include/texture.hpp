@@ -1,8 +1,6 @@
-#ifndef __TEXTURE_HPP__		
-#define __TEXTURE_HPP__
+#pragma once
 
 #include "base.h"
-#include "image.hpp"
 
 namespace glRender
 {
@@ -10,21 +8,27 @@ namespace glRender
 class Texture
 {
 public:
-    Texture(const char * pathToFile);
-    Texture()/* = delete*/;
+    enum class PixelFormat
+    {
+        RGB,
+        RGBA
+    };
+
+    Texture();
     Texture & operator = (const Texture & texture) = delete;
     ~Texture();
 
-    inline uint32_t id()
-    {
-        return m_id;
-    }
+    void fillBy(uint width, uint height, PixelFormat format, void * data);
 
-protected:
+    uint32_t id();
+
+private:
     uint32_t m_id;
 
 };
 
-}
+using TexturePtr = std::shared_ptr<Texture>;
 
-#endif /* __TEXTURE_HPP__ */
+std::shared_ptr<Texture> createTextureFromFile(const char * pathToFile);
+
+}

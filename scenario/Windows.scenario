@@ -1,0 +1,42 @@
+[default]
+runTarget("build")
+runTarget("unit_tests")
+runTarget("make_package")
+runTarget("deploy_package")
+
+[init_git]
+runShell("git submodule update --init --recursive")
+
+[build]
+runTarget("init_git")
+if not exists("./build"):
+    makedirs("./build")
+with cd("./build"):
+    runShell("cmake -G \"MSYS Makefiles\" ..")
+    runShell("cmake --build . --config Release")
+
+[unit_tests]
+with cd("./build/tests/"):
+    runShell("./unit-tests/tests")
+
+[make_package]
+with cd("./build"):
+    runShell("make package")
+
+[deploy_package]
+with cd("./build"):
+    runShell(
+    """
+    bash -ec
+    '
+        currentTag=$(git tag -l --points-at HEAD)
+        if [ -z ${currentTag} ]; then
+            echo "No tag. I will not publish that commit!";
+        else
+            echo "Tag: "${currentTag}
+            REPO=./public/glRender/Windows10_MSYS2_MINGW64
+            echo "Path to repo: "${REPO}
+            rsync -a --rsync-path="mkdir -p ${REPO} && rsync" glRender-*.exe jenkins@sogimu.fvds.ru:${REPO}
+        fi
+    '
+    """)

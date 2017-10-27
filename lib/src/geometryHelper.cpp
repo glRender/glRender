@@ -1,5 +1,9 @@
 #include "geometryHelper.hpp"
 
+#include "vec2.hpp"
+#include "vec3.hpp"
+#include "geometry.hpp"
+
 namespace glRender
 {
       Geometry * GeometryHelper::Box(float halfSideSize)

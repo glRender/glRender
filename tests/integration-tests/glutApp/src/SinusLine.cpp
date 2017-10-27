@@ -50,7 +50,8 @@ SinusLine::SinusLine(Vec3 p0, Vec3 p1, uint segmentsNumber, float r, float g, fl
     Textures * textures = new Textures();
 
 //    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/transparentPoints.vertex", "data/transparentPoints.frag");
-    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", "data/transparentPoints.vertex", "data/transparentPoints.frag");
+//    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", "data/transparentPoints.vertex", "data/transparentPoints.frag");
+    std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::instance().shaderPrograms().get("transparentPointsShP");
 
     shaderProgram->addAttribute<Vec3>("vertex");
     shaderProgram->addAttribute<float>("index");

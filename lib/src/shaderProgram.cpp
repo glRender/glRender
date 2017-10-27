@@ -3,6 +3,12 @@
 #include "resourceManager.hpp"
 #include "geometryBuffer.hpp"
 #include "opengl.h"
+#include "geometry.hpp"
+#include "textures.hpp"
+#include "texture.hpp"
+#include "mat4.hpp"
+#include "vec4.hpp"
+#include "vec3.hpp"
 
 namespace glRender {
 
@@ -325,5 +331,45 @@ template bool ShaderProgram::addUniform<  Texture>(const char * uniformName);
 template void ShaderProgram::setUniform<  Vec3>(const char * uniformName, Vec3 & value);
 template void ShaderProgram::setUniform<  float>(const char * uniformName, float & value);
 template void ShaderProgram::setUniform<  Mat4>(const char * uniformName, Mat4 & value);
+
+std::shared_ptr<ShaderProgram> createShaderProgramFromFiles(std::map<ShaderType, const char *> pathesToShaders)
+{
+    std::shared_ptr<ShaderProgram> program = std::make_shared<ShaderProgram>();
+
+    for (auto & i : pathesToShaders)
+    {
+        // i.second - path to file with code of shader
+        // i.first  - type of shader
+        std::shared_ptr<Shader> shader = createShaderFromFile(i.second, i.first);
+        program->attach(i.first, shader);
+    }
+
+    if (!program->link())
+    {
+        throw std::invalid_argument("Failed shader program linkage!");
+    }
+
+    return std::move(program);
+}
+
+std::shared_ptr<ShaderProgram> createShaderProgramFromText(std::map<ShaderType, const char *> textOfShaders)
+{
+    std::shared_ptr<ShaderProgram> program = std::make_shared<ShaderProgram>();
+
+    for (auto & i : textOfShaders)
+    {
+        // i.second - path to file with code of shader
+        // i.first  - type of shader
+        std::shared_ptr<Shader> shader = createShaderFromText(i.second, i.first);
+        program->attach(i.first, shader);
+    }
+
+    if (!program->link())
+    {
+        throw std::invalid_argument("Failed shader program linkage!");
+    }
+
+    return std::move(program);
+}
 
 }

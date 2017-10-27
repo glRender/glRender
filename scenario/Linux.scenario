@@ -1,0 +1,118 @@
+[default]
+try:
+    if len(imageName) == 0: raise
+except: imageName="sogimu/astralinux"
+
+try:
+    if len(imageTag) == 0: raise
+except: imageTag="1.11"
+
+runTarget("in_container:container=\"%s:%s\", targets=[\"init_git\", \"install_deps\", \"build\", \"unit_tests\", \"make_package\"]" % (imageName, imageTag))
+
+def extractImageName(imageName):
+    parts = imageName.split("/")
+    if len(parts) == 2:
+        return parts[1]
+    else:
+        return parts[0]
+
+runTarget("deploy_package:host=\"sogimu.fvds.ru\",folder=\"glRender/%s-%s\"" % (extractImageName(imageName), imageTag))
+
+
+[install_deps]
+runShell("apt-get update")
+runShell("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev doxygen rsync dpkg-dev")
+
+[init_git]
+runShell("git submodule update --init --recursive")
+
+[build]
+runTarget("init_git")
+if not exists("./build"):
+    makedirs("./build")
+with cd("./build"):
+    buildId = os.getenv("BUILD_ID")
+    if buildId != None and buildId != "":
+        runShell("cmake .. -DBUILD_ID=%s" % buildId)
+    else:
+        runShell("cmake ..")
+
+    runShell("make -j 2")
+
+[unit_tests]
+with cd("./build/tests/"):
+    runShell("./unit-tests/tests")
+
+[make_package]
+with cd("./build"):
+    runShell("make package")
+
+[deploy_package]
+try: host
+except:
+    raise Exception("Необходимо ввести имя хоста!")
+try: folder
+except:
+    raise Exception("Необходимо ввести путь к папке!")
+
+runShell("""
+bash -ecx
+'
+    currentTag=$(git tag -l --points-at HEAD)
+    if [ -z ${currentTag} ]; then
+       echo "Нет git-тега. Я не буду выкладывать пакет в открытый доступ!";
+    else
+        echo "Git-тэг: "${currentTag}
+        BUILDS=/var/lib/jenkins/public/%s
+        echo "Путь к публичной папке: "${BUILDS}
+        ssh jenkins@%s mkdir -p ${BUILDS}
+        rsync build/*.deb jenkins@%s:${BUILDS}
+        ssh jenkins@sogimu.fvds.ru "cd ${BUILDS}; ls; dpkg-scanpackages -m . | gzip --fast > Packages.gz"
+    fi
+'
+""" % (folder, host, host))
+
+[make_docs]
+if not exists("./build"):
+    runShell("scenarist.py run build")
+with cd("./build/lib/"):
+    runShell("doxygen Doxyfile") 
+
+[deploy_docs]
+with cd("./build/lib/"):
+    runShell(
+    """
+    bash -ec
+    '
+        currentTag=$(git tag -l --points-at HEAD)
+        if [ -z ${currentTag} ]; then
+            echo "No tag. I will not publish that commit!";
+        else
+            echo "Tag: "${currentTag}
+            HEAD_SHA=$(git rev-parse --short HEAD)
+            DIR=./public/glRender/docs/${HEAD_SHA}/
+            LATEST_DIR=./public/glRender/docs/latest/
+            echo "Path to docs: "${REPO}
+            rsync -r ./docs/html/* jenkins@sogimu.fvds.ru:${DIR}
+            rsync -r ./docs/html/* jenkins@sogimu.fvds.ru:${LATEST_DIR}
+        fi
+    '
+    """)
+
+[in_container]
+try: container
+except:
+    raise Exception("Необходимо ввести имя docker-контейнера!")
+
+try: targets
+except:
+    raise Exception("Необходимо ввести список целей!")
+
+runShell("""
+    sudo docker run -v %s:/repo %s bash -cex '
+        cd /repo
+        pip install -U build_scenarist
+        scenarist.py info
+        scenarist.py run %s
+    '
+    """ % (os.getcwd(), container, "  ".join(targets)))

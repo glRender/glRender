@@ -30,19 +30,6 @@ Shader::Shader(const char * text, ShaderType type)
     , m_source(text)
 {
     m_typeString = convertShaderTypeToChar(type);
-//    // Get the type of the shader
-//    if (type == GL_VERTEX_SHADER)
-//    {
-//        m_typeString = "Vertex";
-//    }
-//    else if (type == GL_FRAGMENT_SHADER)
-//    {
-//        m_typeString = "Fragment";
-//    }
-//    else
-//    {
-//        m_typeString = "Geometry";
-//    }
 
     // Create the vertex shader id / handle
     // Note: If you segfault here you probably don't have a valid rendering context.
@@ -151,4 +138,35 @@ bool Shader::compile()
     }
 }
     
+std::shared_ptr<Shader> createShaderFromFile(const char * pathToFile, ShaderType type)
+{
+    std::ifstream file;
+
+    file.open(pathToFile);
+
+    if (!file.good())
+    {
+        throw std::invalid_argument("Failed to open file: " + std::string(pathToFile));
+    }
+
+    std::stringstream stream;
+    stream << file.rdbuf();
+    file.close();
+
+    std::string text;
+    text = stream.str();
+
+    return std::move(createShaderFromText(text.c_str(), type));
+}
+
+std::shared_ptr<Shader> createShaderFromText(const char *textOfShader, ShaderType type)
+{
+    std::shared_ptr<Shader> shader = std::make_shared<Shader>(textOfShader, type);
+    if (!shader->compile())
+    {
+        throw std::invalid_argument("Can't compile shader: " + std::string(textOfShader));
+    }
+    return std::move(shader);
+}
+
 }

@@ -1,10 +1,10 @@
-#ifndef RAY_H
-#define RAY_H
+#pragma once
 
 #include "base.h"
 #include "vec3.hpp"
 
-namespace glRender {
+namespace glRender
+{
 
 class Ray
 {
@@ -25,5 +25,3 @@ private:
 using RayPtr = std::shared_ptr<Ray>;
 
 }
-
-#endif // RAY_H

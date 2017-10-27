@@ -1,5 +1,7 @@
 #include "orderedScenes.hpp"
 
+#include "scene.hpp"
+
 using namespace glRender;
 
 void OrderedScenes::add(Scene * scene)
