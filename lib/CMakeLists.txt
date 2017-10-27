@@ -31,6 +31,12 @@ include_directories(
 
 add_library (glRender SHARED ${SRC_FILES})
 
+set_target_properties (glRender
+    PROPERTIES 
+    VERSION       ${glRender_VERSION}
+    SOVERSION     ${glRender_MAJOR_VERSION}
+)
+
 add_custom_target(buildInfo DEPENDS "buildInfo.hpp")
 add_dependencies(glRender buildInfo)
 
