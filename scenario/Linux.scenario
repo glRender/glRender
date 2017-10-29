@@ -7,6 +7,10 @@ try:
     if len(imageTag) == 0: raise
 except: imageTag="1.11"
 
+try: deploy
+except:
+    deploy=False
+
 runTarget("in_container:container=\"%s:%s\", targets=[\"init_git\", \"install_deps\", \"build\", \"unit_tests\", \"make_package\"]" % (imageName, imageTag))
 
 def extractImageName(imageName):
@@ -16,7 +20,8 @@ def extractImageName(imageName):
     else:
         return parts[0]
 
-runTarget("deploy_package:host=\"sogimu.fvds.ru\",folder=\"glRender/%s-%s\"" % (extractImageName(imageName), imageTag))
+if deploy != False:
+    runTarget("deploy_package:host=\"sogimu.fvds.ru\",folder=\"glRender/%s-%s\"" % (extractImageName(imageName), imageTag))
 
 
 [install_deps]

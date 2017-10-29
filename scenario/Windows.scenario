@@ -1,8 +1,14 @@
 [default]
+try: deploy
+except:
+    deploy=False
+
 runTarget("build")
 runTarget("unit_tests")
 runTarget("make_package")
-runTarget("deploy_package")
+
+if deploy != False:
+    runTarget("deploy_package")
 
 [init_git]
 runShell("git submodule update --init --recursive")
@@ -36,7 +42,8 @@ with cd("./build"):
             echo "Tag: "${currentTag}
             REPO=./public/glRender/Windows10_MSYS2_MINGW64
             echo "Path to repo: "${REPO}
-            rsync -a --rsync-path="mkdir -p ${REPO} && rsync" glRender-*.exe jenkins@sogimu.fvds.ru:${REPO}
+            ssh jenkins@sogimu.fvds.ru mkdir -p ${REPO}
+            rsync glRender-*.exe jenkins@sogimu.fvds.ru:${REPO}
         fi
     '
     """)
