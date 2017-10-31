@@ -31,8 +31,7 @@
 	runShell("git submodule update --init --recursive")
 
 [clean]
-	with cd("./build"):
-		runShell("rm -rf ./build")
+	runShell("rm -rf ./build")
 
 [build]
 	runShell("rm -rf ./build")
