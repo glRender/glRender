@@ -27,10 +27,8 @@ target_link_libraries(glutApp
     glRender
 )
 
-if (WIN32)
-	add_custom_command(TARGET glutApp PRE_BUILD
-	                   COMMAND ${CMAKE_COMMAND} -E copy
-	                       ${CMAKE_BINARY_DIR}/lib/*glRender* $<TARGET_FILE_DIR:glutApp>)
-endif()
+add_custom_command(TARGET glutApp PRE_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy
+                       ${CMAKE_BINARY_DIR}/lib/*glRender* $<TARGET_FILE_DIR:glutApp>)
 
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

@@ -21,8 +21,6 @@ include_directories(
 
 target_link_libraries (tests glRender)
 
-if (WIN32)
-	add_custom_command(TARGET tests PRE_BUILD
-	                   COMMAND ${CMAKE_COMMAND} -E copy
-	                       ${CMAKE_BINARY_DIR}/lib/*glRender* $<TARGET_FILE_DIR:tests>)
-endif()
+add_custom_command(TARGET tests PRE_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy
+                       ${CMAKE_BINARY_DIR}/lib/*glRender* $<TARGET_FILE_DIR:tests>)
