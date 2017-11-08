@@ -18,17 +18,23 @@ add_executable (glutApp ${SOURCES})
 find_package(GLUT REQUIRED)
 
 include_directories(
-    ${GLUT_INCLUDE_DIR}
-    ${PROJECT_BINARY_DIR}/lib/include
+  ${GLUT_INCLUDE_DIR}
+  ${PROJECT_BINARY_DIR}/lib/include
 )
+
+set(CMAKE_INSTALL_RPATH ".")
 
 target_link_libraries(glutApp
-    ${GLUT_LIBRARIES}
-    glRender
+  ${GLUT_LIBRARIES}
+  glRender
 )
 
-add_custom_command(TARGET glutApp PRE_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy
-                       ${CMAKE_BINARY_DIR}/lib/*glRender* $<TARGET_FILE_DIR:glutApp>)
+add_custom_command(TARGET glutApp
+  PRE_BUILD
+  COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+  COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+  COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so.${glRender_MAJOR_VERSION}" "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+  COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so.${glRender_VERSION}"       "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+)
 
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

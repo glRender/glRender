@@ -31,7 +31,7 @@
 	runShell("git submodule update --init --recursive")
 
 [clean]
-	runShell("rm -rf ./build")
+    runShell("rm -rf ./build")
 
 [build]
 	runShell("rm -rf ./build")
@@ -48,8 +48,8 @@
 		runShell("make -j 2")
 
 [unit_tests]
-	with cd("./build/tests/"):
-		runShell("./unit-tests/tests")
+    with cd("./build/tests/"):
+        runShell("./unit-tests/tests")
 
 [make_package]
 	with cd("./build"):
@@ -117,7 +117,7 @@
 		raise Exception("Необходимо ввести список целей!")
 
 	runShell("""
-		sudo docker run -v %s:/repo %s bash -cex '
+		sudo docker run --rm -v %s:/repo %s bash -cex '
 			cd /repo
 			pip install -U build_scenarist
 			scenarist.py info
