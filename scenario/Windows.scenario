@@ -22,8 +22,8 @@ with cd("./build"):
     runShell("cmake --build . --config Release")
 
 [unit_tests]
-with cd("build/tests/"):
-    runShell("unit-tests/tests")
+with cd("build/tests/unit-tests/"):
+    runShell("tests")
 
 [make_package]
 with cd("./build"):
