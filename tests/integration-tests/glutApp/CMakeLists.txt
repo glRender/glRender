@@ -41,7 +41,7 @@ if (WIN32)
   add_custom_command(TARGET glutApp
     PRE_BUILD
     COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
-    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/glRender.dll"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.dll"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
   )
 endif()
 

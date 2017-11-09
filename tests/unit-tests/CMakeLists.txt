@@ -22,7 +22,7 @@ include_directories(
 target_link_libraries (tests glRender)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
-  add_custom_command(TARGET glutApp
+  add_custom_command(TARGET tests
     PRE_BUILD
     COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
     COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
@@ -32,10 +32,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 endif()
 
 if (WIN32)
-  add_custom_command(TARGET glutApp
+  add_custom_command(TARGET tests
     PRE_BUILD
     COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
-    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/glRender.dll"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.dll"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
   )
 endif()
  
