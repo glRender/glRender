@@ -22,19 +22,27 @@ include_directories(
   ${PROJECT_BINARY_DIR}/lib/include
 )
 
-set(CMAKE_INSTALL_RPATH ".")
-
 target_link_libraries(glutApp
   ${GLUT_LIBRARIES}
   glRender
 )
 
-add_custom_command(TARGET glutApp
-  PRE_BUILD
-  COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
-  COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
-  COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so.${glRender_MAJOR_VERSION}" "${CMAKE_CURRENT_BINARY_DIR}/libs/"
-  COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so.${glRender_VERSION}"       "${CMAKE_CURRENT_BINARY_DIR}/libs/"
-)
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
+  add_custom_command(TARGET glutApp
+    PRE_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so.${glRender_MAJOR_VERSION}" "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so.${glRender_VERSION}"       "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+  )
+endif()
+
+if (WIN32)
+  add_custom_command(TARGET glutApp
+    PRE_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/glRender.dll"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+  )
+endif()
 
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
