@@ -11,7 +11,7 @@
 	except:
 		deploy=False
 
-	runTarget("in_container:container=\"%s:%s\", targets=[\"init_git\", \"install_deps\", \"clean\", \"build\", \"unit_tests\", \"make_package\"]" % (imageName, imageTag))
+	runTarget("in_container:container=\"%s:%s\", targets=[\"install_deps\", \"init_git\", \"clean\", \"build\", \"unit_tests\", \"make_package\"]" % (imageName, imageTag))
 
 	def extractImageName(imageName):
 		parts = imageName.split("/")
