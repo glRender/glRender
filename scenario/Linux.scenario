@@ -34,7 +34,6 @@
     runShell("rm -rf ./build")
 
 [build]
-	runShell("rm -rf ./build")
 	runTarget("init_git")
 	if not exists("./build"):
 		makedirs("./build")

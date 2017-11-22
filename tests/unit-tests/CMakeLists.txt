@@ -15,27 +15,28 @@ set (SRC_FILES ${SRC_FILES}
 
 add_executable(tests ${SRC_FILES})
 include_directories(
-	${TEST_SRC_PATH} ${CATCH_PATH} 
-    ${PROJECT_BINARY_DIR}/lib/include
+	${TEST_SRC_PATH}
+  ${CATCH_PATH} 
+  ${PROJECT_BINARY_DIR}/lib/include
 )
 
-target_link_libraries (tests glRender)
+target_link_libraries (tests PRIVATE glRender)
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
-  add_custom_command(TARGET tests
-    PRE_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
-    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
-    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so.${glRender_MAJOR_VERSION}" "${CMAKE_CURRENT_BINARY_DIR}/libs/"
-    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so.${glRender_VERSION}"       "${CMAKE_CURRENT_BINARY_DIR}/libs/"
-  )
-endif()
+# if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
+#   add_custom_command(TARGET tests
+#     PRE_BUILD
+#     COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+#     COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+#     COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so.${glRender_MAJOR_VERSION}" "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+#     COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so.${glRender_VERSION}"       "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+#   )
+# endif()
 
-if (WIN32)
-  add_custom_command(TARGET tests
-    PRE_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
-    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.dll"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
-  )
-endif()
+# if (WIN32)
+#   add_custom_command(TARGET tests
+#     PRE_BUILD
+#     COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+#     COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.dll"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+#   )
+# endif()
  

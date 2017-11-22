@@ -4,7 +4,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic -Wno-parentheses -Wl,-no-as-needed")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
   set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -O3")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl")
 endif()
 
 if (MINGW)
@@ -30,7 +29,7 @@ include_directories(
     ${CMAKE_BINARY_DIR}/lib/include/
 )
 
-add_library (glRender SHARED ${SRC_FILES})
+add_library (glRender STATIC ${SRC_FILES})
 
 set_target_properties (glRender
     PROPERTIES 
@@ -43,9 +42,12 @@ add_dependencies(glRender buildInfo)
 
 target_include_directories (glRender PUBLIC include)
 
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
   target_link_libraries(glRender gcc_s gcc)
 endif()
+
+target_link_libraries(glRender m dl)
 
 # Refresh include directory
 file(REMOVE ${CMAKE_CURRENT_BINARY_DIR}/include)
