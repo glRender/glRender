@@ -37,10 +37,26 @@ void PolylineArea::initializeGL()
         exit(3);
     }
 
-    printf("%s\n\n", render->contextInformation());
+    printf("%s\n", render->contextInformation());
+    printf("%s\n", render->versionInformation());
 
-    camera = new PerspectiveCamera(90.0 / 180.0 * MATH_PI, 16.0f/9.0f, 1.0f, 200.0f);
-    camera->lookAt(Vec3(0,0,0), Vec3(0,0,-1000), Vec3::AXE_Y());
+    ///
+    ResourceManager * resMng = &ResourceManager::instance();
+
+    std::pair<const char *, std::map<ShaderType, const char *>> shadersPathes[] = {
+        {"coloredShP",           {{ShaderType::VertexShader, "data/colored.vertex"},           {ShaderType::FragmentShader, "data/colored.frag"}}},
+    };
+
+    for (auto & i : shadersPathes)
+    {
+        resMng->shaderPrograms().create(i.first, [&i]() {
+            return createShaderProgramFromFiles(i.second);
+        });
+    }
+    ///
+
+    camera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 200.0f );
+    camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
 
 
     scene = new Scene();
@@ -55,6 +71,8 @@ void PolylineArea::initializeGL()
         Mark * n = new Mark(Vec3(0,1,0),1,i,0,0);
         scene->add(n);
     }
+
+    Render::instance()->scenes().add(scene);
 
     createAndStartDrawUpdater();
 //    createAndStartLogicUpdater();

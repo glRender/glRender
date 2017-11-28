@@ -1,8 +1,11 @@
 cmake_minimum_required (VERSION 2.8.11)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_EXE_LINKER_FLAGS "-static")
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
+  set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 	set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -O3 ")
@@ -22,7 +25,18 @@ include_directories(
   ${PROJECT_BINARY_DIR}/lib/include
 )
 
-target_link_libraries(glutApp PRIVATE ${GLUT_LIBRARIES} PRIVATE glRender)
+target_link_libraries(glutApp
+	PRIVATE ${GLUT_LIBRARIES}
+	PRIVATE glRender
+)
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
+  add_custom_command(TARGET glutApp
+    PRE_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E make_directory 		 				"${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy ${GLUT_LIBRARIES} 		"${CMAKE_CURRENT_BINARY_DIR}/libs/"
+  )
+endif()
 
 # if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 #   add_custom_command(TARGET glutApp
@@ -43,3 +57,4 @@ target_link_libraries(glutApp PRIVATE ${GLUT_LIBRARIES} PRIVATE glRender)
 # endif()
 
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY bin/run.sh DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

@@ -1,8 +1,15 @@
 cmake_minimum_required (VERSION 2.8.11)
 
-set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_EXE_LINKER_FLAGS "-static")
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -pedantic")
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
+    set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+    set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -O3 ")
+endif()
 
 set (SRC src)
 set (lib_src ${SRC}/knot.cpp
@@ -36,6 +43,7 @@ include_directories (
         ${SRC}
         ${PROJECT_BINARY_DIR}/tests/integration-tests/qtApp
         ${PROJECT_SOURCE_DIR}/lib/include/
+        ${PROJECT_BINARY_DIR}/lib/include/
 )
 
 add_library (Lib SHARED

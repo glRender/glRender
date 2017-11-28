@@ -5,7 +5,7 @@
 
 	try:
 		if len(imageTag) == 0: raise
-	except: imageTag="1.11"
+	except: imageTag="1.11.9"
 
 	try: deploy
 	except:
@@ -25,7 +25,7 @@
 
 [install_deps]
 	runShell("apt-get update")
-	runShell("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev doxygen rsync dpkg-dev")
+	runShell("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev doxygen rsync dpkg-dev qt5-default")
 
 [init_git]
 	runShell("git submodule update --init --recursive")
@@ -44,7 +44,7 @@
 		else:
 			runShell("cmake ..")
 
-		runShell("make -j 2")
+		runShell("make")
 
 [unit_tests]
     with cd("./build/tests/"):

@@ -1,6 +1,11 @@
 cmake_minimum_required (VERSION 2.8.11)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -pedantic -Wno-parentheses")
+set(CMAKE_EXE_LINKER_FLAGS "-static")
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
+	set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+endif()
 
 set (SRC_PATH src)
 set (CATCH_PATH libs/Catch/include)
