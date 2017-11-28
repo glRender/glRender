@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 2.8.11)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-set(CMAKE_EXE_LINKER_FLAGS "-static")
-set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+# set(CMAKE_EXE_LINKER_FLAGS "-static")
+# set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
     set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
