@@ -40,10 +40,10 @@ qt5_wrap_cpp(lib_hdr_moc ${lib_hdr})
 qt5_wrap_ui (lib_ui_moc  ${lib_ui})
 
 include_directories (
-        ${SRC}
-        ${PROJECT_BINARY_DIR}/tests/integration-tests/qtApp
-        ${PROJECT_SOURCE_DIR}/lib/include/
-        ${PROJECT_BINARY_DIR}/lib/include/
+    ${SRC}
+    ${PROJECT_BINARY_DIR}/tests/integration-tests/qtApp
+    ${PROJECT_SOURCE_DIR}/lib/include/
+    ${PROJECT_BINARY_DIR}/lib/include/
 )
 
 add_library (Lib SHARED
@@ -57,7 +57,22 @@ target_link_libraries (Lib
     glRender
 )
 
+set_target_properties(Lib
+    PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/libs"
+)
+
 add_executable(qtApp ${bin_src})
 target_link_libraries (qtApp Lib)
 
-file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+add_custom_command(TARGET qtApp 
+    PRE_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_FILE:Qt5::OpenGL>  "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_FILE:Qt5::Widgets> "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_FILE:Qt5::Gui>  "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_FILE:Qt5::Core>  "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+)
+
+file(COPY "data"       DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+file(COPY "bin/run.sh" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")

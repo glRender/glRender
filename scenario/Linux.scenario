@@ -1,27 +1,40 @@
 [default]
 	try:
-		if len(imageName) == 0: raise
-	except: imageName="sogimu/astralinux"
-
-	try:
-		if len(imageTag) == 0: raise
-	except: imageTag="1.11.9"
+		if len(dockerImage) == 0: raise
+	except: dockerImage="sogimu/astralinux:1.11.9"
 
 	try: deploy
 	except:
 		deploy=False
 
-	runTarget("in_container:container=\"%s:%s\", targets=[\"install_deps\", \"init_git\", \"clean\", \"build\", \"unit_tests\", \"make_package\"]" % (imageName, imageTag))
+	def splitDockerImageName(dockerImage):
+		def extractNameAndTag(imageNameAndTag):
+			imageName_tag = imageNameAndTag.split(":")
+			if len(imageName_tag) == 2:
+				return imageName_tag[0], imageName_tag[1]
+			else:
+				return imageName_tag[0], None
 
-	def extractImageName(imageName):
-		parts = imageName.split("/")
-		if len(parts) == 2:
-			return parts[1]
+		dockerUser = None
+		dockerImageName = None
+		dockerImageTag = None
+
+		user_imageNameAndTag = dockerImage.split("/")
+		if len(user_imageNameAndTag) == 2:
+			dockerUser = user_imageNameAndTag[0]
+			dockerImageName, dockerImageTag = extractNameAndTag(user_imageNameAndTag[1])
 		else:
-			return parts[0]
+			dockerImageName, dockerImageTag = extractNameAndTag(user_imageNameAndTag[0])
+
+		return dockerUser, dockerImageName, dockerImageTag
+
+		dockerUser, dockerImageName, dockerImageTag = splitDockerImageName(dockerImage)
+
+	runTarget("in_container:container=\"%s\", targets=[\"install_deps\", \"init_git\", \"clean\", \"build\", \"unit_tests\", \"make_package\"]" % (dockerImage))
 
 	if deploy != False:
-		runTarget("deploy_package:host=\"sogimu.fvds.ru\",folder=\"glRender/%s-%s\"" % (extractImageName(imageName), imageTag))
+		# runTarget("deploy_package:host=\"sogimu.fvds.ru\",folder=\"glRender/%s-%s\"" % (extractImageName(imageName), imageTag))
+		runTarget("deploy_package:host=\"sogimu.fvds.ru\",folder=\"glRender/%s-%s\"" % (dockerImageName, dockerImageTag))
 
 [install_deps]
 	runShell("apt-get update")

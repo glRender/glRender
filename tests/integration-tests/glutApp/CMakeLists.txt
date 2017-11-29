@@ -26,16 +26,21 @@ include_directories(
 )
 
 target_link_libraries(glutApp
-	${GLUT_LIBRARIES}
-	glRender
+	PRIVATE glRender
+  ${GLUT_LIBRARIES}
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
   add_custom_command(TARGET glutApp
     PRE_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E make_directory 		 				"${CMAKE_CURRENT_BINARY_DIR}/libs/"
-    COMMAND "${CMAKE_COMMAND}" -E copy ${GLUT_LIBRARIES} 		"${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
   )
+  foreach(LIB ${GLUT_LIBRARIES})
+    add_custom_command(TARGET glutApp
+      PRE_BUILD
+      COMMAND "${CMAKE_COMMAND}" -E copy_if_different ${LIB}     "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    )
+  endforeach()
 endif()
 
 # if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
