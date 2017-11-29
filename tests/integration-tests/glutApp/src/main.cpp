@@ -5,7 +5,7 @@
 #include "Mark.hpp"
 #include "WoodenBox.hpp"
 #include "BrickBox.hpp"
-//#include "QuadraticBezeirCurve.hpp"
+#include "QuadraticBezeirCurve.hpp"
 //#include "SinusLine.hpp"
 //#include "Line.hpp"
 #include "aabbNodeVisualizator.hpp"
@@ -121,7 +121,7 @@ void init ()
     {
         for (int j=0; j<1; j++)
         {
-            for (int k=0; k<1000; k++)
+            for (int k=0; k<100; k++)
             {
 //                BrickBox *bb = new BrickBox();
 //                bb->model()->setWireframeMode(false);
@@ -129,11 +129,27 @@ void init ()
 //                t->add(bb);
 
                 Mark * m = new Mark(Vec3(0,1,0), 1.0, i, j, k);
-                m->setOrigin(Vec3(((rand() % 200)) - 25, ((rand() % 200)) - 25, ((rand() % 200)) - 25));
+                m->setOrigin(Vec3(((rand() % 200)) - 25, ((rand() % 200)) - 25, ((rand() % 200)) - 150));
                 t->add(m);
+
+                QuadraticBezeirCurve * qbc = new QuadraticBezeirCurve(
+                    Vec3(0,0,-10),
+                    Vec3(((rand() % 25) - 12),
+                        ((rand() % 25) - 12),
+                        ((rand() % 25) - 12-10)),
+                    Vec3(((rand() % 25) - 12),
+                        ((rand() % 25) - 12),
+                        k-10), 
+                    50.0, 
+                    Vec3(((double) rand() / (RAND_MAX)), 
+                        ((double) rand() / (RAND_MAX)), 
+                        ((double) rand() / (RAND_MAX))));
+                t->add(qbc);
+
             }
         }
     }
+
     scene->add(t);
 
     CameraControlNode * cn = new CameraControlNode(camera);

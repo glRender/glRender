@@ -8,7 +8,7 @@ namespace glRender {
 class QuadraticBezeirCurve : public NodeMixedWith<IUpdateable, IDrawable>
 {
 public:
-  QuadraticBezeirCurve(Vec3 p0, Vec3 p1, Vec3 p2, uint segmentsNumber, float r, float g, float b);
+  QuadraticBezeirCurve(Vec3 p0, Vec3 p1, Vec3 p2, uint segmentsNumber, Vec3 color);
   ~QuadraticBezeirCurve();
 
   void update() override;
@@ -30,6 +30,8 @@ private:
   float m_r;
   float m_g;
   float m_b;
+  Vec3 m_color;
+  float m_speed;
 
 };
 
