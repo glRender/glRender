@@ -45,7 +45,7 @@ QuadraticBezeirCurve::~QuadraticBezeirCurve()
 
 void QuadraticBezeirCurve::update()
 {
-    m_model->rotate(m_speed, Vec3::AXE_Y());
+    // m_model->rotate(m_speed, Vec3::AXE_Y());
 }
 
 void QuadraticBezeirCurve::draw(Camera * camera)

@@ -113,6 +113,11 @@ void Mark::onMouseMove(Vec3 & toPosition)
 {
     setOrigin(toPosition);
 
+    for (auto i : m_points)
+    {
+        i.first->setPointPosition(i.second, toPosition);
+    }
+
     printf("New position: %f, %f, %f\n", toPosition.x, toPosition.y, toPosition.z);
     std::cout << "" << std::endl;
 

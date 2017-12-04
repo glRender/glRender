@@ -5,9 +5,9 @@
 #include "Mark.hpp"
 #include "WoodenBox.hpp"
 #include "BrickBox.hpp"
-#include "QuadraticBezeirCurve.hpp"
+// #include "QuadraticBezeirCurve.hpp"
 //#include "SinusLine.hpp"
-//#include "Line.hpp"
+#include "Line.hpp"
 #include "aabbNodeVisualizator.hpp"
 
 static const int WINDOW_WIDTH = 1280;
@@ -117,38 +117,70 @@ void init ()
 //    t1->add(t);
 //    t2->add(t1);
 
-    for (int i=0; i<1; i++)
-    {
-        for (int j=0; j<1; j++)
-        {
-            for (int k=0; k<100; k++)
-            {
-//                BrickBox *bb = new BrickBox();
-//                bb->model()->setWireframeMode(false);
-//                bb->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
-//                t->add(bb);
+//     for (int i=0; i<1; i++)
+//     {
+//         for (int j=0; j<1; j++)
+//         {
+//             for (int k=0; k<100; k++)
+//             {
+// //                BrickBox *bb = new BrickBox();
+// //                bb->model()->setWireframeMode(false);
+// //                bb->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
+// //                t->add(bb);
 
-                Mark * m = new Mark(Vec3(0,1,0), 1.0, i, j, k);
-                m->setOrigin(Vec3(((rand() % 200)) - 25, ((rand() % 200)) - 25, ((rand() % 200)) - 150));
-                t->add(m);
+//                 Mark * m = new Mark(Vec3(0,1,0), 1.0, i, j, k);
+//                 m->setOrigin(Vec3(((rand() % 200)) - 25, ((rand() % 200)) - 25, ((rand() % 200)) - 150));
+//                 t->add(m);
 
-                QuadraticBezeirCurve * qbc = new QuadraticBezeirCurve(
-                    Vec3(0,0,-10),
-                    Vec3(((rand() % 25) - 12),
-                        ((rand() % 25) - 12),
-                        ((rand() % 25) - 12-10)),
-                    Vec3(((rand() % 25) - 12),
-                        ((rand() % 25) - 12),
-                        k-10), 
-                    50.0, 
-                    Vec3(((double) rand() / (RAND_MAX)), 
-                        ((double) rand() / (RAND_MAX)), 
-                        ((double) rand() / (RAND_MAX))));
-                t->add(qbc);
+//                 QuadraticBezeirCurve * qbc = new QuadraticBezeirCurve(
+//                     Vec3(0,0,-10),
+//                     Vec3(((rand() % 25) - 12),
+//                         ((rand() % 25) - 12),
+//                         ((rand() % 25) - 12-10)),
+//                     Vec3(((rand() % 25) - 12),
+//                         ((rand() % 25) - 12),
+//                         k-10), 
+//                     50.0, 
+//                     Vec3(((double) rand() / (RAND_MAX)), 
+//                         ((double) rand() / (RAND_MAX)), 
+//                         ((double) rand() / (RAND_MAX))));
+//                 t->add(qbc);
 
-            }
-        }
-    }
+//             }
+//         }
+//     }
+
+    Line * l = new Line(
+        Vec3(-0.5f, 0.0, -2.0f),
+        Vec3(0.5f, 0.0, -2.0f), 
+        1.0, 
+        Vec3(1.0f, 0.0f, 1.0f));
+    t->add(l);
+
+    Mark * a = new Mark(Vec3(0,1,0), 0.1, 0, 0, 0);
+    a->setOrigin(Vec3(-0.5f, 0.0, -2.0f));
+    a->addLinePoint(l, Line::POINTS::FirstPoint);
+    t->add(a);
+
+    Mark * b = new Mark(Vec3(0,1,0), 0.1, 0, 0, 0);
+    b->setOrigin(Vec3(0.5f, 0.0, -2.0f));
+    b->addLinePoint(l, Line::POINTS::SecondPoint);
+    t->add(b);
+
+    ///////////////////////
+
+    Line * l1 = new Line(
+        Vec3(0.5f, 0.0, -2.0f),
+        Vec3(1.0f, 0.0, -2.0f), 
+        1.0, 
+        Vec3(1.0f, 0.0f, 1.0f));
+    t->add(l1);
+    b->addLinePoint(l1, Line::POINTS::FirstPoint);
+
+    Mark * c = new Mark(Vec3(0,1,0), 0.1, 0, 0, 0);
+    c->setOrigin(Vec3(1.0f, 0.0, -2.0f));
+    c->addLinePoint(l1, Line::POINTS::SecondPoint);
+    t->add(c);
 
     scene->add(t);
 
