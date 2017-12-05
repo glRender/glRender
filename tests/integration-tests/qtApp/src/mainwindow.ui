@@ -22,7 +22,7 @@
       </property>
       <widget class="PolylineArea" name="polylineArea">
        <property name="focusPolicy">
-        <enum>Qt::ClickFocus</enum>
+        <enum>Qt::StrongFocus</enum>
        </property>
       </widget>
       <widget class="QGroupBox" name="groupBoxPrams">
