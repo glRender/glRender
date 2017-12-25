@@ -1,24 +1,29 @@
+[default]
+runTarget("init_git")
+runTarget("build")
+runTarget("make_package")
+
 [init_git]
-run("git submodule update --init --recursive")
+runShell("git submodule update --init --recursive")
 
 [build]
 if not exists("./build"):
     makedirs("./build")
 with cd("./build"):
-    run("cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=/mingw64/ ..")
-    run("make -j")
+    runShell("cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=/mingw64/ ..")
+    runShell("make -j")
 
 [unit-tests]
 with cd("./build/tests/"):
-    run("./unit-tests/tests")
+    runShell("./unit-tests/tests")
 
 [make_package]
 with cd("./build"):
-    run("make package")
+    runShell("make package")
 
 [deploy]
 with cd("./build"):
-    run(
+    runShell(
     """
     bash -ec
     '
