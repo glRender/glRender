@@ -1,57 +1,42 @@
 #include "label.hpp"
-#include "font.hpp"
-#include "geometryHelper.hpp"
-#include "textures.hpp"
-#include "texture.hpp"
 
-using namespace glRender;
+#include "camera.hpp"
 
-Label::Label(std::shared_ptr<Font::Font> font, const std::string & text)
-    : m_font(font)
+namespace glRender {
+
+Label::Label(Camera * camera, std::shared_ptr<Font::Font> font, const std::string & text) :
+    m_camera(camera)
 {
-    setText(text);
-    extractTextures(font);
-    extractShaderProgram(font);
-    createGeometry(font);
+    m_label = std::make_shared<LabelModel>(font, text);
 }
 
-Label::~Label()
+void Label::update()
 {
-
+    static int counter = 0;
+    // if (counter % 50 == 0)
+    {
+        // std::string t = patch::to_string(((rand() % 999999999999999999)) - 25);
+        std::string t = patch::to_string(counter);
+        setText(t);
+    }
+    counter++;
 }
 
-void Label::draw(Camera *camera)
+void Label::draw(Camera * camera)
 {
-    m_font->setText(m_text);
-    Model::draw(camera);
+    m_label->setParentsMatrix(globalTransforms());
+    m_label->draw(camera);
 }
+
 
 void Label::setText(const std::string & text)
 {
-    m_text = utf8_to_wstring(text + "@");
+    m_label->setText(text);
 }
 
-void Label::extractTextures(std::shared_ptr<Font::Font> font)
+std::shared_ptr<Model> Label::model()
 {
-    std::shared_ptr<Texture> texture = font->texture();
-    Textures * textures = new Textures();
-    textures->setTexture("texture0", texture);
-    setTextures(textures);
+    return m_label;
 }
 
-void Label::createGeometry(std::shared_ptr<Font::Font> font)
-{
-    auto texture = font->texture();
-    float ratioX = float(texture->width()) / texture->heigth();
-    float ratioY = float(texture->heigth()) / texture->width();
-    float scale = 10;
-    std::shared_ptr<Geometry> geometry = GeometryHelper::Plane(Vec3(0, 0, -5.0),               Vec3(scale * ratioX, 0, -5.0),
-                                                               Vec3(0, -scale * ratioY, -5.0), Vec3(scale * ratioX, -scale * ratioY, -5.0));
-    setGeometry(geometry);
-}
-
-void Label::extractShaderProgram(std::shared_ptr<Font::Font> font)
-{
-    std::shared_ptr<ShaderProgram> shaderProgram = font->shaderProgram();
-    setShaderProgram(shaderProgram);
 }

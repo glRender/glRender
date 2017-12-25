@@ -32,6 +32,6 @@
 #include "nodePicker.hpp"
 #include "render.hpp"
 #include "font.hpp"
+#include "labelModel.hpp"
 #include "label.hpp"
-#include "labelNode.hpp"
 #include "glyphsInformation.hpp"

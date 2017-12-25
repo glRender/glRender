@@ -137,7 +137,7 @@ void init ()
     t->add(c);
 
     std::shared_ptr<Font::Font> font = Font::createFromFile("data/myfont.fnt");
-    LabelNode * ln = new LabelNode(camera, font, "one_by_one");
+    Label * ln = new Label(camera, font, "one_by_one");
     ln->model()->setOrigin(0.0f, 0.0f, -2.0f);
     // ln->model()->setWireframeMode(true);
     t->add(ln);

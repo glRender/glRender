@@ -1,28 +1,25 @@
 #pragma once
 
-#include "base.h"
-#include "model.hpp"
+#include "glRender.h"
 
-namespace glRender
+namespace glRender {
+
+class Camera;
+
+class Label : public NodeMixedWith<IUpdateable, IDrawable>
 {
-    namespace Font {
-        class Font;
-    }
+public:
+    Label(Camera * camera, std::shared_ptr<Font::Font> font, const std::string & text);
 
-    class Label : public Model
-    {
-    public:
-        Label(std::shared_ptr<Font::Font> font, const std::string & text);
-        virtual ~Label();
-        void draw(Camera * camera) override;
-        void setText(const std::string & text);
-    private:
-        void createGeometry(std::shared_ptr<Font::Font> font);
-        void extractTextures(std::shared_ptr<Font::Font> font);
-        void extractShaderProgram(std::shared_ptr<Font::Font> font);
-    private:
-        std::shared_ptr<Font::Font> m_font;
-        std::wstring m_text;
-    };
+    void update() override;
+    void draw(Camera * camera) override;
+    void setText(const std::string & text);
+
+    std::shared_ptr<Model> model();
+
+private:
+    Camera * m_camera;
+    std::shared_ptr<LabelModel> m_label;
+};
 
 }
