@@ -1,5 +1,5 @@
 [default]
-# runTarget("install_deps")
+runTarget("install_deps")
 runTarget("init_git")
 runTarget("build")
 runTarget("unit-tests")
