@@ -1,6 +1,11 @@
 #include "nodeTransformsAccumulator.hpp"
 
-namespace glRender {
+#include "mat4.hpp"
+#include "nodeCache.hpp"
+#include "nodeMixer.hpp"
+#include "node.hpp"
+
+using namespace glRender;
 
 NodeTransformsAccumulator::NodeTransformsAccumulator(Mat4 &m) :
     m_m(m)
@@ -85,6 +90,4 @@ void NodeTransformsAccumulator::visit(NodeMixedWith<IKeyPressable> *ref)
 void NodeTransformsAccumulator::accumulate(Node * node)
 {
     m_m *= node->transforms();
-}
-
 }

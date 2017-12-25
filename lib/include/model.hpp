@@ -2,14 +2,15 @@
 
 #include "base.h"
 #include "positionable.hpp"
-#include "geometry.hpp"
-#include "shaderProgram.hpp"
-#include "camera.hpp"
-#include "textures.hpp"
-#include "geometryBuffer.hpp"
 
 namespace glRender
 {
+
+class Geometry;
+class ShaderProgram;
+class Camera;
+class Textures;
+class AbstractBuffer;
 
 class Model : public Positionable
 {
@@ -37,7 +38,7 @@ public:
     void setTextures(Textures * textures);
     void setShaderProgram(std::shared_ptr<ShaderProgram> program);
 
-    inline ShaderProgram* shaderProgram()
+    inline ShaderProgram * shaderProgram()
     {
         return m_shaderProgram;
     }
@@ -52,13 +53,6 @@ public:
 
     void setDrawMode(DrawMode drawMode);
     DrawMode drawMode();
-
-//    void setLocalMatrix(Mat4 & m);
-//    void setGlobalMatrix(Mat4 && m);
-
-//    const Mat4 & localMatrix() const;
-//    const Mat4 & globalMatrix() const;
-//    const Mat4 & localGlobalMatrix() const;
 
 private:
     uint32_t m_vaoId;

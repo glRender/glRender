@@ -1,8 +1,6 @@
-#ifndef PERSPECTIVECAMERA_H
-#define PERSPECTIVECAMERA_H
+#pragma once
 
 #include "base.h"
-
 #include "camera.hpp"
 
 namespace glRender
@@ -34,4 +32,3 @@ private:
 using PerspectiveCameraPtr = std::shared_ptr<PerspectiveCamera>;
 
 }
-#endif // PERSPECTIVECAMERA_H

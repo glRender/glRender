@@ -1,7 +1,8 @@
-#ifndef __GLRENDER_H__		
-#define __GLRENDER_H__
+#pragma once
 
 #include "base.h"
+
+#include "buildInfo.hpp"
 
 #include "shader.hpp"
 #include "shaderProgram.hpp"
@@ -15,6 +16,7 @@
 #include "camera.hpp"
 #include "perspectiveCamera.hpp"
 #include "orthographicCamera.hpp"
+#include "cameraControlNode.hpp"
 #include "node.hpp"
 #include "visitor.hpp"
 #include "nodeMixer.hpp"
@@ -31,6 +33,5 @@
 #include "render.hpp"
 #include "font.hpp"
 #include "label.hpp"
+#include "labelNode.hpp"
 #include "glyphsInformation.hpp"
-
-#endif /* __GLRENDER_H__ */

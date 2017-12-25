@@ -3,6 +3,7 @@
 #include "shader.hpp"
 #include "shaderProgram.hpp"
 #include "texture.hpp"
+#include "textures.hpp"
 #include "resourceManager.hpp"
 #include "geometryHelper.hpp"
 #include "model.hpp"
@@ -137,8 +138,6 @@ std::shared_ptr<GlyphsInformation> Font::glyphsInfo() const
 
 void Font::createShaderProgram()
 {
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
-
     const char * m_uuid = uuid();
 
     ResourceManager::instance().shaderPrograms().create(m_uuid, [this]() {

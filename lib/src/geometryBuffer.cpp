@@ -1,5 +1,8 @@
 #include "geometryBuffer.hpp"
+
 #include "opengl.h"
+#include "vec2.hpp"
+#include "vec3.hpp"
 
 //0x8892 GL_ARRAY_BUFFER
 //0x8893 GL_ELEMENT_ARRAY_BUFFER

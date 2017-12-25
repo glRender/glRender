@@ -2,15 +2,14 @@
 
 namespace glRender {
 
-QuadraticBezeirCurve::QuadraticBezeirCurve(Vec3 p0, Vec3 p1, Vec3 p2, uint segmentsNumber, float r, float g, float b)
+QuadraticBezeirCurve::QuadraticBezeirCurve(Vec3 p0, Vec3 p1, Vec3 p2, uint segmentsNumber, Vec3 color)
     : m_aabb(new AABB(Vec3(0,0,0), 1.0))
     , m_p0(p0)
     , m_p1(p1)
     , m_p2(p2)
     , m_segmentsNumber(segmentsNumber)
-    , m_r(r)
-    , m_g(g)
-    , m_b(b)
+    , m_color(color)
+    , m_speed((double) rand() / (RAND_MAX) * 0.01)
 {
 //    setSelectable(false);
     std::shared_ptr<Geometry> geometry = GeometryHelper::QuadraticBezierCurve(p0, p1, p2, segmentsNumber);
@@ -21,15 +20,17 @@ QuadraticBezeirCurve::QuadraticBezeirCurve(Vec3 p0, Vec3 p1, Vec3 p2, uint segme
 
     std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::instance().shaderPrograms().get("coloredShP");
 
-
     shaderProgram->addAttribute<Vec3>("vertex");
 
     shaderProgram->addUniform<Mat4>("projection");
     shaderProgram->addUniform<Mat4>("view");
     shaderProgram->addUniform<Mat4>("model");
-    shaderProgram->addUniform<float>("r");
-    shaderProgram->addUniform<float>("g");
-    shaderProgram->addUniform<float>("b");
+    // shaderProgram->addUniform<float>("r");
+    // shaderProgram->addUniform<float>("g");
+    // shaderProgram->addUniform<float>("b");
+    shaderProgram->setUniform<Vec3>("color", m_color);
+
+    shaderProgram->setUniform<Vec3>("color", m_color);
 
     m_model = new Model(geometry, textures, shaderProgram);
     m_model->setWireframeMode(false);
@@ -44,15 +45,13 @@ QuadraticBezeirCurve::~QuadraticBezeirCurve()
 
 void QuadraticBezeirCurve::update()
 {
-
-    m_model->rotate(0.1, Vec3::AXE_Y());
+    // m_model->rotate(m_speed, Vec3::AXE_Y());
 }
 
 void QuadraticBezeirCurve::draw(Camera * camera)
 {
-    m_model->shaderProgram()->setUniform<float>("r", m_r);
-    m_model->shaderProgram()->setUniform<float>("g", m_g);
-    m_model->shaderProgram()->setUniform<float>("b", m_b);
+    m_model->shaderProgram()->setUniform<Vec3>("color", m_color);
+    m_model->setParentsMatrix(globalTransforms());
 
     m_model->draw(camera);
 }

@@ -1,12 +1,13 @@
 #pragma once
 
 #include "base.h"
-#include "nodeMixer.hpp"
 #include "visitor.hpp"
-#include "nodeCache.hpp"
 
 namespace glRender
 {
+
+template<typename...> class NodeMixedWith;
+class NodeCache;
 
 class NodeCacheRemover : public NodeVisitor
 {

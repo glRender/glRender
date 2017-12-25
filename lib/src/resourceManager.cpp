@@ -2,11 +2,10 @@
 
 #include "shader.hpp"
 #include "shaderProgram.hpp"
-
 #include "texture.hpp"
 #include "textures.hpp"
 
-namespace glRender {
+using namespace glRender;
 
 ResourceManager::ResourceManager()
 {
@@ -26,7 +25,4 @@ ResourceCache<Texture> &ResourceManager::textures()
 ResourceCache<ShaderProgram> &ResourceManager::shaderPrograms()
 {
     return m_shaderProgramsChache;
-}
-
-
 }

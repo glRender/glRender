@@ -30,19 +30,6 @@ Shader::Shader(const char * text, ShaderType type)
     , m_source(text)
 {
     m_typeString = convertShaderTypeToChar(type);
-//    // Get the type of the shader
-//    if (type == GL_VERTEX_SHADER)
-//    {
-//        m_typeString = "Vertex";
-//    }
-//    else if (type == GL_FRAGMENT_SHADER)
-//    {
-//        m_typeString = "Fragment";
-//    }
-//    else
-//    {
-//        m_typeString = "Geometry";
-//    }
 
     // Create the vertex shader id / handle
     // Note: If you segfault here you probably don't have a valid rendering context.

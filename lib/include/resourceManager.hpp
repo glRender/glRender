@@ -1,5 +1,4 @@
-#ifndef RESOURCEMANAGER_H
-#define RESOURCEMANAGER_H
+#pragma once
 
 #include "base.h"
 
@@ -64,5 +63,3 @@ private:
 };
 
 }
-
-#endif // RESOURCEMANAGER_H

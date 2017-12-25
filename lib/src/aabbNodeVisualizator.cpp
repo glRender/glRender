@@ -1,8 +1,15 @@
 #include "aabbNodeVisualizator.hpp"
 
 #include "resourceManager.hpp"
+#include "geometry.hpp"
+#include "textures.hpp"
+#include "shader.hpp"
+#include "shaderProgram.hpp"
+#include "model.hpp"
+#include "aabb.hpp"
 
-namespace glRender {
+namespace glRender
+{
 
 AABBNodeVisualizator::AABBNodeVisualizator(AABB * aabb) :
     m_aabb(aabb)

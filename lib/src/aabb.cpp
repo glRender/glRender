@@ -11,7 +11,7 @@ AABB::AABB(const Vec3 & center, float halfSide)
     : m_center(center)
     , m_halfSide(halfSide)
 {
-    _updateMinMax();
+    updateMinMax();
 }
 
 const Vec3 &AABB::origin() const
@@ -37,13 +37,13 @@ const Vec3 &AABB::max()
 void AABB::setOrigin(const Vec3 & center)
 {
     m_center = center;
-    _updateMinMax();
+    updateMinMax();
 }
 
 void AABB::setHalfSide(float halfSide)
 {
     m_halfSide = halfSide;
-    _updateMinMax();
+    updateMinMax();
 }
 
 bool AABB::intersects(const RayPtr ray) const
@@ -98,7 +98,7 @@ bool AABB::intersects(const RayPtr ray) const
     return tmin < tmax;
 }
 
-void AABB::_updateMinMax()
+void AABB::updateMinMax()
 {
     m_min = m_center - Vec3(m_halfSide, m_halfSide, m_halfSide);
     m_max = m_center + Vec3(m_halfSide, m_halfSide, m_halfSide);

@@ -1,7 +1,12 @@
 #include "model.hpp"
-#include "opengl.h"
 
-namespace glRender {
+#include "opengl.h"
+#include "geometry.hpp"
+#include "shaderProgram.hpp"
+#include "camera.hpp"
+#include "textures.hpp"
+
+using namespace glRender;
 
 Model::Model()
 {
@@ -46,33 +51,6 @@ Model::DrawMode Model::drawMode()
 {
     return m_drawMode;
 }
-
-//const Mat4 & Model::localGlobalMatrix() const
-//{
-//    return m_localGlobalMatrix;
-//}
-
-//void Model::setLocalMatrix(Mat4 & m)
-//{
-//    m_localMatrix = m;
-//    m_localGlobalMatrix = m_localMatrix * m_globalMatrix;
-//}
-
-//void Model::setGlobalMatrix(Mat4 && m)
-//{
-//    m_globalMatrix = m;
-//    m_localGlobalMatrix = m_localMatrix * m_globalMatrix;
-//}
-
-//const Mat4 & Model::localMatrix() const
-//{
-//    return m_localMatrix;
-//}
-
-//const Mat4 & Model::globalMatrix() const
-//{
-//    return m_globalMatrix;
-//}
 
 void Model::draw(Camera * camera)
 {
@@ -149,6 +127,4 @@ Model::~Model()
 //    delete m_geometry;
     delete m_textures;
     glDeleteVertexArrays(1, &m_vaoId);
-}
-    
 }

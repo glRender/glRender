@@ -1,18 +1,18 @@
 #include "label.hpp"
 #include "font.hpp"
 #include "geometryHelper.hpp"
+#include "textures.hpp"
+#include "texture.hpp"
 
 using namespace glRender;
 
-Label::Label(std::wstring& text, std::shared_ptr<Font::Font> font)
+Label::Label(std::shared_ptr<Font::Font> font, const std::string & text)
     : m_font(font)
 {
+    setText(text);
     extractTextures(font);
     extractShaderProgram(font);
     createGeometry(font);
-
-    setText(text);
-//    setWireframeMode(true);
 }
 
 Label::~Label()
@@ -26,10 +26,9 @@ void Label::draw(Camera *camera)
     Model::draw(camera);
 }
 
-void Label::setText(std::wstring& text)
+void Label::setText(const std::string & text)
 {
-    m_text = text;
-//    std::wcout << text << std::endl;
+    m_text = utf8_to_wstring(text + "@");
 }
 
 void Label::extractTextures(std::shared_ptr<Font::Font> font)

@@ -4,8 +4,8 @@
 
 namespace glRender
 {
-    class Geometry;
     class Vec3;
+    class Geometry;
 
     class GeometryHelper
     {

@@ -5,7 +5,7 @@
 #include "nodeCacheRemover.hpp"
 #include "opengl.h"
 
-namespace glRender {
+using namespace glRender;
 
 Scene::Scene()
 {
@@ -194,6 +194,4 @@ void Scene::processKeyboardsKeys(IKeyPressable::KeyboardKey key)
     traverseKeyPressables([&key](IKeyPressable * mixin) {
         mixin->onKeyPress(key);
     });
-}
-
 }

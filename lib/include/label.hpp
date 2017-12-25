@@ -12,10 +12,10 @@ namespace glRender
     class Label : public Model
     {
     public:
-        Label(std::wstring& text, std::shared_ptr<Font::Font> font);
+        Label(std::shared_ptr<Font::Font> font, const std::string & text);
         virtual ~Label();
         void draw(Camera * camera) override;
-        void setText(std::wstring& text);
+        void setText(const std::string & text);
     private:
         void createGeometry(std::shared_ptr<Font::Font> font);
         void extractTextures(std::shared_ptr<Font::Font> font);

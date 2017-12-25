@@ -5,9 +5,9 @@
 #include "Mark.hpp"
 #include "WoodenBox.hpp"
 #include "BrickBox.hpp"
-//#include "QuadraticBezeirCurve.hpp"
+// #include "QuadraticBezeirCurve.hpp"
 //#include "SinusLine.hpp"
-//#include "Line.hpp"
+#include "Line.hpp"
 #include "aabbNodeVisualizator.hpp"
 
 static const int WINDOW_WIDTH = 1280;
@@ -23,155 +23,10 @@ Camera * overlayCamera;
 int counter = 0;
 clock_t start;
 
-//Mark * np;
-//Mark * fp;
-//Line * l;
-
 UnderOverlayScene * scene;
 OverlayScene * overlayScene;
 
 NodePickerPtr nodePicker;
-
-#define LabelCount 1521
-
-class CameraNode : public NodeMixedWith<IUpdateable, IDrawable, IKeyPressable>
-{
-public:
-    CameraNode(Camera * camera) :
-        m_camera(camera)
-    {
-        std::shared_ptr<Geometry> geometry = GeometryHelper::Arrows();
-        Textures * textures = new Textures();
-
-//        ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
-//        std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::getInstance().shaderPrograms().get("*", "data/colored.vertex", "data/colored.frag");
-        std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::instance().shaderPrograms().get("coloredShP");
-
-        shaderProgram->addAttribute<Vec3>("vertex");
-
-        shaderProgram->addUniform<Mat4>("projection");
-        shaderProgram->addUniform<Mat4>("view");
-        shaderProgram->addUniform<Mat4>("model");
-        shaderProgram->addUniform<Vec3>("color");
-
-//        shaderProgram->setUniform<Vec3>("color", Vec3(0,1,0));
-
-        m_model = new Model(geometry, textures, shaderProgram);
-        m_model->setWireframeMode(true);
-        Mat4 l = m_model->localMatrix();
-        m_model->setLocalMatrix(l.scale(0.005f));
-        m_model->setOrigin(0.5f, 0.25f, -2.0f);
-
-        std::shared_ptr<Font::Font> font = Font::createFromFile("data/myfont.fnt");
-
-        for (int i=0; i<39; i++)
-        {
-            for (int j=0; j<39; j++)
-            {
-                std::wstring wt = utf8_to_wstring("@");
-                m_label[i*39 + j] = std::make_shared<Label>(wt, font);
-                m_label[i*39 + j]->setOrigin(20 - i*15.5, 20 - j*5.5, -5);
-            }
-        }
-    }
-
-    void update() override
-    {
-//        transforms().rotateY(0.01f);
-//        transformsChanged();
-//        m_camera->setGlobalMatrix(globalTransforms());
-        static int counter = 0;
-//        if (counter % 50 == 0)
-        {
-            for (int i=0; i<LabelCount; i++)
-            {
-//                std::string t = patch::to_string(i) + "_" + patch::to_string(((rand() % 999999999999999999)) - 25) + "@";
-                std::string t = patch::to_string(counter) + "@";
-//                std::string t = "привет@";
-                std::wstring wt = utf8_to_wstring(t);
-                m_label[i]->setText(wt);
-            }
-        }
-        counter++;
-    }
-
-    void draw(Camera * camera) override
-    {
-//        m_model->shaderProgram()->setUniform<Vec3>("color", Vec3(0,1,0));
-        m_model->setParentsMatrix(globalTransforms());
-        m_model->draw(camera/*, parentsTransforms()*/);
-        for (auto & i : m_label)
-        {
-            i->draw(camera);
-        }
-    }
-
-    void onKeyPress(KeyboardKey key) override
-    {
-        switch(key)
-        {
-        case IKeyPressable::KeyboardKey::W: {
-            m_camera->setPosition(m_camera->position() + m_camera->front() * cameraMoveSpeed );
-            m_model->setOrigin(m_model->origin() + m_camera->front() * cameraMoveSpeed);
-        }; break;
-
-        case IKeyPressable::KeyboardKey::S: {
-            m_camera->setPosition(m_camera->position() - m_camera->front() * cameraMoveSpeed);
-            m_model->setOrigin(m_model->origin() - m_camera->front() * cameraMoveSpeed);
-        }; break;
-
-        case IKeyPressable::KeyboardKey::A: {
-            m_camera->setPosition(m_camera->position() - m_camera->right() * cameraMoveSpeed );
-            m_model->setOrigin(m_model->origin() - m_camera->right() * cameraMoveSpeed);
-        }; break;
-
-        case IKeyPressable::KeyboardKey::D: {
-            m_camera->setPosition(m_camera->position() + m_camera->right() * cameraMoveSpeed );
-            m_model->setOrigin(m_model->origin() + m_camera->right() * cameraMoveSpeed);
-        }; break;
-
-        case IKeyPressable::KeyboardKey::Q: {
-            m_camera->setEulerAngles( m_camera->pitch(), m_camera->yaw() + cameraRotationSpeed, m_camera->roll() );
-        }; break;
-
-        case IKeyPressable::KeyboardKey::E: {
-            m_camera->setEulerAngles( m_camera->pitch(), m_camera->yaw() - cameraRotationSpeed, m_camera->roll() );
-        }; break;
-
-        case IKeyPressable::KeyboardKey::Z: {
-            m_camera->setPosition(m_camera->position() + m_camera->up() * cameraMoveSpeed );
-            m_model->setOrigin(m_model->origin() + m_camera->up() * cameraMoveSpeed);
-        }; break;
-
-        case IKeyPressable::KeyboardKey::X: {
-            m_camera->setPosition(m_camera->position() - m_camera->up() * cameraMoveSpeed );
-            m_model->setOrigin(m_model->origin() - m_camera->up() * cameraMoveSpeed);
-        }; break;
-
-        case IKeyPressable::KeyboardKey::R: {
-            m_camera->setEulerAngles( m_camera->pitch() + cameraRotationSpeed, m_camera->yaw(), m_camera->roll() );
-        }; break;
-
-        case IKeyPressable::KeyboardKey::F: {
-            m_camera->setEulerAngles( m_camera->pitch() - cameraRotationSpeed, m_camera->yaw(), camera->roll() );
-        }; break;
-
-        default: {
-
-        }
-
-        }
-    }
-
-private:
-    Camera * m_camera;
-    float cameraMoveSpeed = 0.3f;
-    float cameraRotationSpeed = 5.0f;
-
-    Model * m_model;
-    std::shared_ptr<Label> m_label[LabelCount];
-
-};
 
 class Tran : public NodeMixedWith<IUpdateable>
 {
@@ -247,117 +102,50 @@ void init ()
 
     srand( time(0) );
 
-//    Mark * m = new Mark(0,1,0,1);
-//    m->model()->setWireframeMode(false);
-//    m->setOrigin(0.0f, 0.0f, -3.0f);
-//    scene->addNode(m);
-
     Node * t = new Tran();
 
-//    Node * t1 = new Tran1();
+    Line * l = new Line(
+        Vec3(-0.5f, 0.0, -2.0f),
+        Vec3(0.5f, 0.0, -2.0f), 
+        1.0, 
+        Vec3(1.0f, 0.0f, 1.0f));
+    t->add(l);
 
-//    Node * t2 = new Tran2();
+    Mark * a = new Mark(Vec3(0,1,0), 0.1, 0, 0, 0);
+    a->setOrigin(Vec3(-0.5f, 0.0, -2.0f));
+    a->addLinePoint(l, Line::POINTS::FirstPoint);
+    t->add(a);
 
-//    scene->add(t1);
+    Mark * b = new Mark(Vec3(0,1,0), 0.1, 0, 0, 0);
+    b->setOrigin(Vec3(0.5f, 0.0, -2.0f));
+    b->addLinePoint(l, Line::POINTS::SecondPoint);
+    t->add(b);
 
-//    Node * t1 = new Tran1();
-//    Node * t2 = new Tran2();
-//    t1->add(t);
-//    t2->add(t1);
+    /////////////////////////
 
-    for (int i=0; i<30; i++)
-    {
+    Line * l1 = new Line(
+        Vec3(0.5f, 0.0, -2.0f),
+        Vec3(1.0f, 0.0, -2.0f), 
+        1.0, 
+        Vec3(1.0f, 0.0f, 1.0f));
+    t->add(l1);
+    b->addLinePoint(l1, Line::POINTS::FirstPoint);
 
-    for (int j=0; j<30; j++)
-    {
+    Mark * c = new Mark(Vec3(0,1,0), 0.1, 0, 0, 0);
+    c->setOrigin(Vec3(1.0f, 0.0, -2.0f));
+    c->addLinePoint(l1, Line::POINTS::SecondPoint);
+    t->add(c);
 
-    for (int k=0; k<1; k++)
-    {
-//        if ((int)(rand() % 5) == 0)
-//        {
-//        } else
-//        if ((int)(rand() % 3) == 1)
-//        {
-//             BrickBox *bb = new BrickBox();
-//             bb->model()->setWireframeMode(false);
-//             bb->model()->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
-//             scene->addNode(bb);
-//        } else
-//        if ((int)(rand() % 3) == 0)
-//        {
-//            Mark * m = new Mark(Vec3(0,1,0),0.7,i,j,k);
-            WoodenBox * m = new WoodenBox();
-//            Mat4 mm = camera->projectionMatrix();
-//            m->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
+    std::shared_ptr<Font::Font> font = Font::createFromFile("data/myfont.fnt");
+    LabelNode * ln = new LabelNode(camera, font, "one_by_one");
+    ln->model()->setOrigin(0.0f, 0.0f, -2.0f);
+    // ln->model()->setWireframeMode(true);
+    t->add(ln);
 
-            m->model()->setOrigin(Vec3(((rand() % 200)) - 25, ((rand() % 200)) - 25, ((rand() % 200)) - 25));
-
-            t->add(m);
-
-//        }
-//        else
-//        if ((int)(rand() % 3) == 1)
-//        {
-////            Vec3 p0 = Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25));
-////            Vec3 p1 = Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25));
-//            Vec3 p0 = Vec3(-25.0f, 0.0f, -1.0f);
-//            Vec3 p1 = Vec3(25.0f, 0.0f, -1.0f);
-
-//            float r = (rand() % 255) / 255.0;
-//            float g = (rand() % 255) / 255.0;
-//            float b = (rand() % 255) / 255.0;
-
-//            SinusLine * l = new SinusLine(p0, p1, 350, r, g, b);
-//            l->setOrigin(Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25)));
-
-//            scene->addNode(l);
-//        }
-//        else
-//        if ((int)(rand() % 5) == 4)
-//        {
-//            Vec3 p0 = Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25));
-//            Vec3 p1 = Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25));
-//            Vec3 p2 = Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25));
-
-//            float r = (rand() % 255) / 255.0;
-//            float g = (rand() % 255) / 255.0;
-//            float b = (rand() % 255) / 255.0;
-
-//            QuadraticBezeirCurve * l = new QuadraticBezeirCurve(p0, p1, p2, 512, r, g, b);
-//            scene->addNode(l);
-//        }
-    }
-    }
-    }
     scene->add(t);
 
-//    Mark * mmm = new Mark(Vec3(0,1,0),1,0,0,0);
-    CameraNode * cn = new CameraNode(camera);
-
-//    Mark * aaa = new Mark(Vec3(1,0,0),0.05,0,0,5);
-//    aaa->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
-
-//    Node * tmp = mmm;
-
-//    for (int i=0; i<1000; i++)
-//    {
-//        Mark * m = new Mark(Vec3(0,0,1),0.7,i,0,0);
-//        Mat4 mm = camera->projectionMatrix();
-//        m->m_model->m_shaderProgram->setUniform<Mat4>("projection", mm );
-
-////            m->model()->setOrigin(Vec3(((rand() % 50)) - 25, ((rand() % 50)) - 25, 0));
-//        tmp->add(m);
-//        tmp = m;
-//    }
-
-//    scene->add(mmm);
-
-//    cn->add(aaa);
-
-    scene->add(cn);
-//    t1->add(t);
-//    t2->add(t1);
-//    scene->add(t2);
+    CameraControlNode * ccn = new CameraControlNode(camera);
+    scene->add(ccn);
 
 
     overlayCamera = new OrthographicCamera(10.0f, 16.0f / 9.0f, 1.0f, 200.0f );
@@ -365,14 +153,6 @@ void init ()
 
     overlayScene = new OverlayScene();
     overlayScene->setCamera(overlayCamera);
-
-//    WoodenBox *n = new WoodenBox();
-//    n->model()->setOrigin(0,0.0,-1);
-//    overlayScene->add(n);
-
-//    BrickBox *n1 = new BrickBox();
-//    n1->model()->setOrigin(0.1,0.1,-1.4);
-//    overlayScene->add(n1);
 
     Render::instance()->scenes().add(overlayScene);
 }
@@ -390,7 +170,7 @@ void display()
     glutSwapBuffers ();
     counter++;
 
-    if (counter % 50 == 0)
+    if (counter % 100 == 0)
     {
         float frameTime = ((float)(clock() - start) / counter) / CLOCKS_PER_SEC * 1000.0;
         float fps = 1000.0 / frameTime;
@@ -479,7 +259,7 @@ void key ( unsigned char key, int x, int y )
 
 void mouse(int button, int state, int x, int y)
 {
-    printf("%d, %d\n", x, y);
+    printf("Pick on: %d, %d\n", x, y);
     std::cout << "" << std::endl;
 
     Vec2 normDeviceCoords(
@@ -529,7 +309,8 @@ int main ( int argc, char * argv [] )
         exit(3);
     }
 
-    printf("%s\n\n", render->contextInformation());
+    printf("%s\n", render->contextInformation());
+    printf("%s\n", render->versionInformation());
 
     // register handlers
     glutDisplayFunc    ( display );

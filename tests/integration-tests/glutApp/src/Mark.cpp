@@ -15,7 +15,6 @@ Mark::Mark(Vec3 color, float size, uint i, uint j, uint k)
 
     Textures * textures = new Textures();
 
-//    ShaderProgram * shaderProgram = ResourceManager::getInstance().getShaderProgram("data/colored.vertex", "data/colored.frag");
     std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::instance().shaderPrograms().get("coloredShP");
 
     shaderProgram->addAttribute<Vec3>("vertex");
@@ -30,8 +29,6 @@ Mark::Mark(Vec3 color, float size, uint i, uint j, uint k)
     m_model = new Model(geometry, textures, shaderProgram);
     m_model->setWireframeMode(true);
     m_model->setOrigin(0.0, 0.0, 0.0);
-
-    m_model->setOrigin(Vec3(i * 3, j * 3 - 25, k * 3 - 25));
     m_aabb->setOrigin(m_model->origin());
 
 //    m_aabbVisualizator = new AABBNodeVisualizator(m_aabb);
@@ -64,14 +61,20 @@ bool Mark::intersects(const RayPtr ray) const
     return m_aabb->intersects(ray);
 }
 
-Model * Mark::model() const
+const Model * Mark::model() const
 {
     return m_model;
 }
 
-IBoundingBox * Mark::bb() const
+const IBoundingBox * Mark::bb() const
 {
     return m_aabb;
+}
+
+void Mark::setOrigin(const Vec3 & origin)
+{
+    m_model->setOrigin(origin);
+    m_aabb->setOrigin(origin);
 }
 
 void Mark::onMouseDown(Vec3 & position, RayPtr ray, Camera * camera)
@@ -108,8 +111,12 @@ void Mark::onMouseUp(Vec3 & position, RayPtr ray, Camera * camera)
 
 void Mark::onMouseMove(Vec3 & toPosition)
 {
-    model()->setOrigin(toPosition);
-    bb()->setOrigin(toPosition);
+    setOrigin(toPosition);
+
+    for (auto i : m_points)
+    {
+        i.first->setPointPosition(i.second, toPosition);
+    }
 
     printf("New position: %f, %f, %f\n", toPosition.x, toPosition.y, toPosition.z);
     std::cout << "" << std::endl;

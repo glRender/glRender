@@ -2,6 +2,7 @@
 #define MARK_H
 
 #include "glRender.h"
+#include "Line.hpp"
 
 namespace glRender {
 
@@ -17,8 +18,16 @@ public:
   void draw(Camera * camera) override;
   bool intersects(const RayPtr ray) const override;
 
-  Model * model() const;
-  IBoundingBox * bb() const override;
+  const Model * model() const;
+  const IBoundingBox * bb() const override;
+  void setOrigin(const Vec3 & origin);
+
+  void addLinePoint(Line * line, Line::POINTS point)
+  {
+    // m_line = line;
+    // m_linePoint = point;
+    m_points[line] = point;
+  }
 
 //  void onIntersection(IIntersectable * o) override
 //  {
@@ -36,6 +45,11 @@ private:
   AABBNodeVisualizator * m_aabbVisualizator;
 
   Vec3 m_color;
+
+  // Line * m_line = nullptr;
+  // Line::POINTS m_linePoint;
+
+  std::map<Line *, Line::POINTS> m_points;
 
   uint m_i;
   uint m_j;
