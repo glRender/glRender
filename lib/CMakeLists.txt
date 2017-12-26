@@ -48,13 +48,13 @@ target_include_directories (glRender PUBLIC include)
 
 target_link_libraries(glRender
   m
-  dl
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
   target_link_libraries(glRender
     gcc_s
     gcc
+    dl
   )
 endif()
 
