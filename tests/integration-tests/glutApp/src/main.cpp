@@ -5,9 +5,9 @@
 #include "Mark.hpp"
 #include "WoodenBox.hpp"
 #include "BrickBox.hpp"
-//#include "QuadraticBezeirCurve.hpp"
+// #include "QuadraticBezeirCurve.hpp"
 //#include "SinusLine.hpp"
-//#include "Line.hpp"
+#include "Line.hpp"
 #include "aabbNodeVisualizator.hpp"
 
 static const int WINDOW_WIDTH = 1280;
@@ -88,10 +88,8 @@ void init ()
         });
     }
 
-
-
-    camera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 200.0f );
-//    camera = new OrthographicCamera(100.0f, 16.0f / 9.0f, 1.0f, 200.0f );
+    camera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 400.0f );
+//    camera = new OrthographicCamera(3.0f, 16.0f / 9.0f, 1.0f, 200.0f );
     camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
 //    camera->lookAt(Vec3(3,0,4), Vec3(-5,0,-15), Vec3::AXE_Y());
 
@@ -106,42 +104,49 @@ void init ()
 
     Node * t = new Tran();
 
-//    Node * t1 = new Tran1();
+    Line * l = new Line(
+        Vec3(-0.5f, 0.0, -2.0f),
+        Vec3(0.5f, 0.0, -2.0f), 
+        1.0, 
+        Vec3(1.0f, 0.0f, 1.0f));
+    t->add(l);
 
-//    Node * t2 = new Tran2();
+    Mark * a = new Mark(Vec3(0,1,0), 0.1, 0, 0, 0);
+    a->setOrigin(Vec3(-0.5f, 0.0, -2.0f));
+    a->addLinePoint(l, Line::POINTS::FirstPoint);
+    t->add(a);
 
-//    scene->add(t1);
+    Mark * b = new Mark(Vec3(0,1,0), 0.1, 0, 0, 0);
+    b->setOrigin(Vec3(0.5f, 0.0, -2.0f));
+    b->addLinePoint(l, Line::POINTS::SecondPoint);
+    t->add(b);
 
-//    Node * t1 = new Tran1();
-//    Node * t2 = new Tran2();
-//    t1->add(t);
-//    t2->add(t1);
+    /////////////////////////
 
-    for (int i=0; i<1; i++)
-    {
-        for (int j=0; j<1; j++)
-        {
-            for (int k=0; k<1000; k++)
-            {
-//                BrickBox *bb = new BrickBox();
-//                bb->model()->setWireframeMode(false);
-//                bb->setOrigin( ((rand() % 50)) - 25, ((rand() % 50)) - 25, ((rand() % 50) - 25) );
-//                t->add(bb);
+    Line * l1 = new Line(
+        Vec3(0.5f, 0.0, -2.0f),
+        Vec3(1.0f, 0.0, -2.0f), 
+        1.0, 
+        Vec3(1.0f, 0.0f, 1.0f));
+    t->add(l1);
+    b->addLinePoint(l1, Line::POINTS::FirstPoint);
 
-                Mark * m = new Mark(Vec3(0,1,0), 1.0, i, j, k);
-                m->setOrigin(Vec3(((rand() % 200)) - 25, ((rand() % 200)) - 25, ((rand() % 200)) - 25));
-                t->add(m);
-            }
-        }
-    }
+    Mark * c = new Mark(Vec3(0,1,0), 0.1, 0, 0, 0);
+    c->setOrigin(Vec3(1.0f, 0.0, -2.0f));
+    c->addLinePoint(l1, Line::POINTS::SecondPoint);
+    t->add(c);
+
+    std::shared_ptr<Font::Font> font = Font::createFromFile("data/myfont.fnt");
+    Label * ln = new Label(camera, font, "one_by_one");
+    ln->model()->setOrigin(0.0f, 0.0f, -2.0f);
+    // ln->model()->setWireframeMode(true);
+    t->add(ln);
+
     scene->add(t);
 
-    CameraControlNode * cn = new CameraControlNode(camera);
+    CameraControlNode * ccn = new CameraControlNode(camera);
+    scene->add(ccn);
 
-    scene->add(cn);
-//    t1->add(t);
-//    t2->add(t1);
-//    scene->add(t2);
 
     overlayCamera = new OrthographicCamera(10.0f, 16.0f / 9.0f, 1.0f, 200.0f );
     overlayCamera->lookAt(Vec3(0,0,10), Vec3(0,0,-10), Vec3::AXE_Y());
@@ -149,16 +154,7 @@ void init ()
     overlayScene = new OverlayScene();
     overlayScene->setCamera(overlayCamera);
 
-//    WoodenBox *n = new WoodenBox();
-//    n->model()->setOrigin(3.5,1.5,-1);
-//    overlayScene->add(n);
-
-//    BrickBox *n1 = new BrickBox();
-//    n1->model()->setOrigin(3.7,1.3,-1.4);
-//    overlayScene->add(n1);
-
     Render::instance()->scenes().add(overlayScene);
-
 }
 
 void idle()

@@ -3,8 +3,8 @@
 namespace glRender {
 
 WoodenBox::WoodenBox()
-{
-    Geometry * geometry = GeometryHelper::Box(1.0);
+{    
+    std::shared_ptr<Geometry> geometry = GeometryHelper::Box(1.0);
 
     Textures * textures = new Textures();
     textures->setTexture( "texture0", ResourceManager::instance().textures().get("Plywood_1024x640.png"));

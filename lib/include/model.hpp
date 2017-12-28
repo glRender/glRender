@@ -22,15 +22,21 @@ public:
         Lines = 0x0003 /*GL_LINE_STRIP*/
     };
 
-    Model(Geometry* geometry, Textures* textures, std::shared_ptr<ShaderProgram> shaderProgram);
-    ~Model();
+    Model();
+    Model(std::shared_ptr<Geometry> geometry, Textures* textures, std::shared_ptr<ShaderProgram> shaderProgram);
 
-    void draw(Camera * camera);
+    virtual ~Model();
 
-    inline Geometry * geometry()
+    virtual void draw(Camera * camera);
+
+    inline std::shared_ptr<Geometry> geometry()
     {
         return m_geometry;
     }
+
+    void setGeometry(std::shared_ptr<Geometry> geometry);
+    void setTextures(Textures * textures);
+    void setShaderProgram(std::shared_ptr<ShaderProgram> program);
 
     inline ShaderProgram * shaderProgram()
     {
@@ -51,7 +57,7 @@ public:
 private:
     uint32_t m_vaoId;
 
-    Geometry * m_geometry;
+    std::shared_ptr<Geometry> m_geometry;
     std::shared_ptr<ShaderProgram> m_shaderProgramSrtPtr;
     ShaderProgram * m_shaderProgram;
     Textures * m_textures;

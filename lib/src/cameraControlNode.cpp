@@ -13,7 +13,7 @@ using namespace glRender;
 glRender::CameraControlNode::CameraControlNode(glRender::Camera *camera) :
     m_camera(camera)
 {
-    Geometry * geometry = GeometryHelper::Arrows();
+    std::shared_ptr<Geometry> geometry = GeometryHelper::Arrows();
     Textures * textures = new Textures();
     std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::instance().shaderPrograms().get("coloredShP");
 

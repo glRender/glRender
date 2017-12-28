@@ -43,7 +43,7 @@ SinusLine::SinusLine(Vec3 p0, Vec3 p1, uint segmentsNumber, float r, float g, fl
         indexes.push_back(opacity);
     }
 
-    Geometry* geometry = new Geometry();
+    std::shared_ptr<Geometry> geometry = std::make_shared<Geometry>();
     geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
     geometry->set( "index", new Buffer<float>( indexes, BufferType::ArrayBuffer) );
 

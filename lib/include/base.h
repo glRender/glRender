@@ -31,6 +31,8 @@
 #include <stdexcept>
 #include <cstring>
 #include <stdint.h>
+#include <codecvt>
+#include <locale>
 
 // Math
 #define MATH_DEG_TO_RAD(x)          ((x) * 0.0174532925f)
@@ -75,7 +77,8 @@ namespace patch
 
 }
 
-inline std::vector<std::string> split(const std::string &s, char delim) {
+inline std::vector<std::string> split(const std::string& s, char delim)
+{
     std::stringstream ss(s);
     std::string item;
     std::vector<std::string> tokens;
@@ -83,6 +86,45 @@ inline std::vector<std::string> split(const std::string &s, char delim) {
         tokens.push_back(item);
     }
     return tokens;
+}
+
+inline void replaceAll(std::string& str, const std::string& from, const std::string& to)
+{
+    if(from.empty())
+        return;
+    size_t start_pos = 0;
+    while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+    }
+}
+
+// convert UTF-8 string to wstring
+inline std::wstring utf8_to_wstring(const std::string& str)
+{
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
+    return myconv.from_bytes(str);
+}
+
+// convert wstring to UTF-8 string
+inline std::string wstring_to_utf8(const std::wstring& str)
+{
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
+    return myconv.to_bytes(str);
+}
+
+// number of alphabets in UTF-8 string
+inline std::size_t strlen_utf8(const std::string & str)
+{
+    std::size_t length = 0;
+    for (char c : str)
+    {
+        if ((c & 0xC0) != 0x80)
+        {
+            ++length;
+        }
+    }
+    return length;
 }
 
 #ifdef _WIN32

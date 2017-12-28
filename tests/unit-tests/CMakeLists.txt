@@ -1,6 +1,11 @@
 cmake_minimum_required (VERSION 2.8.11)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -pedantic -Wno-parentheses")
+set(CMAKE_EXE_LINKER_FLAGS "-static")
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
+	set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+endif()
 
 set (SRC_PATH src)
 set (CATCH_PATH libs/Catch/include)
@@ -15,14 +20,28 @@ set (SRC_FILES ${SRC_FILES}
 
 add_executable(tests ${SRC_FILES})
 include_directories(
-	${TEST_SRC_PATH} ${CATCH_PATH} 
-    ${PROJECT_BINARY_DIR}/lib/include
+	${TEST_SRC_PATH}
+  ${CATCH_PATH} 
+  ${PROJECT_BINARY_DIR}/lib/include
 )
 
-target_link_libraries (tests glRender)
+target_link_libraries (tests PRIVATE glRender)
 
-if (WIN32)
-	add_custom_command(TARGET tests PRE_BUILD
-	                   COMMAND ${CMAKE_COMMAND} -E copy
-	                       ${CMAKE_BINARY_DIR}/lib/*glRender* $<TARGET_FILE_DIR:tests>)
-endif()
+# if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
+#   add_custom_command(TARGET tests
+#     PRE_BUILD
+#     COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+#     COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+#     COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so.${glRender_MAJOR_VERSION}" "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+#     COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.so.${glRender_VERSION}"       "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+#   )
+# endif()
+
+# if (WIN32)
+#   add_custom_command(TARGET tests
+#     PRE_BUILD
+#     COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+#     COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_BINARY_DIR}/lib/libglRender.dll"                           "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+#   )
+# endif()
+ 

@@ -4,7 +4,7 @@ namespace glRender {
 
 BrickBox::BrickBox()
 {
-    Geometry * geometry = GeometryHelper::Box(1.0);
+    std::shared_ptr<Geometry> geometry = GeometryHelper::Box(1.0);
 
     Textures * textures = new Textures();
     textures->setTexture( "texture0", ResourceManager::instance().textures().get("TexturesCom_BricksSmallOld0080_1_seamless_S_1024x1024.png"));

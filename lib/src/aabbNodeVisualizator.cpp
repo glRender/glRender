@@ -21,7 +21,7 @@ AABBNodeVisualizator::AABBNodeVisualizator(AABB * aabb) :
     vertices.push_back(Vec3(0.0f, 0.0f, 0.0f));
     vertices.push_back(Vec3(0.0f, -0.1f, 0.0f));
 
-    Geometry* geometry = new Geometry();
+    std::shared_ptr<Geometry> geometry = std::make_shared<Geometry>();
     geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
 
     Textures * textures = new Textures();

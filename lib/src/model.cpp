@@ -8,7 +8,13 @@
 
 using namespace glRender;
 
-Model::Model(Geometry* geometry, Textures* textures, std::shared_ptr<ShaderProgram> shaderProgram) :
+Model::Model()
+{
+    glGenVertexArrays ( 1, &m_vaoId );
+
+}
+
+Model::Model(std::shared_ptr<Geometry> geometry, Textures* textures, std::shared_ptr<ShaderProgram> shaderProgram) :
     m_geometry(geometry),
     m_shaderProgramSrtPtr(shaderProgram),
     m_shaderProgram(shaderProgram.get()),
@@ -24,9 +30,6 @@ Model::Model(Geometry* geometry, Textures* textures, std::shared_ptr<ShaderProgr
 
     m_shaderProgram->fillAttributes(m_geometry);
     glBindVertexArray ( 0 );
-
-    glBindVertexArray ( m_vaoId );
-
 }
 
 void Model::setWireframeMode(bool status)
@@ -76,19 +79,52 @@ void Model::draw(Camera * camera)
 
     if (m_wireframeMode) { glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ); }
 
-//    if (!m_textures->isEmpty())
-//    {
-//        shaderProgram()->unbindTextures();
-//    }
+    if (!m_textures->isEmpty())
+    {
+        shaderProgram()->unbindTextures();
+    }
 
-//    shaderProgram()->disable();
+    shaderProgram()->disable();
 
-//    glBindVertexArray ( 0 );
+    glBindVertexArray ( 0 );
+}
+
+void Model::setGeometry(std::shared_ptr<Geometry> geometry)
+{
+    m_geometry = geometry;
+    glBindVertexArray ( m_vaoId );
+
+    if (geometry->hasIndices())
+    {
+        m_indicesBuffer = new Buffer<uint32_t>(m_geometry->getIndices(), BufferType::ElementArrayBuffer);
+    }
+
+    if (m_shaderProgram)
+    {
+        m_shaderProgram->fillAttributes(m_geometry);
+    }
+    glBindVertexArray ( 0 );
+
+}
+
+void Model::setTextures(Textures *textures)
+{
+    m_textures = textures;
+}
+
+void Model::setShaderProgram(std::shared_ptr<ShaderProgram> program)
+{
+    if (m_geometry)
+    {
+        program->fillAttributes(m_geometry);
+    }
+    m_shaderProgram = program.get();
+    m_shaderProgramSrtPtr = program;
 }
 
 Model::~Model()
 {
-    delete m_geometry;
+//    delete m_geometry;
     delete m_textures;
     glDeleteVertexArrays(1, &m_vaoId);
 }

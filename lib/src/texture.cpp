@@ -7,7 +7,7 @@ namespace glRender
 {
 
 Texture::Texture()
-{
+{    
     glGenTextures(1, &m_id);
 
     glBindTexture(GL_TEXTURE_2D, m_id);
@@ -28,7 +28,7 @@ Texture::~Texture()
 void Texture::fillBy(uint width, uint height, Texture::PixelFormat format, void *data)
 {
     GLint pixelFormat = GL_RGB;
-    if( format == Texture::PixelFormat::RGBA)
+    if (format == Texture::PixelFormat::RGBA)
     {
         pixelFormat = GL_RGBA;
     }
@@ -36,9 +36,32 @@ void Texture::fillBy(uint width, uint height, Texture::PixelFormat format, void 
     glBindTexture(GL_TEXTURE_2D, m_id);
     glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, width, height, 0, pixelFormat, GL_UNSIGNED_BYTE, data);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    m_size.set(width, height);
+    m_pixelFormat = format;
 }
 
-uint32_t Texture::id()
+uint Texture::width() const
+{
+    return m_size.x;
+}
+
+uint Texture::heigth() const
+{
+    return m_size.y;
+}
+
+const Vec2& Texture::size() const
+{
+    return m_size;
+}
+
+Texture::PixelFormat Texture::format() const
+{
+    return m_pixelFormat;
+}
+
+uint Texture::id() const
 {
     return m_id;
 }

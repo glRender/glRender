@@ -31,3 +31,7 @@
 #include "aabb.hpp"
 #include "nodePicker.hpp"
 #include "render.hpp"
+#include "font.hpp"
+#include "labelModel.hpp"
+#include "label.hpp"
+#include "glyphsInformation.hpp"

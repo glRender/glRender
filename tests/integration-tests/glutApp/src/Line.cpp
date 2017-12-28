@@ -4,33 +4,31 @@
 
 namespace glRender {
 
-Line::Line(Vec3 p0, Vec3 p1, uint segmentsNumber, float r, float g, float b)
+Line::Line(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color)
     : m_aabb(new AABB(Vec3(0,0,0), 1.0))
     , m_p0(p0)
     , m_p1(p1)
     , m_segmentsNumber(segmentsNumber)
-    , m_r(r)
-    , m_g(g)
-    , m_b(b)
+    , m_color(color)
 {
 //    setSelectable(false);
 
-    Geometry* geometry = GeometryHelper::Line(p0, p1, segmentsNumber);
+    std::shared_ptr<Geometry> geometry = GeometryHelper::Line(p0, p1, segmentsNumber);
 
     Textures * textures = new Textures();
 
     std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::instance().shaderPrograms().get("coloredShP");
 
     shaderProgram->addAttribute<Vec3>("vertex");
-    shaderProgram->addAttribute<float>("index");
+    // shaderProgram->addAttribute<float>("index");
 
     shaderProgram->addUniform<Mat4>("projection");
     shaderProgram->addUniform<Mat4>("view");
     shaderProgram->addUniform<Mat4>("model");
 
-    shaderProgram->addUniform<float>("r");
-    shaderProgram->addUniform<float>("g");
-    shaderProgram->addUniform<float>("b");
+    shaderProgram->setUniform<Vec3>("color", m_color);
+
+    shaderProgram->setUniform<Vec3>("color", m_color);
 
     m_model = new Model(geometry, textures, shaderProgram);
     m_model->setWireframeMode(false);
@@ -49,9 +47,8 @@ void Line::update()
 
 void Line::draw(Camera * camera)
 {
-    m_model->shaderProgram()->setUniform<float>("r", m_r);
-    m_model->shaderProgram()->setUniform<float>("g", m_g);
-    m_model->shaderProgram()->setUniform<float>("b", m_b);
+    m_model->shaderProgram()->setUniform<Vec3>("color", m_color);
+    m_model->setParentsMatrix(globalTransforms());
 
     m_model->draw(camera);
 }

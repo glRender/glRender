@@ -1,27 +1,19 @@
 [default]
-try: deploy
-except:
-    deploy=False
-
+runTarget("init_git")
 runTarget("build")
-runTarget("unit_tests")
 runTarget("make_package")
-
-if deploy != False:
-    runTarget("deploy_package")
 
 [init_git]
 runShell("git submodule update --init --recursive")
 
 [build]
-runTarget("init_git")
 if not exists("./build"):
     makedirs("./build")
 with cd("./build"):
-    runShell("cmake -G \"MSYS Makefiles\" ..")
-    runShell("cmake --build . --config Release")
+    runShell("cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=/mingw64/ ..")
+    runShell("make -j")
 
-[unit_tests]
+[unit-tests]
 with cd("./build/tests/"):
     runShell("./unit-tests/tests")
 
@@ -29,7 +21,7 @@ with cd("./build/tests/"):
 with cd("./build"):
     runShell("make package")
 
-[deploy_package]
+[deploy]
 with cd("./build"):
     runShell(
     """
@@ -39,11 +31,17 @@ with cd("./build"):
         if [ -z ${currentTag} ]; then
             echo "No tag. I will not publish that commit!";
         else
-            echo "Tag: "${currentTag}
-            REPO=./public/glRender/Windows10_MSYS2_MINGW64
-            echo "Path to repo: "${REPO}
-            ssh jenkins@sogimu.fvds.ru mkdir -p ${REPO}
-            rsync glRender-*.exe jenkins@sogimu.fvds.ru:${REPO}
+            if [ -z ${OS} ]; then
+                echo "Varibale OS not exist! I do not where to publish debs!"
+            else
+                echo "Tag: "${currentTag}
+                IMAGE_NAME=(${OS//\//_})
+                echo "Image name: "${IMAGE_NAME}
+                REPO=./public/glRender/${IMAGE_NAME}
+                echo "Path to repo: "${REPO}
+                rsync glRender-*.deb jenkins@sogimu.fvds.ru:${REPO}
+                ssh jenkins@sogimu.fvds.ru "cd ${REPO}; ls; dpkg-scanpackages -m . | gzip --fast > Packages.gz"
+            fi
         fi
     '
     """)

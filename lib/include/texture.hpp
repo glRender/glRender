@@ -1,17 +1,19 @@
 #pragma once
 
 #include "base.h"
+#include "vec2.hpp"
 
 namespace glRender
 {
 
 class Texture
 {
-public:
+public:    
     enum class PixelFormat
-    {
+    {        
         RGB,
-        RGBA
+        RGBA,
+        No
     };
 
     Texture();
@@ -19,11 +21,17 @@ public:
     ~Texture();
 
     void fillBy(uint width, uint height, PixelFormat format, void * data);
+    uint width() const;
+    uint heigth() const;
+    const Vec2 & size() const;
+    PixelFormat format() const;
 
-    uint32_t id();
+    uint id() const;
 
 private:
-    uint32_t m_id;
+    uint m_id = -1;
+    Vec2 m_size;
+    PixelFormat m_pixelFormat = PixelFormat::No;
 
 };
 

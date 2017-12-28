@@ -11,7 +11,7 @@ Mark::Mark(Vec3 color, float size, uint i, uint j, uint k)
     , m_j(j)
     , m_k(k)
 {
-    Geometry * geometry = GeometryHelper::Box(size);
+    std::shared_ptr<Geometry> geometry = GeometryHelper::Box(size);
 
     Textures * textures = new Textures();
 
@@ -112,6 +112,11 @@ void Mark::onMouseUp(Vec3 & position, RayPtr ray, Camera * camera)
 void Mark::onMouseMove(Vec3 & toPosition)
 {
     setOrigin(toPosition);
+
+    for (auto i : m_points)
+    {
+        i.first->setPointPosition(i.second, toPosition);
+    }
 
     printf("New position: %f, %f, %f\n", toPosition.x, toPosition.y, toPosition.z);
     std::cout << "" << std::endl;

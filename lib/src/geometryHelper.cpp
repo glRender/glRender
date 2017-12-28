@@ -6,7 +6,7 @@
 
 namespace glRender
 {
-      Geometry * GeometryHelper::Box(float halfSideSize)
+      std::shared_ptr<Geometry> GeometryHelper::Box(float halfSideSize)
       {
             std::vector<Vec3> vertices;
             /////////////
@@ -85,14 +85,14 @@ namespace glRender
             indices.push_back( 4 );
             indices.push_back( 6 );
 
-            Geometry * geometry = new Geometry(indices);
+            std::shared_ptr<Geometry> geometry = std::make_shared<Geometry>(indices);
             geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
             geometry->set( "uv", new Buffer<Vec2>( uvs, BufferType::ArrayBuffer) );
 
-            return geometry;
+            return std::move(geometry);
       }
 
-      Geometry * GeometryHelper::Plane(const Vec3 & leftUpPoint, const Vec3 & rightUpPoint, const Vec3 & leftBottomPoint, const Vec3 & rightBottomPoint)
+      std::shared_ptr<Geometry> GeometryHelper::Plane(const Vec3 & leftUpPoint, const Vec3 & rightUpPoint, const Vec3 & leftBottomPoint, const Vec3 & rightBottomPoint)
       {
             std::vector<Vec3> vertices;
             vertices.push_back( leftUpPoint );
@@ -101,10 +101,10 @@ namespace glRender
             vertices.push_back( rightBottomPoint );
 
             std::vector<Vec2> uvs;
-            uvs.push_back( Vec2(0.0, 1.0) );
-            uvs.push_back( Vec2(1.0, 1.0) );
             uvs.push_back( Vec2(0.0, 0.0) );
             uvs.push_back( Vec2(1.0, 0.0) );
+            uvs.push_back( Vec2(0.0, 1.0) );
+            uvs.push_back( Vec2(1.0, 1.0) );
 
             std::vector<uint32_t> indices;
             indices.push_back( 0 );
@@ -115,14 +115,14 @@ namespace glRender
             indices.push_back( 1 );
             indices.push_back( 3 );
 
-            Geometry* geometry = new Geometry(indices);
+            std::shared_ptr<Geometry> geometry = std::make_shared<Geometry>(indices);
             geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
             geometry->set( "uv", new Buffer<Vec2>( uvs, BufferType::ArrayBuffer) );
 
-            return geometry;
+            return std::move(geometry);
       }
 
-      Geometry *GeometryHelper::Line(const Vec3 &p0, const Vec3 &p1, uint32_t segmentsNumber)
+      std::shared_ptr<Geometry> GeometryHelper::Line(const Vec3 &p0, const Vec3 &p1, uint32_t segmentsNumber)
       {
           std::vector<Vec3> vertices;
 
@@ -134,14 +134,14 @@ namespace glRender
               vertices.push_back(p);
           }
 
-          Geometry* geometry = new Geometry();
+          std::shared_ptr<Geometry> geometry = std::make_shared<Geometry>();
           geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
 
-          return geometry;
+          return std::move(geometry);
 
       }
 
-      Geometry *GeometryHelper::QuadraticBezierCurve(const Vec3 &p0, const Vec3 &p1, const Vec3 &p2, uint32_t segmentsNumber)
+      std::shared_ptr<Geometry> GeometryHelper::QuadraticBezierCurve(const Vec3 &p0, const Vec3 &p1, const Vec3 &p2, uint32_t segmentsNumber)
       {
           std::vector<Vec3> vertices;
 
@@ -152,14 +152,14 @@ namespace glRender
               vertices.push_back(p);
           }
 
-          Geometry* geometry = new Geometry();
+          std::shared_ptr<Geometry> geometry = std::make_shared<Geometry>();
           geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
 
-          return geometry;
+          return std::move(geometry);
 
       }
 
-      Geometry * GeometryHelper::Arrows()
+      std::shared_ptr<Geometry> GeometryHelper::Arrows()
       {
             std::vector<Vec3> vertices;
             vertices.push_back( Vec3( 0.000000f, -2.000000f, -6.123888f));
@@ -397,10 +397,10 @@ namespace glRender
             indices.push_back( 5);
             indices.push_back( 15);
 
-            Geometry* geometry = new Geometry(indices);
+            std::shared_ptr<Geometry> geometry = std::make_shared<Geometry>(indices);
             geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
 
-            return geometry;
+            return std::move(geometry);
       }
 
 }
