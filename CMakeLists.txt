@@ -3,8 +3,8 @@ cmake_minimum_required (VERSION 2.8.11)
 project("glRender")
 
 set (glRender_MAJOR_VERSION 0)
-set (glRender_MINOR_VERSION 10)
-set (glRender_PATCH_VERSION 4)
+set (glRender_MINOR_VERSION 11)
+set (glRender_PATCH_VERSION 1)
 set (glRender_VERSION ${glRender_MAJOR_VERSION}.${glRender_MINOR_VERSION}.${glRender_PATCH_VERSION})
 
 option(BUILD_ID "Build ID")
