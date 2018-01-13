@@ -45,8 +45,8 @@ void LabelModel::createGeometry(std::shared_ptr<Font::Font> font)
     float ratioX = float(texture->width()) / texture->heigth();
     float ratioY = float(texture->heigth()) / texture->width();
     float scale = 10;
-    std::shared_ptr<Geometry> geometry = GeometryHelper::Plane(Vec3(0, 0, -5.0),               Vec3(scale * ratioX, 0, -5.0),
-                                                               Vec3(0, -scale * ratioY, -5.0), Vec3(scale * ratioX, -scale * ratioY, -5.0));
+    std::shared_ptr<Geometry> geometry = GeometryHelper::Plane(Vec3(0, 0, 0.0),               Vec3(scale * ratioX, 0, 0.0),
+                                                               Vec3(0, -scale * ratioY, 0.0), Vec3(scale * ratioX, -scale * ratioY, 0.0));
     setGeometry(geometry);
 }
 
