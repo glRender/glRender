@@ -171,7 +171,7 @@ const char * Render::contextInformation() const
     glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS, &maxFragmentUniformsComponents);
 
     int maxGeometryUniformsComponents = 0;
-    glGetIntegerv(GL_MAX_GEOMETRY_UNIFORM_COMPONENTS, &maxGeometryUniformsComponents);
+    // glGetIntegerv(GL_MAX_GEOMETRY_UNIFORM_COMPONENTS, &maxGeometryUniformsComponents);
 
     int maxRenderBufferSize = 0;
     glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &maxRenderBufferSize);
