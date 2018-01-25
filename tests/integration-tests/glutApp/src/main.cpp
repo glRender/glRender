@@ -7,8 +7,11 @@
 #include "BrickBox.hpp"
 // #include "QuadraticBezeirCurve.hpp"
 //#include "SinusLine.hpp"
-#include "Line.hpp"
 #include "aabbNodeVisualizator.hpp"
+
+#include "SplineMark.hpp"
+#include "SplineSegment.hpp"
+#include "Spline.hpp"
 
 static const int WINDOW_WIDTH = 1280;
 static const int WINDOW_HEIGHT = 720;
@@ -58,7 +61,6 @@ class Tran2 : public NodeMixedWith<IUpdateable>
 
 };
 
-
 void init ()
 {
     ResourceManager * resMng = &ResourceManager::instance();
@@ -104,37 +106,18 @@ void init ()
 
     Node * t = new Tran();
 
-    Line * l = new Line(
-        Vec3(-0.5f, 0.0, -2.0f),
-        Vec3(0.5f, 0.0, -2.0f), 
-        1.0, 
-        Vec3(1.0f, 0.0f, 1.0f));
-    t->add(l);
-
-    Mark * a = new Mark(Vec3(0,1,0), 0.1, 0, 0, 0);
-    a->setOrigin(Vec3(-0.5f, 0.0, -2.0f));
-    a->addLinePoint(l, Line::POINTS::FirstPoint);
-    t->add(a);
-
-    Mark * b = new Mark(Vec3(0,1,0), 0.1, 0, 0, 0);
-    b->setOrigin(Vec3(0.5f, 0.0, -2.0f));
-    b->addLinePoint(l, Line::POINTS::SecondPoint);
-    t->add(b);
-
-    /////////////////////////
-
-    Line * l1 = new Line(
-        Vec3(0.5f, 0.0, -2.0f),
-        Vec3(1.0f, 0.0, -2.0f), 
-        1.0, 
-        Vec3(1.0f, 0.0f, 1.0f));
-    t->add(l1);
-    b->addLinePoint(l1, Line::POINTS::FirstPoint);
-
-    Mark * c = new Mark(Vec3(0,1,0), 0.1, 0, 0, 0);
-    c->setOrigin(Vec3(1.0f, 0.0, -2.0f));
-    c->addLinePoint(l1, Line::POINTS::SecondPoint);
-    t->add(c);
+    Spline * spline0 = new Spline();
+    
+    Vec3 startPoint(-1.0, 0.0, -5.0);
+    for (int i=0; i<10; i++)
+    {
+        SplineMark * m = new SplineMark(startPoint);
+        spline0->add(m);
+        startPoint += Vec3(0.2,0.0,0.0);
+        
+    }    
+    
+    t->add(spline0);
 
     std::shared_ptr<Font::Font> font = Font::createFromFile("data/myfont.fnt");
     Label * ln = new Label(camera, font, "one_by_one");

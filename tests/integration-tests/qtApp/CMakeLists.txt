@@ -19,6 +19,7 @@ set (lib_src ${SRC}/knot.cpp
             ${SRC}/polylineeditor.cpp
             ${SRC}/utils.cpp
             ${SRC}/Mark.cpp
+            ${SRC}/Line.cpp
 )
 
 set (lib_hdr ${SRC}/knot.h
@@ -28,6 +29,10 @@ set (lib_hdr ${SRC}/knot.h
             ${SRC}/polylineeditor.h
             ${SRC}/utils.h
             ${SRC}/Mark.hpp
+            ${SRC}/Line.hpp
+            ${SRC}/SplineMark.hpp
+            ${SRC}/Spline.hpp
+            ${SRC}/SplineSegment.hpp
 )
 
 set (lib_ui  ${SRC}/mainwindow.ui)
