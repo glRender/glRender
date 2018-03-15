@@ -23,7 +23,14 @@ void Node::add(Node * node)
     notifyUp(Event::ADD, node);
 }
 
-std::vector<Node *> & Node::childs()
+void Node::remove(Node * node)
+{
+    m_childs.remove(node);
+    node->m_parent = nullptr;
+    notifyUp(Event::REMOVE, node);
+}
+
+std::list<Node *> & Node::childs()
 {
     return m_childs;
 }

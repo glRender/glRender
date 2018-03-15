@@ -27,7 +27,9 @@ public:
     virtual void accept(NodeVisitor * v) = 0;
 
     void add(Node * node);
-    std::vector<Node *> & childs();
+    void remove(Node * node);
+
+    std::list<Node *> & childs();
     Node * parent() const;
 
     void traverse(std::function<void(Node * node)> handler);
@@ -49,7 +51,7 @@ private:
 
 private:
     Node * m_parent = nullptr;
-    std::vector<Node * > m_childs;
+    std::list<Node * > m_childs;
 
     Mat4 m_localTransforms;
     Mat4 m_globalTransforms;

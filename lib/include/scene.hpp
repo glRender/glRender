@@ -17,20 +17,18 @@ public:
     Scene();
     virtual ~Scene();
 
-    void addToCache(Node * node);
-    void removeFromCache(Node * node);
-
     void add(Node * node);
+    void remove(Node * node);
     
     void setCamera(Camera * camera);
     bool hasCamera();
-    Camera * camera();
+    Camera * camera() const;
 
-    std::vector<Node *>           queryNodes(std::function<bool(const Node *)> condition);
-    std::vector<IUpdateable *>    queryUpdateables(std::function<bool(const IUpdateable *)> condition);
-    std::vector<IDrawable *>      queryDrawables(std::function<bool(const IDrawable *)> condition);
+    std::vector<Node *>           queryNodes         (std::function<bool(const Node *          )> condition);
+    std::vector<IUpdateable *>    queryUpdateables   (std::function<bool(const IUpdateable *   )> condition);
+    std::vector<IDrawable *>      queryDrawables     (std::function<bool(const IDrawable *     )> condition);
     std::vector<IIntersectable *> queryIntersectables(std::function<bool(const IIntersectable *)> condition);
-    std::vector<IKeyPressable *>  queryKeyPressables(std::function<bool(const IKeyPressable *)> condition);
+    std::vector<IKeyPressable *>  queryKeyPressables (std::function<bool(const IKeyPressable * )> condition);
 
     void drawFrame();
     void update();
@@ -45,6 +43,8 @@ protected:
 
     EventManager<Scene::Event> & eventManager();
 private:
+    void addToCache(Node * node);
+    void removeFromCache(Node * node);
     void traverseNodes(std::function<void(Node *)> handler);
     void traverseUpdateables(std::function<void(IUpdateable *)> handler);
     void traverseDrawables(std::function<void(IDrawable *)> handler);
@@ -52,7 +52,7 @@ private:
     void traverseKeyPressables(std::function<void(IKeyPressable *)> handler);
 
 private:
-    std::vector<Node * > m_childs;
+    std::list<Node * > m_childs;
     Camera * m_camera = nullptr;
 
     NodeCache m_cache;

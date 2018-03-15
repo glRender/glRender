@@ -15,6 +15,46 @@ Scene::~Scene()
 {
 }
 
+void Scene::add(Node * node)
+{
+    m_childs.push_back(node);
+    node->subscribeTo(Node::Event::ADD, [this](Node * node) {
+        addToCache(node);
+    });
+
+    node->subscribeTo(Node::Event::REMOVE, [this](Node * node) {
+        removeFromCache(node);
+    });
+
+    addToCache(node);
+}
+
+void Scene::remove(Node * node)
+{
+    m_childs.remove(node);
+    removeFromCache(node);
+}
+
+void Scene::setCamera(Camera * camera)
+{
+    m_camera = camera;
+}
+
+bool Scene::hasCamera()
+{
+    return m_camera != nullptr;
+}
+
+Camera * Scene::camera() const
+{
+    return m_camera;
+}
+
+EventManager<Scene::Event> &Scene::eventManager()
+{
+    return m_eventManager;
+}
+
 void Scene::addToCache(Node * node)
 {
     NodeCacheAdder v(m_cache);
@@ -30,40 +70,6 @@ void Scene::removeFromCache(Node * node)
     node->traverse([&v](Node * node) {
         node->accept(&v);
     });
-}
-
-void Scene::add(Node * node)
-{
-    m_childs.push_back(node);
-    node->subscribeTo(Node::Event::ADD, [this](Node * node) {
-        addToCache(node);
-    });
-
-    node->subscribeTo(Node::Event::REMOVE, [this](Node * node) {
-        removeFromCache(node);
-    });
-
-    addToCache(node);
-}
-
-void Scene::setCamera(Camera * camera)
-{
-    m_camera = camera;
-}
-
-bool Scene::hasCamera()
-{
-    return m_camera != nullptr;
-}
-
-Camera * Scene::camera()
-{
-    return m_camera;
-}
-
-EventManager<Scene::Event> &Scene::eventManager()
-{
-    return m_eventManager;
 }
 
 void Scene::traverseNodes(std::function<void(Node * node)> handler)

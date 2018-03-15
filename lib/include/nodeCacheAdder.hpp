@@ -14,21 +14,21 @@ class NodeCacheAdder : public NodeVisitor
 public:
     NodeCacheAdder(NodeCache & cache);
 
-    void visit(NodeMixedWith<IUpdateable> * ref) override;
-    void visit(NodeMixedWith<IUpdateable, IDrawable> * ref) override;
-    void visit(NodeMixedWith<IUpdateable, IDrawable, IIntersectable> * ref) override;
-    void visit(NodeMixedWith<IUpdateable, IDrawable, IIntersectable, IKeyPressable> * ref) override;
-    void visit(NodeMixedWith<IUpdateable, IKeyPressable> * ref) override;
-    void visit(NodeMixedWith<IUpdateable, IDrawable, IKeyPressable> * ref) override;
-    void visit(NodeMixedWith<IUpdateable, IIntersectable, IKeyPressable> *ref) override;
-    void visit(NodeMixedWith<IDrawable, IKeyPressable, IIntersectable> *ref) override;
-    void visit(NodeMixedWith<IUpdateable, IIntersectable> *ref) override;
-    void visit(NodeMixedWith<IDrawable, IIntersectable> *ref) override;
-    void visit(NodeMixedWith<IDrawable, IKeyPressable> *ref) override;
-    void visit(NodeMixedWith<IIntersectable, IKeyPressable> *ref) override;
-    void visit(NodeMixedWith<IDrawable> *ref) override;
-    void visit(NodeMixedWith<IIntersectable> *ref) override;
-    void visit(NodeMixedWith<IKeyPressable> *ref) override;
+    void visit(NodeMixedWith<IUpdateable> * pointer) override;
+    void visit(NodeMixedWith<IUpdateable, IDrawable> * pointer) override;
+    void visit(NodeMixedWith<IUpdateable, IDrawable, IIntersectable> * pointer) override;
+    void visit(NodeMixedWith<IUpdateable, IDrawable, IIntersectable, IKeyPressable> * pointer) override;
+    void visit(NodeMixedWith<IUpdateable, IKeyPressable> * pointer) override;
+    void visit(NodeMixedWith<IUpdateable, IDrawable, IKeyPressable> * pointer) override;
+    void visit(NodeMixedWith<IUpdateable, IIntersectable, IKeyPressable> *pointer) override;
+    void visit(NodeMixedWith<IDrawable, IKeyPressable, IIntersectable> *pointer) override;
+    void visit(NodeMixedWith<IUpdateable, IIntersectable> *pointer) override;
+    void visit(NodeMixedWith<IDrawable, IIntersectable> *pointer) override;
+    void visit(NodeMixedWith<IDrawable, IKeyPressable> *pointer) override;
+    void visit(NodeMixedWith<IIntersectable, IKeyPressable> *pointer) override;
+    void visit(NodeMixedWith<IDrawable> *pointer) override;
+    void visit(NodeMixedWith<IIntersectable> *pointer) override;
+    void visit(NodeMixedWith<IKeyPressable> *pointer) override;
 
 private:
     NodeCache & cache;
