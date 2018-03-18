@@ -37,7 +37,7 @@
 
 [install_deps]
     runShell("apt-get update")
-    runShell("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev doxygen rsync dpkg-dev")
+    runShell("apt-get -y install git cmake build-essential freeglut3-dev freeglut3 libxmu-dev libxi-dev doxygen rsync dpkg-dev qt5-default")
 
 [init_git]
     runShell("git submodule update --init --recursive")
@@ -127,10 +127,16 @@
     except:
         raise Exception("Необходимо ввести список целей!")
 
+    runShell("sudo docker pull %s" % container)
     runShell("""
         sudo docker run --rm -v %s:/repo %s bash -cex '
-            cd /repo
+            apt-get update
+            apt-get install -y python wget sudo
+            cd /tmp
+            wget https://bootstrap.pypa.io/get-pip.py
+            python get-pip.py
             pip install -U build_scenarist
+            cd /repo
             scenarist.py info
             scenarist.py run %s
         '
