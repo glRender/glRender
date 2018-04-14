@@ -132,9 +132,10 @@
         sudo docker run --rm -v %s:/repo %s bash -cex '
             apt-get update
             apt-get install -y python wget sudo
+            adduser root sudo
             cd /tmp
             wget https://bootstrap.pypa.io/get-pip.py
-            python get-pip.py
+            python get-pip.py --force-reinstall
             pip install -U build_scenarist
             cd /repo
             scenarist.py info
