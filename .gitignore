@@ -2,3 +2,4 @@ build
 docs
 CMakeLists.txt.user*
 lib/include/buildInfo.hpp
+Dockerfile

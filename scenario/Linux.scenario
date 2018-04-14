@@ -127,16 +127,25 @@
     except:
         raise Exception("Необходимо ввести список целей!")
 
+    f=open("Dockerfile","w")
+    f.write("""FROM %s
+    ADD scenario/Linux.scenario /scenario/Linux.scenario
+    WORKDIR /
+    RUN apt-get update && \\
+    apt-get install -y python wget sudo && \\
+    adduser root sudo && \\
+    cd /tmp && \\
+    wget https://bootstrap.pypa.io/get-pip.py && \\
+    python get-pip.py --force-reinstall && \\
+    cd / && \\
+    pip install -U build_scenarist && \\
+    scenarist.py run install_deps""" % container)
+    f.close()
+
     runShell("sudo docker pull %s" % container)
+    runShell("sudo docker build -t %s-dev ." % container)
     runShell("""
-        sudo docker run --rm -v %s:/repo %s bash -cex '
-            apt-get update
-            apt-get install -y python wget sudo
-            adduser root sudo
-            cd /tmp
-            wget https://bootstrap.pypa.io/get-pip.py
-            python get-pip.py --force-reinstall
-            pip install -U build_scenarist
+        sudo docker run --rm -v %s:/repo %s-dev bash -cex '
             cd /repo
             scenarist.py info
             scenarist.py run %s
