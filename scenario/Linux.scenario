@@ -129,7 +129,7 @@
 
     f=open("Dockerfile","w")
     f.write("""FROM %s
-    ADD scenario/Linux.scenario /scenario/Linux.scenario
+    ADD scenario/ /scenario/
     WORKDIR /
     RUN apt-get update && \\
     apt-get install -y python wget sudo && \\
