@@ -26,8 +26,7 @@ inline const char * convertShaderTypeToChar(ShaderType type)
 }
 
 Shader::Shader(const char * text, ShaderType type)
-    : m_type(type)
-    , m_source(text)
+    : m_source(text)
 {
     m_typeString = convertShaderTypeToChar(type);
 
@@ -137,7 +136,7 @@ bool Shader::compile()
         return true;
     }
 }
-    
+
 std::shared_ptr<Shader> createShaderFromFile(const char * pathToFile, ShaderType type)
 {
     std::ifstream file;
@@ -156,7 +155,7 @@ std::shared_ptr<Shader> createShaderFromFile(const char * pathToFile, ShaderType
     std::string text;
     text = stream.str();
 
-    return std::move(createShaderFromText(text.c_str(), type));
+    return createShaderFromText(text.c_str(), type);
 }
 
 std::shared_ptr<Shader> createShaderFromText(const char *textOfShader, ShaderType type)
@@ -166,7 +165,7 @@ std::shared_ptr<Shader> createShaderFromText(const char *textOfShader, ShaderTyp
     {
         throw std::invalid_argument("Can't compile shader: " + std::string(textOfShader));
     }
-    return std::move(shader);
+    return shader;
 }
 
 }

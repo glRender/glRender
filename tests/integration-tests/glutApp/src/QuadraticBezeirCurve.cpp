@@ -7,11 +7,9 @@ QuadraticBezeirCurve::QuadraticBezeirCurve(Vec3 p0, Vec3 p1, Vec3 p2, uint segme
     , m_p0(p0)
     , m_p1(p1)
     , m_p2(p2)
-    , m_segmentsNumber(segmentsNumber)
     , m_color(color)
     , m_speed((double) rand() / (RAND_MAX) * 0.01)
 {
-//    setSelectable(false);
     std::shared_ptr<Geometry> geometry = GeometryHelper::QuadraticBezierCurve(p0, p1, p2, segmentsNumber);
 \
     Textures * textures = new Textures();
@@ -25,9 +23,6 @@ QuadraticBezeirCurve::QuadraticBezeirCurve(Vec3 p0, Vec3 p1, Vec3 p2, uint segme
     shaderProgram->addUniform<Mat4>("projection");
     shaderProgram->addUniform<Mat4>("view");
     shaderProgram->addUniform<Mat4>("model");
-    // shaderProgram->addUniform<float>("r");
-    // shaderProgram->addUniform<float>("g");
-    // shaderProgram->addUniform<float>("b");
     shaderProgram->setUniform<Vec3>("color", m_color);
 
     shaderProgram->setUniform<Vec3>("color", m_color);

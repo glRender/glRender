@@ -38,8 +38,8 @@ public:
     }
   }
 
-  Model * model()/* override*/;
-  IBoundingBox * bb() const/* override*/;
+  Model * model();
+  IBoundingBox * bb() const;
 
 private:
   Model * m_model;
@@ -49,11 +49,6 @@ private:
   Vec3 m_p1;
   Vec3 m_p2;
 
-  int m_segmentsNumber;
-
-  float m_r;
-  float m_g;
-  float m_b;
   Vec3 m_color;
   float m_speed;
 

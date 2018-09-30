@@ -6,8 +6,9 @@
 namespace glRender
 {
 
-struct NodeCache
+class NodeCache
 {
+public:
     std::list<Node *> nodes;
     std::list<IUpdateable *> updateables;
     std::list<IDrawable *> drawables;

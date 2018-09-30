@@ -23,12 +23,6 @@ list(GET VERSION_LIST 2 glRender_PATCH_VERSION)
 #set (glRender_PATCH_VERSION 3)
 #set (glRender_VERSION ${glRender_MAJOR_VERSION}.${glRender_MINOR_VERSION}.${glRender_PATCH_VERSION})
 
-option(BUILD_ID "Build ID")
-
-if (BUILD_ID STREQUAL "" OR BUILD_ID STREQUAL OFF)
-	set(BUILD_ID "-")
-endif()
-
 add_subdirectory (lib)
 add_subdirectory (tests/unit-tests)
 add_subdirectory (tests/integration-tests/glutApp)

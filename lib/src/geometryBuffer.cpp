@@ -77,7 +77,9 @@ void Buffer<T>::rewrite(const uint32_t index, const T & element)
     glBindBuffer(m_type , 0);
 }
 
-template class Buffer<Vec3>;
-template class Buffer<uint32_t>;
-template class Buffer<Vec2>;
-template class Buffer<float>;
+namespace glRender {
+    template class Buffer<Vec3>;
+    template class Buffer<uint32_t>;
+    template class Buffer<Vec2>;
+    template class Buffer<float>;
+}

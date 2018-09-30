@@ -18,7 +18,6 @@ public:
     std::shared_ptr<Model> model();
 
 private:
-    Camera * m_camera;
     std::shared_ptr<LabelModel> m_label;
 };
 

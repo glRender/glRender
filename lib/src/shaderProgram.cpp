@@ -394,7 +394,7 @@ std::shared_ptr<ShaderProgram> createShaderProgramFromFiles(std::map<ShaderType,
         throw std::invalid_argument("Failed shader program linkage!");
     }
 
-    return std::move(program);
+    return program;
 }
 
 std::shared_ptr<ShaderProgram> createShaderProgramFromText(std::map<ShaderType, const char *> textOfShaders)
@@ -414,7 +414,7 @@ std::shared_ptr<ShaderProgram> createShaderProgramFromText(std::map<ShaderType, 
         throw std::invalid_argument("Failed shader program linkage!");
     }
 
-    return std::move(program);
+    return program;
 }
 
 }

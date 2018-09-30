@@ -8,7 +8,6 @@ Line::Line(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color)
     : m_aabb(new AABB(Vec3(0,0,0), 1.0))
     , m_p0(p0)
     , m_p1(p1)
-    , m_segmentsNumber(segmentsNumber)
     , m_color(color)
 {
 //    setSelectable(false);

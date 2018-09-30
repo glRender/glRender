@@ -47,13 +47,13 @@ private:
   Vec3 m_p0;
   Vec3 m_p1;
 
-  int m_segmentsNumber;
+  //int m_segmentsNumber;
 
-  float m_r;
-  float m_g;
-  float m_b;
+  //float m_r;
+  //float m_g;
+  //float m_b;
   Vec3 m_color;
-  float m_speed;
+  //float m_speed;
 
 };
 
