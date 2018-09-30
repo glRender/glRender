@@ -187,9 +187,9 @@ void Font::createShaderProgram()
 //        shaderProgram->addUniform<Vec2>(fieldSize.c_str());
 //        shaderProgram->addUniform<Vec2>(fieldOffset.c_str());
 
-        return std::move(shaderProgram);
+        return shaderProgram;
     });
-    m_shaderProgram = std::move(ResourceManager::instance().shaderPrograms().get(m_uuid));
+    m_shaderProgram = ResourceManager::instance().shaderPrograms().get(m_uuid);
 }
 
 std::shared_ptr<Font> createFromFile(const char * pathToFile)
@@ -204,7 +204,7 @@ std::shared_ptr<Font> createFromFile(const char * pathToFile)
     std::shared_ptr<Texture> texture = ResourceManager::instance().textures().get(uuid.c_str());
     info->normalizeBySize(texture->size());
 
-    return std::move(std::make_shared<Font>(texture, info));
+    return std::make_shared<Font>(texture, info);
 }
 
 }

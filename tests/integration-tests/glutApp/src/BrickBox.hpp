@@ -14,8 +14,8 @@ public:
   void update() override;
   void draw(Camera * camera) override;
 
-  Model * model()/* override*/;
-  AABB * bb() const/* override*/;
+  Model * model();
+  AABB * bb() const;
 
 private:
   Model * m_model;

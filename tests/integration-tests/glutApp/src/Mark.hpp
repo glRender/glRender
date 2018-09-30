@@ -42,7 +42,7 @@ public:
 private:
   Model * m_model;
   AABB * m_aabb;
-  AABBNodeVisualizator * m_aabbVisualizator;
+  // AABBNodeVisualizator * m_aabbVisualizator;
 
   Vec3 m_color;
 
@@ -50,10 +50,6 @@ private:
   // Line::POINTS m_linePoint;
 
   std::map<Line *, Line::POINTS> m_points;
-
-  uint m_i;
-  uint m_j;
-  uint m_k;
 
   bool m_isSelected = false;
 

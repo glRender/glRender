@@ -84,7 +84,7 @@ std::shared_ptr<Texture> createTextureFromFile(const char * pathToFile)
 
         image->clear();
         delete image;
-        return std::move(texture);
+        return texture;
     }
     else
     {

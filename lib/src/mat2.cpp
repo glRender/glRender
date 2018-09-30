@@ -1,7 +1,6 @@
 #include "mat2.hpp"
 
 namespace glRender {
-const float DEG2RAD = 3.141593f / 180;
 const float EPSILON = 0.00001f;
 
 ///////////////////////////////////////////////////////////////////////////////

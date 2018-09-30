@@ -89,7 +89,7 @@ namespace glRender
             geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
             geometry->set( "uv", new Buffer<Vec2>( uvs, BufferType::ArrayBuffer) );
 
-            return std::move(geometry);
+            return geometry;
       }
 
       std::shared_ptr<Geometry> GeometryHelper::Plane(const Vec3 & leftUpPoint, const Vec3 & rightUpPoint, const Vec3 & leftBottomPoint, const Vec3 & rightBottomPoint)
@@ -119,7 +119,7 @@ namespace glRender
             geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
             geometry->set( "uv", new Buffer<Vec2>( uvs, BufferType::ArrayBuffer) );
 
-            return std::move(geometry);
+            return geometry;
       }
 
       std::shared_ptr<Geometry> GeometryHelper::Line(const Vec3 &p0, const Vec3 &p1, uint32_t segmentsNumber)
@@ -137,7 +137,7 @@ namespace glRender
           std::shared_ptr<Geometry> geometry = std::make_shared<Geometry>();
           geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
 
-          return std::move(geometry);
+          return geometry;
 
       }
 
@@ -155,7 +155,7 @@ namespace glRender
           std::shared_ptr<Geometry> geometry = std::make_shared<Geometry>();
           geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
 
-          return std::move(geometry);
+          return geometry;
 
       }
 
@@ -400,7 +400,7 @@ namespace glRender
             std::shared_ptr<Geometry> geometry = std::make_shared<Geometry>(indices);
             geometry->set( "vertex", new Buffer<Vec3>( vertices, BufferType::ArrayBuffer) );
 
-            return std::move(geometry);
+            return geometry;
       }
 
 }
