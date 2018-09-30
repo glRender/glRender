@@ -6,8 +6,9 @@
 namespace glRender
 {
 
-struct Vec4
+class Vec4
 {
+public:
     float x;
     float y;
     float z;

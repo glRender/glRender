@@ -60,7 +60,7 @@ public:
         return m_model;
     }
 
-    const IBoundingBox * bb() const
+    const IBoundingBox * bb() const override
     {
         return m_aabb;
     }

@@ -7,9 +7,6 @@ namespace glRender {
 Mark::Mark(Vec3 color, float size, uint i, uint j, uint k)
     : m_aabb(new AABB(Vec3(0,0,0), size))
     , m_color(color)
-    , m_i(i)
-    , m_j(j)
-    , m_k(k)
 {
     std::shared_ptr<Geometry> geometry = GeometryHelper::Box(size);
 

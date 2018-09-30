@@ -27,8 +27,6 @@ private:
     int m_width = -1;
     int m_height = -1;
     int m_components = -1;
-
-    bool m_isLoaded = false;
 };
 
 }
