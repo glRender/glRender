@@ -31,9 +31,33 @@
     dockerUser, dockerImageName, dockerImageTag = splitDockerImageName(dockerImage)
 
     runTarget("in_container:container=\"%s\", targets=[\"install_deps\", \"init_git\", \"clean\", \"build\", \"unit_tests\", \"make_package\"]" % (dockerImage))
-
+    
     if deploy != False:
         runTarget("deploy_package:host=\"sogimu.fvds.ru\",folder=\"glRender/%s-%s\"" % (dockerImageName, dockerImageTag))
+
+[prepare_env_in]
+    try:
+        if len(dockerImage) == 0: raise
+    except: dockerImage="sogimu/astralinux:1.11.9"
+    runTarget("in_container:container=\"%s\", targets=[\"install_deps\", \"init_git\", \"clean\"]" % (dockerImage))
+
+[build_in]
+    try:
+        if len(dockerImage) == 0: raise
+    except: dockerImage="sogimu/astralinux:1.11.9"
+    runTarget("in_container:container=\"%s\", targets=[\"install_deps\", \"build\"              ]" % (dockerImage))
+
+[unit_tests_in]
+    try:
+        if len(dockerImage) == 0: raise
+    except: dockerImage="sogimu/astralinux:1.11.9"
+    runTarget("in_container:container=\"%s\", targets=[\"install_deps\", \"unit_tests\"         ]" % (dockerImage))
+
+[make_package_in]
+    try:
+        if len(dockerImage) == 0: raise
+    except: dockerImage="sogimu/astralinux:1.11.9"
+    runTarget("in_container:container=\"%s\", targets=[\"install_deps\", \"make_package\"       ]" % (dockerImage))
 
 [install_deps]
     runShell("apt-get update")
