@@ -1,7 +1,7 @@
 node {
     stage('clone') {
-		checkout scm
-	}	
+		    checkout scm
+	  }	
     stage('prepare_env_in') {
         sh 'scenarist.py run prepare_env_in:dockerImage=\"ubuntu:16.04\"'
     }
