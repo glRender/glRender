@@ -9,19 +9,19 @@ execute_process(
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
-string(REPLACE "." ";" VERSION_LIST ${glRender_VERSION})
+# string(REPLACE "." ";" VERSION_LIST ${glRender_VERSION})
 
-list(GET VERSION_LIST 0 DIRTY_MAJOR_VERSION)
-string(REPLACE "v" "" glRender_MAJOR_VERSION ${DIRTY_MAJOR_VERSION})
+# list(GET VERSION_LIST 0 DIRTY_MAJOR_VERSION)
+# string(REPLACE "v" ""   glRender_MAJOR_VERSION ${DIRTY_MAJOR_VERSION})
 
-list(GET VERSION_LIST 1 glRender_MINOR_VERSION)
-list(GET VERSION_LIST 2 glRender_PATCH_VERSION)
+# list(GET VERSION_LIST 1 glRender_MINOR_VERSION)
+# list(GET VERSION_LIST 2 glRender_PATCH_VERSION)
 
 
-#set (glRender_MAJOR_VERSION 0)
-#set (glRender_MINOR_VERSION 12)
-#set (glRender_PATCH_VERSION 3)
-#set (glRender_VERSION ${glRender_MAJOR_VERSION}.${glRender_MINOR_VERSION}.${glRender_PATCH_VERSION})
+set (glRender_MAJOR_VERSION 0)
+set (glRender_MINOR_VERSION 12)
+set (glRender_PATCH_VERSION 3)
+set (glRender_VERSION ${glRender_MAJOR_VERSION}.${glRender_MINOR_VERSION}.${glRender_PATCH_VERSION})
 
 add_subdirectory (lib)
 add_subdirectory (tests/unit-tests)
