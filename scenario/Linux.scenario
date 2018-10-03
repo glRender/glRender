@@ -83,8 +83,9 @@
         runShell("make")
 
 [unit_tests]
-    with cd("./build/tests/"):
-        runShell("./unit-tests/tests")
+    with cd("./build/tests/unit-tests"):
+        runShell("./tests")
+        runShell("./tests -r junit -o unit_tests_results.xml")
 
 [make_package]
     with cd("./build"):
