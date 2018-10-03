@@ -33,6 +33,7 @@ pipeline {
     }
     post {
         always {
+            archiveArtifacts artifacts: 'build/.deb', fingerprint: true
             junit 'build/tests/unit-tests/unit_tests_results.xml'
         }
     }
