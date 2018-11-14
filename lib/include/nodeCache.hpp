@@ -14,6 +14,7 @@ public:
     std::list<IDrawable *> drawables;
     std::list<IIntersectable *> intersectables;
     std::list<IKeyPressable *> keyPressable;
+    std::list<IMouseListenable *> mouseListenable;
 };
 
 

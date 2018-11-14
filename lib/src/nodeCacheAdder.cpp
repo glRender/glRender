@@ -101,3 +101,16 @@ void NodeCacheAdder::visit(NodeMixedWith<IKeyPressable> *ref) {
     cache.keyPressable.push_back(ref);
     cache.nodes.push_back(ref);
 }
+
+void glRender::NodeCacheAdder::visit(NodeMixedWith<glRender::IMouseListenable> *ref)
+{
+    cache.mouseListenable.push_back(ref);
+    cache.nodes.push_back(ref);
+}
+
+void glRender::NodeCacheAdder::visit(NodeMixedWith<glRender::IUpdateable, glRender::IKeyPressable, glRender::IMouseListenable> *ref)
+{
+    cache.mouseListenable.push_back(ref);
+    cache.keyPressable.push_back(ref);
+    cache.nodes.push_back(ref);
+}

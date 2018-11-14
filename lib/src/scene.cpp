@@ -112,6 +112,14 @@ void Scene::traverseKeyPressables(std::function<void (IKeyPressable *)> handler)
     }
 }
 
+void Scene::traverseMouseListenable(std::function<void (IMouseListenable *)> handler)
+{
+    for (auto & o : m_cache.mouseListenable)
+    {
+        handler(o);
+    }
+}
+
 std::vector<Node *> Scene::queryNodes(std::function<bool (const Node *)> condition)
 {
     std::vector<Node *> result;
@@ -168,6 +176,19 @@ std::vector<IKeyPressable *> Scene::queryKeyPressables(std::function<bool (const
 {
     std::vector<IKeyPressable *> result;
     for (auto & o : m_cache.keyPressable)
+    {
+        if (condition(o))
+        {
+            result.push_back(o);
+        }
+    }
+    return result;
+}
+
+std::vector<IMouseListenable *> glRender::Scene::queryMouseListenable(std::function<bool (const IMouseListenable *)> condition)
+{
+    std::vector<IMouseListenable *> result;
+    for (auto & o : m_cache.mouseListenable)
     {
         if (condition(o))
         {

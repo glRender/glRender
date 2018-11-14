@@ -102,3 +102,18 @@ void NodeCacheRemover::visit(NodeMixedWith<IKeyPressable> *ref) {
     cache.keyPressable.remove(ref);
     cache.nodes.remove(ref);
 }
+
+void NodeCacheRemover::visit(NodeMixedWith<IMouseListenable> *ref)
+{
+    cache.mouseListenable.remove(ref);
+    cache.nodes.remove(ref);
+
+}
+
+void NodeCacheRemover::visit(NodeMixedWith<IUpdateable, IKeyPressable, IMouseListenable> *ref)
+{
+    cache.mouseListenable.remove(ref);
+    cache.keyPressable.remove(ref);
+    cache.nodes.remove(ref);
+
+}

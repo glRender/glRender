@@ -95,13 +95,20 @@ void NodePicker::mouseDownUnderNearest(float nx, float ny)
 
 void NodePicker::mouseDownUnderNearest(const Vec2 & normDeviceCoords)
 {
+    auto ray = this->ray(normDeviceCoords);
     m_pressedNearestNode = findNearest(normDeviceCoords);
     if (m_pressedNearestNode)
     {
         float pressedNodeDistance = m_pressedNearestNode->bb()->origin().distance(m_camera->position());
         auto pos = coordOnDistance(normDeviceCoords, pressedNodeDistance);
-        auto ray = this->ray(normDeviceCoords);
         m_pressedNearestNode->onMouseDown(pos, ray, m_camera);
+    }
+    else
+    {
+        m_scene->traverseMouseListenable([this, &ray, &normDeviceCoords](IMouseListenable * o) {
+            o->onMouseDown(normDeviceCoords, ray, m_camera);
+        });
+
     }
 }
 
@@ -112,13 +119,20 @@ void NodePicker::mouseUpUnderNearest(float nx, float ny)
 
 void NodePicker::mouseUpUnderNearest(const Vec2 & normDeviceCoords)
 {
+    auto ray = this->ray(normDeviceCoords);
     if (m_pressedNearestNode)
     {
         float pressedNodeDistance = m_pressedNearestNode->bb()->origin().distance(m_camera->position());
         auto pos = coordOnDistance(normDeviceCoords, pressedNodeDistance);
-        auto ray = this->ray(normDeviceCoords);
         m_pressedNearestNode->onMouseUp(pos, ray, m_camera);
     }
+    else
+    {
+        m_scene->traverseMouseListenable([this, &ray, &normDeviceCoords](IMouseListenable * o) {
+            o->onMouseUp(normDeviceCoords, ray, m_camera);
+        });
+    }
+
 }
 
 void NodePicker::mouseMoveUnderNearest(float nx, float ny)
@@ -128,11 +142,19 @@ void NodePicker::mouseMoveUnderNearest(float nx, float ny)
 
 void NodePicker::mouseMoveUnderNearest(const Vec2 & normDeviceCoords)
 {
+    auto ray = this->ray(normDeviceCoords);
     if (m_pressedNearestNode)
     {
         float pressedNodeDistance = m_pressedNearestNode->bb()->origin().distance(m_camera->position());
         Vec3 newPos = coordOnDistance(normDeviceCoords, pressedNodeDistance);
         m_pressedNearestNode->onMouseMove(newPos);
+    }
+    else
+    {
+        m_scene->traverseMouseListenable([this, normDeviceCoords, ray](IMouseListenable * o) {
+            o->onMouseMove(normDeviceCoords, ray, m_camera);
+        });
+
     }
 
 }

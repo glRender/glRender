@@ -35,6 +35,14 @@ public:
 //    virtual void onIntersection(NodeMixedWith<IUpdateable, IDrawable, IIntersectable> * o) = 0;
 };
 
+class IMouseListenable
+{
+public:
+    virtual void onMouseUp(Vec2 normDeviceCoords, RayPtr ray, Camera *) = 0;
+    virtual void onMouseDown(Vec2 normDeviceCoords, RayPtr ray, Camera *) = 0;
+    virtual void onMouseMove(Vec2 normDeviceCoords, RayPtr ray, Camera *) = 0;
+};
+
 class IKeyPressable
 {
 public:

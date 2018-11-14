@@ -29,6 +29,8 @@ public:
     std::vector<IDrawable *>      queryDrawables     (std::function<bool(const IDrawable *     )> condition);
     std::vector<IIntersectable *> queryIntersectables(std::function<bool(const IIntersectable *)> condition);
     std::vector<IKeyPressable *>  queryKeyPressables (std::function<bool(const IKeyPressable * )> condition);
+    std::vector<IMouseListenable *> queryMouseListenable (std::function<bool(const IMouseListenable * )> condition);
+    void traverseMouseListenable(std::function<void(IMouseListenable *)> handler);
 
     void drawFrame();
     void update();

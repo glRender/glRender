@@ -12,6 +12,7 @@ class IDrawable;
 class IUpdateable;
 class IIntersectable;
 class IKeyPressable;
+class IMouseListenable;
 
 template<typename...> class NodeMixedWith;
 
@@ -33,6 +34,8 @@ public:
     virtual void visit(NodeMixedWith<IDrawable> *pointer) = 0;
     virtual void visit(NodeMixedWith<IIntersectable> *pointer) = 0;
     virtual void visit(NodeMixedWith<IKeyPressable> *pointer) = 0;
+    virtual void visit(NodeMixedWith<IMouseListenable> *pointer) = 0;
+    virtual void visit(NodeMixedWith<IUpdateable, IKeyPressable, IMouseListenable> *pointer) = 0;
 };
 
 }

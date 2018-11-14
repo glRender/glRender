@@ -28,6 +28,8 @@ public:
     void visit(NodeMixedWith<IDrawable> *pointer) override;
     void visit(NodeMixedWith<IIntersectable> *pointer) override;
     void visit(NodeMixedWith<IKeyPressable> *pointer) override;
+    void visit(NodeMixedWith<IMouseListenable> *) override;
+    void visit(NodeMixedWith<IUpdateable, IKeyPressable, IMouseListenable> *) override;
 
 private:
     NodeCache & cache;
